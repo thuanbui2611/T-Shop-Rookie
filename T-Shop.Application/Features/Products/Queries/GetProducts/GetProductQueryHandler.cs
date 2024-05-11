@@ -1,16 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using T_Shop.Application.Features.Products.ViewModels;
 using T_Shop.Domain.Repository;
+using T_Shop.Shared.DTOs.Product;
 
 namespace T_Shop.Application.Features.Products.Queries.GetProducts
 {
-    public class GetProductQueryHandler : IRequestHandler<GetProductQuery, List<ProductDtos>>
+    public class GetProductQueryHandler : IRequestHandler<GetProductQuery, List<ProductDto>>
     {
         private readonly IProductQueries _productRepository;
         private readonly IMapper _mapper;
@@ -20,10 +15,10 @@ namespace T_Shop.Application.Features.Products.Queries.GetProducts
             _mapper = mapper;
         }
 
-        public async Task<List<ProductDtos>> Handle(GetProductQuery request, CancellationToken cancellationToken)
+        public async Task<List<ProductDto>> Handle(GetProductQuery request, CancellationToken cancellationToken)
         {
             var products = await _productRepository.GetAllProductsAsync();
-            var result = _mapper.Map<List<ProductDtos>>(products);
+            var result = _mapper.Map<List<ProductDto>>(products);
             return result;
         }
     }

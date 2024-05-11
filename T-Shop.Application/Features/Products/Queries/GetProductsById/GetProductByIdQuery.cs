@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using T_Shop.Application.Features.Products.ViewModels;
+using T_Shop.Shared.DTOs.Product;
 
 namespace T_Shop.Application.Features.Products.Queries.GetProductsById
 {
-    public class GetProductByIdQuery : IRequest<ProductDtos>
+    public record GetProductByIdQuery : IRequest<ProductDto>
     {
         public Guid productId { get; set; }
     }

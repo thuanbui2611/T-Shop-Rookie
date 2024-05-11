@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using T_Shop.Application.Features.Categories.Commands.CreateCategory;
 using T_Shop.Application.Features.Categories.Commands.UpdateCategory;
-using T_Shop.Application.Features.Categories.DTOs;
 using T_Shop.Application.Features.Products.Commands.CreateProduct;
 using T_Shop.Application.Features.Products.Commands.UpdateProduct;
-using T_Shop.Application.Features.Products.ViewModels;
 using T_Shop.Domain.Entity;
+using T_Shop.Shared.DTOs.Category;
+using T_Shop.Shared.DTOs.Product;
 
 namespace T_Shop.Application.Common.Mappings
 {
@@ -14,7 +14,7 @@ namespace T_Shop.Application.Common.Mappings
         public MappingProfile()
         {
             //Product
-            CreateMap<Product, ProductDtos>()
+            CreateMap<Product, ProductDto>()
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => new CategoryOfProduct
                 {
                     Id = src.Category.Id,
@@ -27,7 +27,7 @@ namespace T_Shop.Application.Common.Mappings
             CreateMap<UpdateProductCommand, Product>();
 
             //Category
-            CreateMap<Category, CategoryDtos>();
+            CreateMap<Category, CategoryDto>();
             CreateMap<CreateCategoryCommand, Category>();
             CreateMap<UpdateCategoryCommand, Category>();
         }

@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace T_Shop.Application.Features.Categories.DTOs
+namespace T_Shop.Shared.DTOs.Category
 {
-    public class CategoryDtos
+    public class CategoryDto
     {
         [JsonPropertyName("id")]
         public Guid Id { get; set; }

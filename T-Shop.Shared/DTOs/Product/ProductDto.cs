@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace T_Shop.Application.Features.Products.ViewModels
+namespace T_Shop.Shared.DTOs.Product
 {
-    public class ProductDtos
+    public class ProductDto
     {
         [JsonPropertyName("id")]
         public Guid Id { get; set; }
@@ -21,4 +21,5 @@ namespace T_Shop.Application.Features.Products.ViewModels
         [JsonPropertyName("name")]
         public string Name { get; set; }
     }
+
 }

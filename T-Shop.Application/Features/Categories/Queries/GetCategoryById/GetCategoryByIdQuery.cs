@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using T_Shop.Domain.Entity;
+using T_Shop.Shared.DTOs.Category;
 
 namespace T_Shop.Application.Features.Categories.Queries.GetCategoryById
 {
-    public class GetCategoryByIdQuery : IRequest<Category>
+    public record GetCategoryByIdQuery : IRequest<CategoryDto>
     {
         public Guid Id { get; set; }
     }

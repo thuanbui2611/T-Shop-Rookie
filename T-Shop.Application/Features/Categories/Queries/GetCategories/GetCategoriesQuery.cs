@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using T_Shop.Application.Features.Categories.DTOs;
+using T_Shop.Shared.DTOs.Category;
 
 namespace T_Shop.Application.Features.Categories.Queries.GetCategories
 {
-    public class GetCategoriesQuery : IRequest<List<CategoryDtos>>
+    public record GetCategoriesQuery : IRequest<List<CategoryDto>>
     {
     }
 }

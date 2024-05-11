@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using MediatR;
-using T_Shop.Application.Features.Products.ViewModels;
 using T_Shop.Domain.Entity;
 using T_Shop.Domain.Repository;
+using T_Shop.Shared.DTOs.Product;
 
 namespace T_Shop.Application.Features.Products.Commands.CreateProduct
 {
-    public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, ProductDtos>
+    public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, ProductDto>
     {
         private readonly IMapper _mapper;
         private readonly IGenericRepository<Product> _productRepository;
@@ -21,7 +21,7 @@ namespace T_Shop.Application.Features.Products.Commands.CreateProduct
             _categoryRepository = categoryRepository;
         }
 
-        public async Task<ProductDtos> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+        public async Task<ProductDto> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
             //Will use validator
             if (string.IsNullOrEmpty(request.Name))
@@ -37,7 +37,7 @@ namespace T_Shop.Application.Features.Products.Commands.CreateProduct
             _productRepository.Add(newProduct);
             await _unitOfWork.CompleteAsync();
 
-            var result = _mapper.Map<ProductDtos>(newProduct);
+            var result = _mapper.Map<ProductDto>(newProduct);
             return result;
         }
     }
