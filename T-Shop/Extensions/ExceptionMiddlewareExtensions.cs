@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using System.Text.Json;
 using T_Shop.Application.Common.Exceptions;
-using T_Shop.Domain.Entity.Exceptions;
 
 namespace T_Shop.Extensions
 {
@@ -21,6 +20,7 @@ namespace T_Shop.Extensions
                         {
                             NotFoundException => StatusCodes.Status404NotFound,
                             BadRequestException => StatusCodes.Status400BadRequest,
+                            ConflictException => StatusCodes.Status409Conflict,
                             ValidationAppException => StatusCodes.Status422UnprocessableEntity,
                             _ => StatusCodes.Status500InternalServerError
                         };

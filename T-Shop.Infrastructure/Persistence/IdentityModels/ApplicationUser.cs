@@ -7,7 +7,7 @@ namespace T_Shop.Infrastructure.Persistence.IdentityModels
     {
 
         [Column("full_name")]
-        public string FullName { get; set; }
+        public string? FullName { get; set; }
 
         [Column("date_of_birth")]
         public DateTime? DateOfBirth { get; set; } = null;
@@ -15,7 +15,7 @@ namespace T_Shop.Infrastructure.Persistence.IdentityModels
         public string? Gender { get; set; } = null;
 
         [Column("address")]
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
         [Column("avatar")]
         public string? Avatar { get; set; }

@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using T_Shop.Application.Common.Behaviours;
@@ -27,9 +26,5 @@ namespace T_Shop.Application
             return services;
         }
 
-        public static void SeedDatabase(WebApplicationBuilder builder)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

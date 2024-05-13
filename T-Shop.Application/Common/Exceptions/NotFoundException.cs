@@ -1,4 +1,4 @@
-﻿namespace T_Shop.Domain.Entity.Exceptions
+﻿namespace T_Shop.Application.Common.Exceptions
 {
     public class NotFoundException : Exception
     {

@@ -1,12 +1,17 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using T_Shop.Application.Common.Interface;
 using T_Shop.Domain.Repository;
 using T_Shop.Infrastructure.Data.Queries;
 using T_Shop.Infrastructure.Data.Repository;
 using T_Shop.Infrastructure.Persistence;
 using T_Shop.Infrastructure.Persistence.IdentityModels;
+using T_Shop.Infrastructure.SharedServices.Authentication;
 
 namespace T_Shop.Infrastructure;
 
@@ -15,9 +20,13 @@ public static class ConfigureServices
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.ConfigureDatabase(configuration);
+        //Identity + jwt
+        services.ConfigureJWT(configuration);
         services.ConfigureIdentity();
+        //DI
         services.RegisterQueriesDependencies();
         services.RegistryDatabaseDependencies();
+        services.RegisterServices();
 
         return services;
     }
@@ -40,13 +49,35 @@ public static class ConfigureServices
             o.Password.RequireLowercase = false;
             o.Password.RequireUppercase = false;
             o.Password.RequireNonAlphanumeric = false;
-            o.Password.RequiredLength = 10;
+            o.Password.RequiredLength = 6;
             o.User.RequireUniqueEmail = true;
         })
         .AddEntityFrameworkStores<ApplicationContext>()
         .AddDefaultTokenProviders();
     }
-
+    public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
+    {
+        var jwtSettings = configuration.GetSection("JwtSettings");
+        var secretKey = jwtSettings["secret"];
+        services.AddAuthentication(opt =>
+        {
+            opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = jwtSettings["validIssuer"],
+                ValidAudience = jwtSettings["validAudience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+            };
+        });
+    }
 
     public static void RegisterQueriesDependencies(this IServiceCollection services)
     {
@@ -59,6 +90,11 @@ public static class ConfigureServices
         services.AddScoped<IApplicationContext, ApplicationContext>();
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+    }
+
+    public static void RegisterServices(this IServiceCollection services)
+    {
+        services.AddScoped<IAccountManager, AccountManager>();
     }
 }
 

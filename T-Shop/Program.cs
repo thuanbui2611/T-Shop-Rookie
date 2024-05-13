@@ -11,7 +11,9 @@ builder.Services.ConfigureSwagger();
 // Add layer dependency
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
-
+// Identity
+builder.Services.AddAuthentication();
+//
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {

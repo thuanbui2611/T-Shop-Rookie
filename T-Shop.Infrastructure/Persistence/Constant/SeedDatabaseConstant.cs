@@ -47,6 +47,6 @@ namespace T_Shop.Infrastructure.Persistence.Constant
         public static List<Product> Default_Product = ProductsSeed();
 
         //Role
-
+        
     }
 }

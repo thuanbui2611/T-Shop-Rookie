@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using T_Shop.Application.Features.Categories.Commands.CreateCategory;
 using T_Shop.Application.Features.Categories.Commands.DeleteCategory;
 using T_Shop.Application.Features.Categories.Commands.UpdateCategory;
@@ -9,6 +10,7 @@ namespace T_Shop.Controllers
 {
     [Route("api/category")]
     [ApiController]
+    [Authorize]
     public class CategoryController : ApiControllerBase
     {
         /// <summary>

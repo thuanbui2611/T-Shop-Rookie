@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
-using T_Shop.Domain.Entity.Exceptions;
+using T_Shop.Application.Common.Exceptions;
 
 namespace T_Shop.Application.Common.Behaviours
 {

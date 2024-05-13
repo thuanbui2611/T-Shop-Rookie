@@ -30,6 +30,8 @@ namespace T_Shop.Application.Common.Mappings
             CreateMap<Category, CategoryDto>();
             CreateMap<CreateCategoryCommand, Category>();
             CreateMap<UpdateCategoryCommand, Category>();
+
+            //User
         }
     }
 }
