@@ -13,7 +13,13 @@ namespace T_Shop.Infrastructure.Persistence
         }
 
         public DbSet<Product> Products { get; set; }
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<Brand> Brands { get; set; }
+        public DbSet<Color> Colors { get; set; }
+        public DbSet<Image> Images { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<Model> Models { get; set; }
+        public DbSet<TypeProduct> Types { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -35,7 +41,6 @@ namespace T_Shop.Infrastructure.Persistence
 
         private static void SeedDatabase(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Category>().HasData(SeedDatabaseConstant.Default_Category);
             modelBuilder.Entity<Product>().HasData(SeedDatabaseConstant.Default_Product);
         }
 
