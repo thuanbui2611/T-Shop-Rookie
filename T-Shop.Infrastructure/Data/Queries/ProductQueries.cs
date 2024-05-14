@@ -13,8 +13,9 @@ namespace T_Shop.Infrastructure.Data.Queries
         public async Task<List<Product>> GetAllProductsAsync()
         {
             return await dbSet
-                    .OrderBy(p => p.Name)
-                    .Include(p => p.Category)
+                    .OrderBy(p => p.Model.Name)
+                    .Include(p => p.Color)
+                    .Include(p => p.ProductImages)
                     .ToListAsync();
         }
 
@@ -22,7 +23,8 @@ namespace T_Shop.Infrastructure.Data.Queries
         {
             return await dbSet
                     .Where(p => p.Id.Equals(id))
-                    .Include(p => p.Category)
+                    .Include(p => p.Color)
+                    .Include(p => p.ProductImages)
                     .FirstOrDefaultAsync();
         }
 

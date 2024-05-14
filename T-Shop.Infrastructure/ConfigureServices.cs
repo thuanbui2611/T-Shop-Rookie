@@ -20,7 +20,7 @@ public static class ConfigureServices
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.ConfigureDatabase(configuration);
-        //Identity + jwt
+        //Identity
         //services.ConfigureJWT(configuration);
         services.ConfigureIdentity();
         //DI
@@ -63,7 +63,6 @@ public static class ConfigureServices
         {
             opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
         })
         .AddJwtBearer(options =>
         {
@@ -83,7 +82,10 @@ public static class ConfigureServices
     public static void RegisterQueriesDependencies(this IServiceCollection services)
     {
         services.AddScoped<IProductQueries, ProductQueries>();
-        services.AddScoped<ICategoryQueries, CategoryQueries>();
+        services.AddScoped<IBrandQueries, BrandQueries>();
+        services.AddScoped<IColorQueries, ColorQueries>();
+        services.AddScoped<IModelQueries, ModelQueries>();
+        services.AddScoped<ITypeQueries, TypeQueries>();
     }
 
     public static void RegistryDatabaseDependencies(this IServiceCollection services)
