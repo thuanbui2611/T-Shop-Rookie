@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using System.Text.Json.Serialization;
 using T_Shop.Application;
 using T_Shop.Extensions;
@@ -8,11 +11,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.ConfigureCors();
 builder.Services.ConfigureSwagger();
+//builder.Services.ConfigureJWT(builder.Configuration);
 // Add layer dependency
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 // Identity
-builder.Services.AddAuthentication();
+//builder.Services.AddAuthentication();
 //
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -21,17 +25,32 @@ builder.Services.AddControllers()
     });
 builder.Services.AddEndpointsApiExplorer();
 
+////
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+       .AddJwtBearer(options =>
+       {
+           options.TokenValidationParameters = new TokenValidationParameters
+           {
+               ValidateIssuer = true,
+               ValidateAudience = true,
+               ValidateLifetime = true,
+               ValidateIssuerSigningKey = true,
+               ValidIssuer = builder.Configuration["JwtSettings:validIssuer"],
+               ValidAudience = builder.Configuration["JwtSettings:validAudience"],
+               IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:secret"]))
+           };
+       });
+
+builder.Services.AddAuthorization();
+
 ////builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 app.ConfigureExceptionHandler();
-
-// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseSwagger();
-//    app.UseSwaggerUI();
-//}
 app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
@@ -47,11 +66,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
-//if (args.Contains("/seed"))
-//{
-//    SeedDatabase(builder);
-
-//}
 
 app.Run();

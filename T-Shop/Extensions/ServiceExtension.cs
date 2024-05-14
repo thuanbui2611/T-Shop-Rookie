@@ -56,7 +56,8 @@ namespace T_Shop.Extensions
                             {
                                 Type=ReferenceType.SecurityScheme,
                                 Id="Bearer"
-                            }
+                            },
+                            Name = "Bearer"
                         },
                         Array.Empty<string>()
                     }

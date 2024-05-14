@@ -5,7 +5,6 @@ namespace T_Shop.Infrastructure.Persistence.IdentityModels
 {
     public class ApplicationUser : IdentityUser<Guid>
     {
-
         [Column("full_name")]
         public string? FullName { get; set; }
 

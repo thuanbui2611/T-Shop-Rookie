@@ -1,15 +1,11 @@
 ﻿using MediatR;
-using System.Text.Json.Serialization;
-using T_Shop.Shared.DTOs.Product;
+using T_Shop.Shared.DTOs.Product.RequestModel;
+using T_Shop.Shared.DTOs.Product.ResponseModel;
 
 namespace T_Shop.Application.Features.Products.Commands.UpdateProduct
 {
-    public class UpdateProductCommand : IRequest<ProductDto>
+    public class UpdateProductCommand : ProductUpdateRequestModel, IRequest<ProductResponseModel>
     {
-        [JsonIgnore]
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public Guid CategoryId { get; set; }
+
     }
 }

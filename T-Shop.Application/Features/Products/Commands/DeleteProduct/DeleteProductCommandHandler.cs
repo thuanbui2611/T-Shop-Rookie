@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using T_Shop.Application.Common.Exceptions;
 using T_Shop.Domain.Entity;
 using T_Shop.Domain.Repository;
 
@@ -9,9 +10,9 @@ namespace T_Shop.Application.Features.Products.Commands.DeleteProduct
         private readonly IGenericRepository<Product> _productRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public DeleteProductCommandHandler(IGenericRepository<Product> productRepository, IUnitOfWork unitOfWork)
+        public DeleteProductCommandHandler(IUnitOfWork unitOfWork)
         {
-            _productRepository = productRepository;
+            _productRepository = unitOfWork.GetBaseRepo<Product>();
             _unitOfWork = unitOfWork;
         }
 
@@ -20,7 +21,7 @@ namespace T_Shop.Application.Features.Products.Commands.DeleteProduct
             var product = _productRepository.GetById(request.Id);
             if (product == null)
             {
-                //throw new StatusCodeException(message: "Product not found", statusCode: StatusCodes.Status404NotFound);
+                throw new NotFoundException("Product not found");
             }
             _productRepository.Delete(request.Id);
             await _unitOfWork.CompleteAsync();

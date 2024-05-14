@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using T_Shop.Shared.DTOs.Product;
+using T_Shop.Shared.DTOs.Product.ResponseModel;
 
 namespace T_Shop.Client.MVC.Controllers
 {
@@ -16,13 +16,13 @@ namespace T_Shop.Client.MVC.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            List<ProductDto> productList = new List<ProductDto>();
+            List<ProductResponseModel> productList = new List<ProductResponseModel>();
             HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "api/product").Result;
 
             if (response.IsSuccessStatusCode)
             {
                 string data = response.Content.ReadAsStringAsync().Result;
-                productList = JsonConvert.DeserializeObject<List<ProductDto>>(data);
+                productList = JsonConvert.DeserializeObject<List<ProductResponseModel>>(data);
             }
             return View(productList);
         }

@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace T_Shop.Shared.DTOs.Product
+namespace T_Shop.Shared.DTOs.Product.ResponseModel
 {
-    public class ProductDto
+    public class ProductResponseModel
     {
         [JsonPropertyName("id")]
         public Guid Id { get; set; }
