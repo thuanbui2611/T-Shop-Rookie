@@ -5,4 +5,5 @@ public interface ITypeQueries
 {
     Task<List<TypeProduct>> GetTypesAsync();
     Task<TypeProduct> GetTypeByIdAsync(Guid id);
+    Task<bool> CheckIsTypeExisted(string name);
 }

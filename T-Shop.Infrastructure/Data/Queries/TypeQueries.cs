@@ -22,8 +22,14 @@ public class TypeQueries : BaseQuery<TypeProduct>, ITypeQueries
     {
         return await dbSet
             .Where(t => t.Id.Equals(id))
+            .AsNoTracking()
             .FirstOrDefaultAsync();
     }
 
+    public async Task<bool> CheckIsTypeExisted(string name)
+    {
+        return await dbSet
+            .AnyAsync(t => t.Name.ToLower().Equals(name.ToLower()));
+    }
 
 }
