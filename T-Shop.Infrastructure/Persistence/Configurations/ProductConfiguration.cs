@@ -10,22 +10,17 @@ namespace T_Shop.Infrastructure.Persistence.Configurations
         {
             builder.ToTable("table_product");
 
-            //Product - Category
-            builder.HasOne(p => p.Category)
+            // Product - Color
+            builder.HasOne(p => p.Color)
                 .WithMany(c => c.Products)
-                .HasForeignKey(p => p.CategoryId)
+                .HasForeignKey(p => p.ColorID)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            //builder.HasData(GetSampleData());
-
+            // Product - Color
+            builder.HasOne(p => p.Color)
+                .WithMany(c => c.Products)
+                .HasForeignKey(p => p.ColorID)
+                .OnDelete(DeleteBehavior.Cascade);
         }
-
-        //private Product[] GetSampleData()
-        //{
-        //    yield return new Product[]
-        //    {
-
-        //    };
-        //}
     }
 }
