@@ -43,9 +43,9 @@ namespace T_Shop.Extensions
                     In = ParameterLocation.Header,
                     Description = "Enter your token here. The token is in JWT format",
                     Name = "Authorization",
-                    Type = SecuritySchemeType.Http,
+                    Type = SecuritySchemeType.ApiKey,
                     BearerFormat = "JWT",
-                    Scheme = "bearer"
+                    Scheme = "Bearer"
                 });
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {

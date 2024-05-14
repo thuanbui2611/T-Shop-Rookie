@@ -21,7 +21,7 @@ public static class ConfigureServices
     {
         services.ConfigureDatabase(configuration);
         //Identity + jwt
-        services.ConfigureJWT(configuration);
+        //services.ConfigureJWT(configuration);
         services.ConfigureIdentity();
         //DI
         services.RegisterQueriesDependencies();
@@ -63,6 +63,7 @@ public static class ConfigureServices
         {
             opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
         })
         .AddJwtBearer(options =>
         {

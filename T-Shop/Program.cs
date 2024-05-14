@@ -20,8 +20,8 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     });
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
 
+////builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 app.ConfigureExceptionHandler();

@@ -18,7 +18,7 @@ public class AuthenticationController : ApiControllerBase
     [HttpPost("Login")]
     public async Task<IActionResult> Login([FromBody] LoginCommand command)
     {
-        await Mediator.Send(command);
-        return Ok();
+        var result = await Mediator.Send(command);
+        return Ok(result);
     }
 }

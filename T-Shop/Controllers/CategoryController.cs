@@ -10,7 +10,6 @@ namespace T_Shop.Controllers
 {
     [Route("api/category")]
     [ApiController]
-    [Authorize]
     public class CategoryController : ApiControllerBase
     {
         /// <summary>
@@ -20,6 +19,7 @@ namespace T_Shop.Controllers
         /// <response code="200">Successfully get items information.</response>
         /// <response code="500">There is something wrong while execute.</response>
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetCategoriesAsync()
         {
 

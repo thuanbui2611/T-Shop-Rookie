@@ -86,7 +86,7 @@ public class AccountManager : IAccountManager
     {
         var claims = new List<Claim>
             {
-            new Claim(ClaimTypes.Name, _user.UserName),
+            new Claim(ClaimTypes.NameIdentifier, _user.UserName),
             new Claim(ClaimTypes.Email, _user.Email),
             new Claim(ClaimTypes.Name, _user.FullName)
             };

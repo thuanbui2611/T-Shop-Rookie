@@ -18,8 +18,9 @@ namespace T_Shop.Extensions
                     {
                         context.Response.StatusCode = contextFeature.Error switch
                         {
-                            NotFoundException => StatusCodes.Status404NotFound,
                             BadRequestException => StatusCodes.Status400BadRequest,
+                            UnauthorizedException => StatusCodes.Status401Unauthorized,
+                            NotFoundException => StatusCodes.Status404NotFound,
                             ConflictException => StatusCodes.Status409Conflict,
                             ValidationAppException => StatusCodes.Status422UnprocessableEntity,
                             _ => StatusCodes.Status500InternalServerError
