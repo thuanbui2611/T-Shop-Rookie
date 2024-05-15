@@ -12,7 +12,7 @@ namespace T_Shop.Application.Features.Products.Commands.CreateProduct
         private readonly IMapper _mapper;
         private readonly IGenericRepository<Product> _productRepository;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IGenericRepository<Color> _colorRepository;
+        private readonly IGenericRepository<Domain.Entity.Color> _colorRepository;
         private readonly IGenericRepository<Model> _modelRepository;
 
         public CreateProductCommandHandler(IMapper mapper, IGenericRepository<Product> productRepository, IUnitOfWork unitOfWork)
@@ -21,7 +21,7 @@ namespace T_Shop.Application.Features.Products.Commands.CreateProduct
             _productRepository = productRepository;
             _unitOfWork = unitOfWork;
             _modelRepository = _unitOfWork.GetBaseRepo<Model>();
-            _colorRepository = _unitOfWork.GetBaseRepo<Color>();
+            _colorRepository = _unitOfWork.GetBaseRepo<Domain.Entity.Color>();
         }
 
         public async Task<ProductResponseModel> Handle(CreateProductCommand request, CancellationToken cancellationToken)

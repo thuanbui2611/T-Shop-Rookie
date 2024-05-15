@@ -24,4 +24,10 @@ public class ColorQueries : BaseQuery<Color>, IColorQueries
             .FirstOrDefaultAsync();
     }
 
+    public async Task<bool> CheckIsColorExisted(string name)
+    {
+        return await dbSet
+            .AnyAsync(t => t.Name.ToLower().Equals(name.ToLower()));
+    }
+
 }

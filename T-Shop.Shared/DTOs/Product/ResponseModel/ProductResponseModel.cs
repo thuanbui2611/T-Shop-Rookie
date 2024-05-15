@@ -1,25 +1,28 @@
-﻿using System.Text.Json.Serialization;
+﻿using T_Shop.Shared.DTOs.Color.ResponseModel;
+using T_Shop.Shared.DTOs.ModelProduct.ResponseModel;
+using T_Shop.Shared.DTOs.Type.ResponseModel;
 
 namespace T_Shop.Shared.DTOs.Product.ResponseModel
 {
     public class ProductResponseModel
     {
-        [JsonPropertyName("id")]
         public Guid Id { get; set; }
-        [JsonPropertyName("name")]
         public string Name { get; set; }
-        [JsonPropertyName("description")]
+        public double Price { get; set; }
         public string Description { get; set; }
-        [JsonPropertyName("category")]
-        public CategoryOfProduct Category { get; set; }
-    }
+        public string CreatedAt { get; set; }
+        public string IsOnStock { get; set; }
+        public TypeResponseModel Type { get; set; }
+        public ModelProductResponseModel Model { get; set; }
+        public ColorResponseModel Color { get; set; }
+        public List<ProductImage> Images { get; set; }
 
-    public class CategoryOfProduct
-    {
-        [JsonPropertyName("id")]
-        public Guid Id { get; set; }
-        [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public class ProductImage
+        {
+            public Guid Id { get; set; }
+            public string ImageUrl { get; set; }
+            public string PublicID { get; set; }
+        }
     }
 
 }

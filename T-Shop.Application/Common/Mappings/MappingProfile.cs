@@ -5,6 +5,8 @@ using T_Shop.Application.Features.Type.Commands.CreateType;
 using T_Shop.Application.Features.Type.Commands.UpdateType;
 using T_Shop.Domain.Entity;
 using T_Shop.Shared.DTOs.Brand.ResponseModel;
+using T_Shop.Shared.DTOs.Color.RequestModel;
+using T_Shop.Shared.DTOs.Color.ResponseModel;
 using T_Shop.Shared.DTOs.ModelProduct.RequestModel;
 using T_Shop.Shared.DTOs.ModelProduct.ResponseModel;
 using T_Shop.Shared.DTOs.Type.ResponseModel;
@@ -53,6 +55,11 @@ namespace T_Shop.Application.Common.Mappings
                 }));
             CreateMap<ModelCreationRequestModel, Model>();
             CreateMap<ModelUpdateRequestModel, Model>();
+
+            //Color
+            CreateMap<Color, ColorResponseModel>();
+            CreateMap<ColorCreationRequestModel, Color>();
+            CreateMap<ColorUpdateRequestModel, Color>();
         }
     }
 }
