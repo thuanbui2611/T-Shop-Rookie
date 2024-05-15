@@ -9,6 +9,14 @@ namespace T_Shop.Infrastructure.Persistence.Configurations
         public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder.ToTable("table_product");
+            builder.HasIndex(p => new
+            {
+                p.ColorID,
+                p.ModelID,
+                p.Variant
+            })
+                .IsUnique(true);
+
 
             // Product - Color
             builder.HasOne(p => p.Color)
@@ -21,6 +29,8 @@ namespace T_Shop.Infrastructure.Persistence.Configurations
                 .WithMany(c => c.Products)
                 .HasForeignKey(p => p.ColorID)
                 .OnDelete(DeleteBehavior.Cascade);
+
+
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using T_Shop.Application.Features.Brand.Command.CreateBrand;
 using T_Shop.Application.Features.Brand.Command.UpdateBrand;
+using T_Shop.Application.Features.Products.Commands.CreateProduct;
+using T_Shop.Application.Features.Products.Commands.UpdateProduct;
 using T_Shop.Application.Features.Type.Commands.CreateType;
 using T_Shop.Application.Features.Type.Commands.UpdateType;
 using T_Shop.Domain.Entity;
@@ -9,6 +11,7 @@ using T_Shop.Shared.DTOs.Color.RequestModel;
 using T_Shop.Shared.DTOs.Color.ResponseModel;
 using T_Shop.Shared.DTOs.ModelProduct.RequestModel;
 using T_Shop.Shared.DTOs.ModelProduct.ResponseModel;
+using T_Shop.Shared.DTOs.Product.ResponseModel;
 using T_Shop.Shared.DTOs.Type.ResponseModel;
 using static T_Shop.Shared.DTOs.ModelProduct.ResponseModel.ModelProductResponseModel;
 
@@ -19,23 +22,13 @@ namespace T_Shop.Application.Common.Mappings
         public MappingProfile()
         {
             //Product
-            //CreateMap<Product, ProductDto>()
-            //    .ForMember(dest => dest.Category, opt => opt.MapFrom(src => new CategoryOfProduct
-            //    {
-            //        Id = src.Category.Id,
-            //        Name = src.Category.Name,
-
-            //    }));
-
-            //CreateMap<CreateProductCommand, Product>();
-            //CreateMap<Product, CreateProductCommand>();
-            //CreateMap<UpdateProductCommand, Product>();
-
-            ////Category
-            //CreateMap<Category, CategoryDto>();
-            //CreateMap<CreateCategoryCommand, Category>();
-            //CreateMap<UpdateCategoryCommand, Category>();
-
+            CreateMap<Product, ProductResponseModel>()
+                .AfterMap((src, dest) =>
+                {
+                    dest.Name = String.Concat(src.Model.Brand.Name, " ", src.Model.Name, " ", src.Variant);
+                });
+            CreateMap<CreateProductCommand, Product>();
+            CreateMap<UpdateProductCommand, Product>();
             //Type
             CreateMap<TypeProduct, TypeResponseModel>();
             CreateMap<CreateTypeCommand, TypeProduct>();

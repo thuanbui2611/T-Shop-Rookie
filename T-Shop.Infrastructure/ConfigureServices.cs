@@ -38,9 +38,9 @@ public static class ConfigureServices
             b => b.MigrationsAssembly(typeof(ApplicationContext).Assembly.FullName))
             .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
            //.UseModel(ApplicationContextModel.Instance)
-           )
-         ;
-        ;
+           );
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
     }
 
     public static void ConfigureIdentity(this IServiceCollection services)

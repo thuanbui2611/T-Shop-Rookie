@@ -27,7 +27,5 @@ namespace T_Shop.Infrastructure.Data.Queries
                     .Include(p => p.ProductImages)
                     .FirstOrDefaultAsync();
         }
-
-
     }
 }

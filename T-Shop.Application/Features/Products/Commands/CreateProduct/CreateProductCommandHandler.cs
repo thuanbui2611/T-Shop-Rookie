@@ -13,15 +13,17 @@ namespace T_Shop.Application.Features.Products.Commands.CreateProduct
         private readonly IGenericRepository<Product> _productRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IGenericRepository<Domain.Entity.Color> _colorRepository;
-        private readonly IGenericRepository<Model> _modelRepository;
+        private readonly IModelQueries _modelQueries;
+        private readonly IGenericRepository<TypeProduct> _typeRepository;
 
-        public CreateProductCommandHandler(IMapper mapper, IGenericRepository<Product> productRepository, IUnitOfWork unitOfWork)
+        public CreateProductCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, IModelQueries modelQueries)
         {
             _mapper = mapper;
-            _productRepository = productRepository;
+            _productRepository = unitOfWork.GetBaseRepo<Product>();
             _unitOfWork = unitOfWork;
-            _modelRepository = _unitOfWork.GetBaseRepo<Model>();
             _colorRepository = _unitOfWork.GetBaseRepo<Domain.Entity.Color>();
+            _typeRepository = _unitOfWork.GetBaseRepo<TypeProduct>();
+            _modelQueries = modelQueries;
         }
 
         public async Task<ProductResponseModel> Handle(CreateProductCommand request, CancellationToken cancellationToken)
@@ -31,20 +33,25 @@ namespace T_Shop.Application.Features.Products.Commands.CreateProduct
             {
                 throw new NotFoundException("Color is not found");
             }
-            var model = await _modelRepository.GetById(request.ModelID);
+            var model = await _modelQueries.GetModelByIdAsync(request.ModelID);
             if (model == null)
             {
                 throw new NotFoundException("Model is not found");
             }
+            var type = await _typeRepository.GetById(request.TypeID);
+            if (type == null)
+            {
+                throw new NotFoundException("Type is not found");
+            }
 
             var newProduct = _mapper.Map<Product>(request);
-
-            newProduct.IsOnStock = true;
-            newProduct.CreatedAt = DateTime.Now;
 
             _productRepository.Add(newProduct);
             await _unitOfWork.CompleteAsync();
 
+            newProduct.Model = model;
+            newProduct.Type = type;
+            newProduct.Color = color;
             var result = _mapper.Map<ProductResponseModel>(newProduct);
             return result;
         }

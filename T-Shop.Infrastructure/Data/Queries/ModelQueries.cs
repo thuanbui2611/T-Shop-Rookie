@@ -14,6 +14,7 @@ public class ModelQueries : BaseQuery<Model>, IModelQueries
     public async Task<List<Model>> GetModelsAsync()
     {
         return await dbSet
+           .Include(m => m.Brand)
            .OrderBy(m => m.Name)
            .ToListAsync();
     }
@@ -21,6 +22,7 @@ public class ModelQueries : BaseQuery<Model>, IModelQueries
     public async Task<Model> GetModelByIdAsync(Guid id)
     {
         return await dbSet
+           .Include(m => m.Brand)
            .Where(m => m.Id.Equals(id))
            .FirstOrDefaultAsync();
     }
