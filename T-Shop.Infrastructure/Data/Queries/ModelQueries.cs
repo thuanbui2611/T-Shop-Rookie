@@ -14,16 +14,27 @@ public class ModelQueries : BaseQuery<Model>, IModelQueries
     public async Task<List<Model>> GetModelsAsync()
     {
         return await dbSet
-           .OrderBy(x => x.Name)
+           .OrderBy(m => m.Name)
            .ToListAsync();
     }
 
     public async Task<Model> GetModelByIdAsync(Guid id)
     {
         return await dbSet
-           .Where(t => t.Id.Equals(id))
+           .Where(m => m.Id.Equals(id))
            .FirstOrDefaultAsync();
     }
 
+    public async Task<List<Model>> GetModelsByNameAsync(string name)
+    {
+        return await dbSet
+            .Where(m => m.Name.ToLower().Trim().Equals(name.ToLower().Trim()))
+            .ToListAsync();
+    }
 
+    public async Task<bool> CheckIsModelExisted(string name)
+    {
+        return await dbSet
+            .AnyAsync(t => t.Name.ToLower().Equals(name.ToLower()));
+    }
 }

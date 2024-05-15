@@ -26,10 +26,10 @@ public class CreateTypeCommandHandler : IRequestHandler<CreateTypeCommand, TypeR
         if (await _typeQueries.CheckIsTypeExisted(request.Name)) throw new ConflictException("The type is existed");
 
         var newType = _mapper.Map<TypeProduct>(request);
-        _typeRepository.Add(newType);
+        var typeAdded = _typeRepository.Add(newType);
         await _unitOfWork.CompleteAsync();
 
-        var result = _mapper.Map<TypeResponseModel>(newType);
+        var result = _mapper.Map<TypeResponseModel>(typeAdded);
         return result;
     }
 }

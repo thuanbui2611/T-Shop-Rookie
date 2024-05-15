@@ -6,5 +6,5 @@ public class Model : BaseModel
     public Guid BrandID { get; set; }
 
     public virtual ICollection<Product> Products { get; set; }
-    public virtual Brand Brand { get; set; } = new Brand();
+    public virtual Brand Brand { get; set; }
 }
