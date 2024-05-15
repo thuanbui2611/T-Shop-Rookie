@@ -3,5 +3,5 @@ public class TypeProduct : BaseModel
 {
     public string Name { get; set; }
 
-    public virtual ICollection<Brand> Brands { get; set; } = [];
+    public virtual ICollection<Product> Products { get; set; } = [];
 }

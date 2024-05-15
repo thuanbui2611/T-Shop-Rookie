@@ -1,30 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using T_Shop.Application.Common.Exceptions;
-using T_Shop.Application.Features.Type.Commands.CreateType;
-using T_Shop.Application.Features.Type.Commands.DeleteType;
-using T_Shop.Application.Features.Type.Commands.UpdateType;
-using T_Shop.Application.Features.Type.Queries.GetTypeById;
-using T_Shop.Application.Features.Type.Queries.GetTypes;
+using T_Shop.Application.Features.Brand.Command.CreateBrand;
+using T_Shop.Application.Features.Brand.Command.DeleteBrand;
+using T_Shop.Application.Features.Brand.Command.UpdateBrand;
+using T_Shop.Application.Features.Brand.Queries.GetBrandById;
+using T_Shop.Application.Features.Brand.Queries.GetBrands;
 using T_Shop.Controllers;
-using T_Shop.Shared.DTOs.Type.ResponseModel;
+using T_Shop.Shared.DTOs.Brand.ResponseModel;
 
 namespace T_Shop.WebAPI.Controllers;
-[Route("api/type")]
-[ApiController]
-public class TypeController : ApiControllerBase
+
+public class BrandController : ApiControllerBase
 {
     /// <summary>
-    /// Acquire Types information
+    /// Acquire brands information
     /// </summary>
     /// <returns>Status code of the action.</returns>
     /// <response code="200">Successfully get items information.</response>
     /// <response code="500">There is something wrong while execute.</response>
     [HttpGet]
-    public async Task<ActionResult<List<TypeResponseModel>>> GetTypesAsync()
+    public async Task<ActionResult<List<BrandResponseModel>>> GetBrandsAsync()
     {
-
-        var types = await Mediator.Send(new GetTypesQuery());
-        return Ok(types);
+        var brands = await Mediator.Send(new GetBrandsQuery());
+        return Ok(brands);
     }
 
     /// <summary>
@@ -34,59 +32,56 @@ public class TypeController : ApiControllerBase
     /// <response code="200">Successfully get items information.</response>
     /// <response code="500">There is something wrong while execute.</response>
     [HttpGet("{id}")]
-    public async Task<ActionResult<TypeResponseModel>> GetTypeByIdAsync([FromRoute] Guid id)
+    public async Task<ActionResult<BrandResponseModel>> GetBrandByIdAsync([FromRoute] Guid id)
     {
-
-        var type = await Mediator.Send(new GetTypeByIdQuery()
+        var brand = await Mediator.Send(new GetBrandByIdQuery()
         {
-            Id = id
+            ID = id
         });
-        return Ok(type);
+        return Ok(brand);
     }
 
     /// <summary>
-    /// Create a type
+    /// Create a brand
     /// </summary>
     /// <returns>Status code of the action.</returns>
     /// <response code="201">Successfully created item.</response>
     /// <response code="500">There is something wrong while execute.</response>
     [HttpPost]
-    public async Task<ActionResult<TypeResponseModel>> CreateTypeAsync([FromBody] CreateTypeCommand command)
+    public async Task<ActionResult<BrandResponseModel>> CreateBrandAsync([FromBody] CreateBrandCommand command)
     {
-
-        var type = await Mediator.Send(command);
-        return Created($"type/{type.Id}", type);
+        var brand = await Mediator.Send(command);
+        return Created($"brand/{brand.ID}", brand);
     }
     /// <summary>
-    /// Update a type
+    /// Update a brand
     /// </summary>
     /// <returns>Status code of the action.</returns>
     /// <response code="200">Successfully updated item.</response>
     /// <response code="500">There is something wrong while execute.</response>
     [HttpPut("{id}")]
-    public async Task<ActionResult<TypeResponseModel>> UpdateTypeAsync([FromRoute] Guid id, [FromBody] UpdateTypeCommand command)
+    public async Task<ActionResult<BrandResponseModel>> UpdateBrandAsync([FromRoute] Guid id, [FromBody] UpdateBrandCommand command)
     {
-        if (id != command.Id)
+        if (id != command.ID)
         {
-            throw new BadRequestException("Type ID do not match");
+            throw new BadRequestException("Brand ID do not match");
         }
-        var type = await Mediator.Send(command);
-        return Created($"type/{type.Id}", type);
+        var brand = await Mediator.Send(command);
+        return Created($"brand/{brand.ID}", brand);
     }
 
     /// <summary>
-    /// Delete a type
+    /// Delete a brand
     /// </summary>
     /// <returns>Status code of the action.</returns>
     /// <response code="204">Successfully deleted item.</response>
     /// <response code="500">There is something wrong while execute.</response>
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteTypeAsync([FromRoute] Guid id)
+    public async Task<IActionResult> DeleteBrandAsync([FromRoute] Guid id)
     {
-
-        var result = await Mediator.Send(new DeleteTypeCommand()
+        var result = await Mediator.Send(new DeleteBrandCommand()
         {
-            Id = id
+            ID = id
         });
         if (!result) return BadRequest("Delete failed!");
         return NoContent();

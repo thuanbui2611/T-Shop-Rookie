@@ -23,4 +23,10 @@ public class BrandQueries : BaseQuery<Brand>, IBrandQueries
             .Where(b => b.Id.Equals(id))
             .FirstOrDefaultAsync();
     }
+
+    public async Task<bool> CheckIsBrandExisted(string name)
+    {
+        return await dbSet
+            .AnyAsync(t => t.Name.ToLower().Equals(name.ToLower()));
+    }
 }

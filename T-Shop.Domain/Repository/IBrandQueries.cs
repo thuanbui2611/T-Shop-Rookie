@@ -5,4 +5,5 @@ public interface IBrandQueries
 {
     Task<List<Brand>> GetBrandsAsync();
     Task<Brand> GetBrandByIdAsync(Guid id);
+    Task<bool> CheckIsBrandExisted(string name);
 }

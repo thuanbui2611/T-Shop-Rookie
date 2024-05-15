@@ -36,8 +36,10 @@ public static class ConfigureServices
         services.AddDbContextPool<ApplicationContext>(
             option => option.UseNpgsql(configuration.GetConnectionString("postgreSqlConnection")!,
             b => b.MigrationsAssembly(typeof(ApplicationContext).Assembly.FullName))
+            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
            //.UseModel(ApplicationContextModel.Instance)
-           );
+           )
+         ;
         ;
     }
 

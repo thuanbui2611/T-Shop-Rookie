@@ -22,7 +22,6 @@ public class TypeQueries : BaseQuery<TypeProduct>, ITypeQueries
     {
         return await dbSet
             .Where(t => t.Id.Equals(id))
-            .AsNoTracking()
             .FirstOrDefaultAsync();
     }
 

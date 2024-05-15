@@ -19,9 +19,4 @@
     <ProjectReference Include="..\T-Shop.Shared\T-Shop.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Brand\Command\" />
-    <Folder Include="Features\Brand\Queries\" />
-  </ItemGroup>
-
 </Project>

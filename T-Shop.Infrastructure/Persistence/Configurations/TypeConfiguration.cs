@@ -8,8 +8,8 @@ public class TypeConfiguration : IEntityTypeConfiguration<Domain.Entity.TypeProd
     {
         builder.ToTable("table_type");
 
-        //Type - Brand
-        builder.HasMany(t => t.Brands)
+        //Type - Product
+        builder.HasMany(t => t.Products)
             .WithOne(b => b.Type)
             .HasForeignKey(b => b.TypeID)
             .OnDelete(DeleteBehavior.Cascade);

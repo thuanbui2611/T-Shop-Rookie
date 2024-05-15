@@ -2,6 +2,7 @@
 using T_Shop.Application.Features.Type.Commands.CreateType;
 using T_Shop.Application.Features.Type.Commands.UpdateType;
 using T_Shop.Domain.Entity;
+using T_Shop.Shared.DTOs.Brand.ResponseModel;
 using T_Shop.Shared.DTOs.Type.ResponseModel;
 
 namespace T_Shop.Application.Common.Mappings
@@ -32,6 +33,10 @@ namespace T_Shop.Application.Common.Mappings
             CreateMap<TypeProduct, TypeResponseModel>();
             CreateMap<CreateTypeCommand, TypeProduct>();
             CreateMap<UpdateTypeCommand, TypeProduct>();
+
+            //Brand
+            CreateMap<Brand, BrandResponseModel>();
+
         }
     }
 }
