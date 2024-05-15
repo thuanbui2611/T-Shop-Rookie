@@ -6,6 +6,7 @@ using T_Shop.Application.Features.Type.Commands.UpdateType;
 using T_Shop.Application.Features.Type.Queries.GetTypeById;
 using T_Shop.Application.Features.Type.Queries.GetTypes;
 using T_Shop.Controllers;
+using T_Shop.Shared.DTOs.Type.ResponseModel;
 
 namespace T_Shop.WebAPI.Controllers;
 [Route("api/type")]
@@ -19,7 +20,7 @@ public class TypeController : ApiControllerBase
     /// <response code="200">Successfully get items information.</response>
     /// <response code="500">There is something wrong while execute.</response>
     [HttpGet]
-    public async Task<IActionResult> GetTypesAsync()
+    public async Task<ActionResult<List<TypeResponseModel>>> GetTypesAsync()
     {
 
         var types = await Mediator.Send(new GetTypeQuery());
@@ -33,7 +34,7 @@ public class TypeController : ApiControllerBase
     /// <response code="200">Successfully get items information.</response>
     /// <response code="500">There is something wrong while execute.</response>
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetTypeByIdAsync([FromRoute] Guid id)
+    public async Task<ActionResult<TypeResponseModel>> GetTypeByIdAsync([FromRoute] Guid id)
     {
 
         var type = await Mediator.Send(new GetTypeByIdQuery()
@@ -50,7 +51,7 @@ public class TypeController : ApiControllerBase
     /// <response code="201">Successfully created item.</response>
     /// <response code="500">There is something wrong while execute.</response>
     [HttpPost]
-    public async Task<IActionResult> CreateTypeAsync([FromBody] CreateTypeCommand command)
+    public async Task<ActionResult<TypeResponseModel>> CreateTypeAsync([FromBody] CreateTypeCommand command)
     {
 
         var type = await Mediator.Send(command);
@@ -63,7 +64,7 @@ public class TypeController : ApiControllerBase
     /// <response code="200">Successfully updated item.</response>
     /// <response code="500">There is something wrong while execute.</response>
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateTypeAsync([FromRoute] Guid id, [FromBody] UpdateTypeCommand command)
+    public async Task<ActionResult<TypeResponseModel>> UpdateTypeAsync([FromRoute] Guid id, [FromBody] UpdateTypeCommand command)
     {
         if (id != command.Id)
         {
@@ -87,7 +88,7 @@ public class TypeController : ApiControllerBase
         {
             Id = id
         });
-        if (!result) return BadRequest();
-        return Ok();
+        if (!result) return BadRequest("Delete failed!");
+        return NoContent();
     }
 }
