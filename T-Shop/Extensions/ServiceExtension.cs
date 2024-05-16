@@ -43,7 +43,7 @@ namespace T_Shop.Extensions
                     In = ParameterLocation.Header,
                     Description = "Enter your token here. The token is in JWT format",
                     Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey,
+                    Type = SecuritySchemeType.Http,
                     BearerFormat = "JWT",
                     Scheme = "Bearer"
                 });
@@ -57,7 +57,6 @@ namespace T_Shop.Extensions
                                 Type=ReferenceType.SecurityScheme,
                                 Id="Bearer"
                             },
-                            Name = "Bearer"
                         },
                         Array.Empty<string>()
                     }

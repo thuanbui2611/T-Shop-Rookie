@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using T_Shop.Application.Common.Exceptions;
 using T_Shop.Application.Features.Brand.Command.CreateBrand;
 using T_Shop.Application.Features.Brand.Command.DeleteBrand;
@@ -10,6 +11,7 @@ using T_Shop.Shared.DTOs.Brand.ResponseModel;
 
 namespace T_Shop.WebAPI.Controllers;
 
+
 public class BrandController : ApiControllerBase
 {
     /// <summary>
@@ -18,6 +20,7 @@ public class BrandController : ApiControllerBase
     /// <returns>Status code of the action.</returns>
     /// <response code="200">Successfully get items information.</response>
     /// <response code="500">There is something wrong while execute.</response>
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult<List<BrandResponseModel>>> GetBrandsAsync()
     {

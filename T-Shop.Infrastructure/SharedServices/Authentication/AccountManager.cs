@@ -6,6 +6,8 @@ using System.Security.Claims;
 using System.Text;
 using T_Shop.Application.Common.Exceptions;
 using T_Shop.Application.Common.Interface;
+using T_Shop.Application.Common.ServiceInterface;
+using T_Shop.Domain.Repository;
 using T_Shop.Infrastructure.Persistence.IdentityModels;
 using T_Shop.Shared.DTOs.User.RequestModels;
 
@@ -14,26 +16,42 @@ public class AccountManager : IAccountManager
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IConfiguration _configuration;
+    private readonly ICloudinaryService _cloudinaryService;
+    private readonly IImageService _imageService;
+    private readonly IUnitOfWork _unitOfWork;
     private ApplicationUser? _user;
 
-    public AccountManager(UserManager<ApplicationUser> userManager, IConfiguration configuration)
+    public AccountManager(UserManager<ApplicationUser> userManager, IConfiguration configuration, ICloudinaryService cloudinaryService, IUnitOfWork unitOfWork, IImageService imageService)
     {
         _userManager = userManager;
         _configuration = configuration;
+        _cloudinaryService = cloudinaryService;
+        _unitOfWork = unitOfWork;
+        _imageService = imageService;
     }
 
 
     public async Task<IdentityResult> RegisterUser(UserCreationResquestModel registerUser)
     {
-        var user = await _userManager.FindByEmailAsync(registerUser.Email);
+        var user = await _userManager.(registerUser.Email);
         if (user != null)
         {
-            throw new ConflictException("Email existed, please choose other email");
+            if (user.UserName.ToLower().Equals(registerUser.Username.ToLower()))
+            {
+                throw new ConflictException("Username existed, please choose other email");
+
+            }
+            else
+            {
+                throw new ConflictException("Email existed, please choose other email");
+            }
+
         }
         if (!registerUser.Password.Equals(registerUser.ConfirmPassword))
         {
             throw new BadRequestException("Password not match.");
         }
+
         ApplicationUser newUser = new ApplicationUser()
         {
             FullName = registerUser.Full_name,
@@ -43,14 +61,26 @@ public class AccountManager : IAccountManager
             Gender = registerUser.Gender,
             PhoneNumber = registerUser.PhoneNumber,
             Address = registerUser.Address,
-            Avatar = registerUser.Avatar,
+            AvatarId = null,
             CreatedAt = DateTime.UtcNow,
             IsLocked = false,
         };
+        // Add image
+        //if (registerUser.Avatar.Length > 0)
+        //{
+        //    var imageAdded = await _imageService.AddImage(registerUser.Avatar);
+        //    newUser.AvatarId = imageAdded.ID;
+        //}
+
+        // Add user
         var result = await _userManager.CreateAsync(newUser, registerUser.Password);
         if (result.Succeeded)
         {
             await _userManager.AddToRoleAsync(newUser, "User");
+        }
+        else
+        {
+            throw new Exception(result.Errors.First().Description);
         }
         return result;
     }
@@ -90,9 +120,9 @@ public class AccountManager : IAccountManager
             new Claim(ClaimTypes.Email, _user.Email),
             new Claim(ClaimTypes.Name, _user.FullName)
             };
-        if (!_user.Avatar.IsNullOrEmpty())
+        if (_user.Image is not null)
         {
-            claims.Add(new Claim("Avatar", _user.Avatar));
+            claims.Add(new Claim("Avatar", _user.Image.ImageURL));
         }
         else
         {

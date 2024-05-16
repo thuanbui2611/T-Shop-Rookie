@@ -1,4 +1,6 @@
-﻿namespace T_Shop.Shared.DTOs.User.RequestModels;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace T_Shop.Shared.DTOs.User.RequestModels;
 public class UserCreationResquestModel
 {
     public string Full_name { get; set; }
@@ -10,5 +12,5 @@ public class UserCreationResquestModel
     public string Gender { get; set; }
     public string PhoneNumber { get; set; }
     public string Address { get; set; }
-    public string? Avatar { get; set; }
+    public IFormFile Avatar { get; set; }
 }

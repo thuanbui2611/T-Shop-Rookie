@@ -6,12 +6,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using T_Shop.Application.Common.Interface;
+using T_Shop.Application.Common.ServiceInterface;
+using T_Shop.Domain.Entity.ServiceEntity.Cloudinary;
 using T_Shop.Domain.Repository;
 using T_Shop.Infrastructure.Data.Queries;
 using T_Shop.Infrastructure.Data.Repository;
 using T_Shop.Infrastructure.Persistence;
 using T_Shop.Infrastructure.Persistence.IdentityModels;
 using T_Shop.Infrastructure.SharedServices.Authentication;
+using T_Shop.Infrastructure.SharedServices.Cloudinary;
+using T_Shop.Infrastructure.SharedServices.ImageService;
 
 namespace T_Shop.Infrastructure;
 
@@ -26,7 +30,7 @@ public static class ConfigureServices
         //DI
         services.RegisterQueriesDependencies();
         services.RegistryDatabaseDependencies();
-        services.RegisterServices();
+        services.RegisterServices(configuration);
 
         return services;
     }
@@ -97,9 +101,13 @@ public static class ConfigureServices
         services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 
-    public static void RegisterServices(this IServiceCollection services)
+    public static void RegisterServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IAccountManager, AccountManager>();
+        services.AddScoped<IImageService, ImageService>();
+        //Cloudinary
+        services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
+        services.AddScoped<ICloudinaryService, CloudinaryService>();
     }
 }
 
