@@ -1,4 +1,6 @@
-﻿namespace T_Shop.Shared.DTOs.Product.RequestModel;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace T_Shop.Shared.DTOs.Product.RequestModel;
 public record ProductCreationRequestModel
 {
     public Guid ModelID { get; set; }
@@ -7,4 +9,5 @@ public record ProductCreationRequestModel
     public string Variant { get; set; }
     public double Price { get; set; }
     public string? Description { get; set; }
+    public IFormFileCollection Images { get; set; }
 }

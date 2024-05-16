@@ -54,7 +54,7 @@ namespace T_Shop.Controllers
         /// <response code="201">Successfully created item.</response>
         /// <response code="500">There is something wrong while execute.</response>
         [HttpPost]
-        public async Task<ActionResult<ProductResponseModel>> CreateProductAsync([FromBody] CreateProductCommand command)
+        public async Task<ActionResult<ProductResponseModel>> CreateProductAsync([FromForm] CreateProductCommand command)
         {
 
             var createdProduct = await Mediator.Send(command);

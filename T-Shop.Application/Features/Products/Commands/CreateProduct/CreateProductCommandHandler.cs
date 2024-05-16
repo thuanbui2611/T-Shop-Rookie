@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using T_Shop.Application.Common.Exceptions;
+using T_Shop.Application.Common.ServiceInterface;
 using T_Shop.Domain.Entity;
 using T_Shop.Domain.Repository;
 using T_Shop.Shared.DTOs.Product.ResponseModel;
@@ -15,8 +16,9 @@ namespace T_Shop.Application.Features.Products.Commands.CreateProduct
         private readonly IGenericRepository<Domain.Entity.Color> _colorRepository;
         private readonly IModelQueries _modelQueries;
         private readonly IGenericRepository<TypeProduct> _typeRepository;
+        private readonly IImageService _imageService;
 
-        public CreateProductCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, IModelQueries modelQueries)
+        public CreateProductCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, IModelQueries modelQueries, IImageService imageService)
         {
             _mapper = mapper;
             _productRepository = unitOfWork.GetBaseRepo<Product>();
@@ -24,6 +26,7 @@ namespace T_Shop.Application.Features.Products.Commands.CreateProduct
             _colorRepository = _unitOfWork.GetBaseRepo<Domain.Entity.Color>();
             _typeRepository = _unitOfWork.GetBaseRepo<TypeProduct>();
             _modelQueries = modelQueries;
+            _imageService = imageService;
         }
 
         public async Task<ProductResponseModel> Handle(CreateProductCommand request, CancellationToken cancellationToken)
@@ -45,14 +48,17 @@ namespace T_Shop.Application.Features.Products.Commands.CreateProduct
             }
 
             var newProduct = _mapper.Map<Product>(request);
-
             _productRepository.Add(newProduct);
+
+            var productImages = await _imageService.AddImagesProduct(request.Images, newProduct.Id);
+
             await _unitOfWork.CompleteAsync();
 
             newProduct.Model = model;
             newProduct.Type = type;
             newProduct.Color = color;
             var result = _mapper.Map<ProductResponseModel>(newProduct);
+            result.Images = productImages;
             return result;
         }
     }

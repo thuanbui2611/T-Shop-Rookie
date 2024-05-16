@@ -33,7 +33,7 @@ public class AccountManager : IAccountManager
 
     public async Task<IdentityResult> RegisterUser(UserCreationResquestModel registerUser)
     {
-        var user = await _userManager.(registerUser.Email);
+        var user = await _userManager.FindByEmailAsync(registerUser.Email);
         if (user != null)
         {
             if (user.UserName.ToLower().Equals(registerUser.Username.ToLower()))
@@ -66,11 +66,11 @@ public class AccountManager : IAccountManager
             IsLocked = false,
         };
         // Add image
-        //if (registerUser.Avatar.Length > 0)
-        //{
-        //    var imageAdded = await _imageService.AddImage(registerUser.Avatar);
-        //    newUser.AvatarId = imageAdded.ID;
-        //}
+        if (registerUser.Avatar.Length > 0)
+        {
+            var uploadResponse = await _imageService.AddImage(registerUser.Avatar);
+            newUser.AvatarId = uploadResponse.ID;
+        }
 
         // Add user
         var result = await _userManager.CreateAsync(newUser, registerUser.Password);
@@ -122,7 +122,7 @@ public class AccountManager : IAccountManager
             };
         if (_user.Image is not null)
         {
-            claims.Add(new Claim("Avatar", _user.Image.ImageURL));
+            claims.Add(new Claim("Avatar", _user.Image.PublicID));
         }
         else
         {

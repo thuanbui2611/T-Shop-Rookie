@@ -12,5 +12,5 @@ public class UserCreationResquestModel
     public string Gender { get; set; }
     public string PhoneNumber { get; set; }
     public string Address { get; set; }
-    public IFormFile Avatar { get; set; }
+    public IFormFile? Avatar { get; set; }
 }

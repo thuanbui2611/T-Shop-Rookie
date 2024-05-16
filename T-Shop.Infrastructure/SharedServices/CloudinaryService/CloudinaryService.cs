@@ -9,6 +9,7 @@ namespace T_Shop.Infrastructure.SharedServices.Cloudinary;
 public class CloudinaryService : ICloudinaryService
 {
     private readonly CloudinaryDotNet.Cloudinary _cloudinary;
+    private readonly string folder;
 
     public CloudinaryService(IOptions<CloudinarySettings> config)
     {
@@ -18,11 +19,11 @@ public class CloudinaryService : ICloudinaryService
             config.Value.ApiKey,
             config.Value.ApiSecret
         );
-
+        folder = config.Value.Folder;
         _cloudinary = new CloudinaryDotNet.Cloudinary(acc);
     }
 
-    public async Task<CloudinaryResult> AddPhotoAsync(IFormFile? file)
+    public async Task<CloudinaryResult> AddImageAsync(IFormFile file)
     {
         if (file is not { Length: > 0 }) return null;
 
@@ -30,9 +31,9 @@ public class CloudinaryService : ICloudinaryService
         var uploadParams = new ImageUploadParams
         {
             File = new(file.FileName, stream),
-            Transformation = new Transformation().Height(800).Width(800).Crop("fill").Gravity("face")
+            Transformation = new Transformation().Height(800).Width(800).Crop("fill").Gravity("face"),
+            Folder = folder
         };
-
         var uploadResult = await _cloudinary.UploadAsync(uploadParams);
         var result = new CloudinaryResult()
         {
@@ -42,7 +43,26 @@ public class CloudinaryService : ICloudinaryService
         return result;
     }
 
-    public async Task<string> DeletePhotoAsync(string publicID)
+    public async Task<bool> UpdateImageAsync(IFormFile file, string publicID)
+    {
+        if (file is not { Length: > 0 } || publicID is null) return false;
+
+        await using var stream = file.OpenReadStream();
+        var uploadParams = new ImageUploadParams
+        {
+            File = new(file.FileName, stream),
+            Transformation = new Transformation().Height(800).Width(800).Crop("fill").Gravity("face"),
+            PublicId = publicID,
+            Overwrite = true
+        };
+
+        var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+        if (uploadResult.Error is not null) throw new Exception(uploadResult.Error.Message);
+
+        return true;
+    }
+
+    public async Task<string> DeleteImageAsync(string publicID)
     {
         var deleteParams = new DeletionParams(publicID);
         var result = await _cloudinary.DestroyAsync(deleteParams);
