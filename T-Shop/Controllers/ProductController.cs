@@ -70,7 +70,7 @@ namespace T_Shop.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<ProductResponseModel>> UpdateProductAsync([FromRoute] Guid id, [FromForm] UpdateProductCommand command)
         {
-
+            //Can not retrieve list in formdata
             command.Id = id;
             var updatedProduct = await Mediator.Send(command);
             return Ok(updatedProduct);

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
+using T_Shop.Domain.Entity;
 
 namespace T_Shop.Infrastructure.Persistence.IdentityModels
 {
@@ -24,6 +25,8 @@ namespace T_Shop.Infrastructure.Persistence.IdentityModels
 
         [Column("created_at")]
         public DateTime CreatedAt { get; set; }
+
+        public virtual Cart Cart { get; set; }
 
     }
 }
