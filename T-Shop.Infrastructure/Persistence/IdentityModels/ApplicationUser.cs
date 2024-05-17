@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
-using T_Shop.Domain.Entity;
 
 namespace T_Shop.Infrastructure.Persistence.IdentityModels
 {
@@ -17,8 +16,8 @@ namespace T_Shop.Infrastructure.Persistence.IdentityModels
         [Column("address")]
         public string? Address { get; set; }
 
-        [Column("avatar_id")]
-        public Guid? AvatarId { get; set; }
+        [Column("avatar")]
+        public string? Avatar { get; set; }
 
         [Column("is_locked")]
         public bool IsLocked { get; set; } = false;
@@ -26,6 +25,5 @@ namespace T_Shop.Infrastructure.Persistence.IdentityModels
         [Column("created_at")]
         public DateTime CreatedAt { get; set; }
 
-        public virtual Image Image { get; set; }
     }
 }

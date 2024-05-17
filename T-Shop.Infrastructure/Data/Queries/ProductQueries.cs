@@ -16,7 +16,6 @@ namespace T_Shop.Infrastructure.Data.Queries
                     .OrderBy(p => p.Model.Name)
                     .Include(p => p.Color)
                     .Include(p => p.ProductImages)
-                        .ThenInclude(pi => pi.Image)
                     .Include(p => p.Type)
                     .Include(p => p.Model)
                         .ThenInclude(m => m.Brand)

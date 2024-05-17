@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using T_Shop.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using T_Shop.Infrastructure.Persistence;
 namespace T_Shop.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240516113939_modify database image")]
+    partial class modifydatabaseimage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -298,13 +301,13 @@ namespace T_Shop.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("979288ab-57be-4bee-8b4d-38236346705a"),
+                            Id = new Guid("6a030151-ab91-4493-8e79-3d7b6d9a191d"),
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = new Guid("a7e9e7cd-b630-4be8-a0a0-18c52bc4de3f"),
+                            Id = new Guid("74b66054-8c32-43f7-a83f-4abec006e93f"),
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

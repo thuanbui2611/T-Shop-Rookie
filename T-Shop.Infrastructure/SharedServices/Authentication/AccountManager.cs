@@ -17,17 +17,15 @@ public class AccountManager : IAccountManager
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IConfiguration _configuration;
     private readonly ICloudinaryService _cloudinaryService;
-    private readonly IImageService _imageService;
     private readonly IUnitOfWork _unitOfWork;
     private ApplicationUser? _user;
 
-    public AccountManager(UserManager<ApplicationUser> userManager, IConfiguration configuration, ICloudinaryService cloudinaryService, IUnitOfWork unitOfWork, IImageService imageService)
+    public AccountManager(UserManager<ApplicationUser> userManager, IConfiguration configuration, ICloudinaryService cloudinaryService, IUnitOfWork unitOfWork)
     {
         _userManager = userManager;
         _configuration = configuration;
         _cloudinaryService = cloudinaryService;
         _unitOfWork = unitOfWork;
-        _imageService = imageService;
     }
 
 
@@ -61,15 +59,15 @@ public class AccountManager : IAccountManager
             Gender = registerUser.Gender,
             PhoneNumber = registerUser.PhoneNumber,
             Address = registerUser.Address,
-            AvatarId = null,
+            Avatar = null,
             CreatedAt = DateTime.UtcNow,
             IsLocked = false,
         };
         // Add image
         if (registerUser.Avatar.Length > 0)
         {
-            var uploadResponse = await _imageService.AddImage(registerUser.Avatar);
-            newUser.AvatarId = uploadResponse.ID;
+            var uploadResponse = await _cloudinaryService.AddImageAsync(registerUser.Avatar);
+            newUser.Avatar = uploadResponse.ImageUrl;
         }
 
         // Add user
@@ -120,9 +118,9 @@ public class AccountManager : IAccountManager
             new Claim(ClaimTypes.Email, _user.Email),
             new Claim(ClaimTypes.Name, _user.FullName)
             };
-        if (_user.Image is not null)
+        if (_user.Avatar is not null)
         {
-            claims.Add(new Claim("Avatar", _user.Image.PublicID));
+            claims.Add(new Claim("Avatar", _user.Avatar));
         }
         else
         {

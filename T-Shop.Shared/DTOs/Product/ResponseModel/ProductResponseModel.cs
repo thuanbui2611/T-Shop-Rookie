@@ -1,5 +1,4 @@
 ﻿using T_Shop.Shared.DTOs.Color.ResponseModel;
-using T_Shop.Shared.DTOs.Image.ResponseModel;
 using T_Shop.Shared.DTOs.ModelProduct.ResponseModel;
 using T_Shop.Shared.DTOs.Type.ResponseModel;
 
@@ -18,8 +17,14 @@ namespace T_Shop.Shared.DTOs.Product.ResponseModel
         public TypeResponseModel Type { get; set; }
         public ModelProductResponseModel Model { get; set; }
         public ColorResponseModel Color { get; set; }
-        public List<ImageResponseModel> Images { get; set; }
+        public List<ImageOfProductResponseModel> Images { get; set; }
 
     }
 
+    public class ImageOfProductResponseModel
+    {
+        public Guid ImageID { get; set; }
+        public required string ImageUrl { get; set; }
+        public bool IsMain { get; set; }
+    }
 }

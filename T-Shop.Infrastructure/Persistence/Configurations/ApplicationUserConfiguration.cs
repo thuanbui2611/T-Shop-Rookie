@@ -7,10 +7,6 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 {
     public void Configure(EntityTypeBuilder<ApplicationUser> builder)
     {
-        // User - Image
-        builder.HasOne(u => u.Image)
-            .WithOne()
-            .HasForeignKey<ApplicationUser>(u => u.AvatarId)
-            .OnDelete(DeleteBehavior.Cascade);
+
     }
 }

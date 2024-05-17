@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using T_Shop.Application.Common.Exceptions;
+using T_Shop.Application.Common.Helpers;
 using T_Shop.Application.Common.ServiceInterface;
 using T_Shop.Domain.Entity;
 using T_Shop.Domain.Repository;
@@ -16,9 +17,10 @@ namespace T_Shop.Application.Features.Products.Commands.CreateProduct
         private readonly IGenericRepository<Domain.Entity.Color> _colorRepository;
         private readonly IModelQueries _modelQueries;
         private readonly IGenericRepository<TypeProduct> _typeRepository;
-        private readonly IImageService _imageService;
+        private readonly ICloudinaryService _cloudinaryService;
+        private readonly IGenericRepository<ProductImage> _productImageRepository;
 
-        public CreateProductCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, IModelQueries modelQueries, IImageService imageService)
+        public CreateProductCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, IModelQueries modelQueries, ICloudinaryService cloudinaryService)
         {
             _mapper = mapper;
             _productRepository = unitOfWork.GetBaseRepo<Product>();
@@ -26,7 +28,8 @@ namespace T_Shop.Application.Features.Products.Commands.CreateProduct
             _colorRepository = _unitOfWork.GetBaseRepo<Domain.Entity.Color>();
             _typeRepository = _unitOfWork.GetBaseRepo<TypeProduct>();
             _modelQueries = modelQueries;
-            _imageService = imageService;
+            _cloudinaryService = cloudinaryService;
+            _productImageRepository = _unitOfWork.GetBaseRepo<ProductImage>();
         }
 
         public async Task<ProductResponseModel> Handle(CreateProductCommand request, CancellationToken cancellationToken)
@@ -49,16 +52,31 @@ namespace T_Shop.Application.Features.Products.Commands.CreateProduct
 
             var newProduct = _mapper.Map<Product>(request);
             _productRepository.Add(newProduct);
+            //Upload images
+            var images = await _cloudinaryService.AddImagesAsync(request.Images);
+            //Add images to table product image
+            List<ProductImage> productImages = new List<ProductImage>();
+            foreach (var image in images)
+            {
+                ProductImage productImage = new ProductImage()
+                {
+                    ProductID = newProduct.Id,
+                    ImageUrl = ImageHelpers.RemoveTimestampFromImageUrl(image.ImageUrl)
+                };
+                productImages.Add(productImage);
+            }
+            //Set first image to main image
+            productImages[0].IsMain = true;
 
-            var productImages = await _imageService.AddImagesProduct(request.Images, newProduct.Id);
+            _productImageRepository.AddRange(productImages);
 
             await _unitOfWork.CompleteAsync();
 
             newProduct.Model = model;
             newProduct.Type = type;
             newProduct.Color = color;
+            newProduct.ProductImages = productImages;
             var result = _mapper.Map<ProductResponseModel>(newProduct);
-            result.Images = productImages;
             return result;
         }
     }

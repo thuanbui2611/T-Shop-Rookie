@@ -18,10 +18,10 @@ namespace T_Shop.Infrastructure.Persistence.Configurations
                 .IsUnique(true);
 
 
-            // Product - Color
-            builder.HasOne(p => p.Color)
+            // Product - Model
+            builder.HasOne(p => p.Model)
                 .WithMany(c => c.Products)
-                .HasForeignKey(p => p.ColorID)
+                .HasForeignKey(p => p.ModelID)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Product - Color
@@ -29,8 +29,6 @@ namespace T_Shop.Infrastructure.Persistence.Configurations
                 .WithMany(c => c.Products)
                 .HasForeignKey(p => p.ColorID)
                 .OnDelete(DeleteBehavior.Cascade);
-
-
         }
     }
 }

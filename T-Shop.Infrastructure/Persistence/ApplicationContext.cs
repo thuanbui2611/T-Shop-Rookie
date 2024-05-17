@@ -15,7 +15,6 @@ namespace T_Shop.Infrastructure.Persistence
         public DbSet<Product> Products { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Color> Colors { get; set; }
-        public DbSet<Image> Images { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Model> Models { get; set; }
         public DbSet<TypeProduct> Types { get; set; }

@@ -43,6 +43,31 @@ public class CloudinaryService : ICloudinaryService
         return result;
     }
 
+    public async Task<List<CloudinaryResult>> AddImagesAsync(IFormFileCollection files)
+    {
+        if (files.Count == 0) return null;
+        List<CloudinaryResult> result = new();
+        foreach (var file in files)
+        {
+            await using var stream = file.OpenReadStream();
+            var uploadParams = new ImageUploadParams
+            {
+                File = new(file.FileName, stream),
+                Transformation = new Transformation().Height(800).Width(800).Crop("fill").Gravity("face"),
+                Folder = folder
+            };
+            var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+            var imageAdded = new CloudinaryResult()
+            {
+                ImageUrl = uploadResult.SecureUrl.AbsoluteUri,
+                PublicID = uploadResult.PublicId,
+            };
+            result.Add(imageAdded);
+        }
+
+        return result;
+    }
+
     public async Task<bool> UpdateImageAsync(IFormFile file, string publicID)
     {
         if (file is not { Length: > 0 } || publicID is null) return false;

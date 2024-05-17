@@ -15,7 +15,6 @@ using T_Shop.Infrastructure.Persistence;
 using T_Shop.Infrastructure.Persistence.IdentityModels;
 using T_Shop.Infrastructure.SharedServices.Authentication;
 using T_Shop.Infrastructure.SharedServices.Cloudinary;
-using T_Shop.Infrastructure.SharedServices.ImageService;
 
 namespace T_Shop.Infrastructure;
 
@@ -104,7 +103,6 @@ public static class ConfigureServices
     public static void RegisterServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IAccountManager, AccountManager>();
-        services.AddScoped<IImageService, ImageService>();
         //Cloudinary
         services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
         services.AddScoped<ICloudinaryService, CloudinaryService>();

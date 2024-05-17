@@ -68,7 +68,7 @@ namespace T_Shop.Controllers
         /// <response code="200">Successfully updated item.</response>
         /// <response code="500">There is something wrong while execute.</response>
         [HttpPut("{id}")]
-        public async Task<ActionResult<ProductResponseModel>> UpdateProductAsync([FromRoute] Guid id, [FromBody] UpdateProductCommand command)
+        public async Task<ActionResult<ProductResponseModel>> UpdateProductAsync([FromRoute] Guid id, [FromForm] UpdateProductCommand command)
         {
 
             command.Id = id;

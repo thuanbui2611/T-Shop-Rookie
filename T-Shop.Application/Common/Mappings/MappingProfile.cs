@@ -9,7 +9,6 @@ using T_Shop.Domain.Entity;
 using T_Shop.Shared.DTOs.Brand.ResponseModel;
 using T_Shop.Shared.DTOs.Color.RequestModel;
 using T_Shop.Shared.DTOs.Color.ResponseModel;
-using T_Shop.Shared.DTOs.Image.ResponseModel;
 using T_Shop.Shared.DTOs.ModelProduct.RequestModel;
 using T_Shop.Shared.DTOs.ModelProduct.ResponseModel;
 using T_Shop.Shared.DTOs.Product.ResponseModel;
@@ -23,10 +22,13 @@ namespace T_Shop.Application.Common.Mappings
         public MappingProfile()
         {
             //Product
+            CreateMap<ProductImage, ImageOfProductResponseModel>();
             CreateMap<Product, ProductResponseModel>()
+                .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.ProductImages))
                 .AfterMap((src, dest) =>
                 {
                     dest.Name = $"{src.Model.Brand.Name} {src.Model.Name} {src.Variant}";
+
                 });
             CreateMap<CreateProductCommand, Product>();
             CreateMap<UpdateProductCommand, Product>();
@@ -55,8 +57,6 @@ namespace T_Shop.Application.Common.Mappings
             CreateMap<ColorCreationRequestModel, Color>();
             CreateMap<ColorUpdateRequestModel, Color>();
 
-            //Image
-            CreateMap<Image, ImageResponseModel>();
 
         }
 
