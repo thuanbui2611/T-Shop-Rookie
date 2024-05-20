@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
-using T_Shop.Application.Common.Interface;
-using T_Shop.Application.Common.ServiceInterface;
+using T_Shop.Infrastructure.SharedServices.Authentication;
+using T_Shop.Infrastructure.SharedServices.CloudinaryService;
 
 namespace T_Shop.Application.Features.Authentication.Commands.RegisterUser;
 public class CreateUserHandler : IRequestHandler<CreateUserCommand, IdentityResult>

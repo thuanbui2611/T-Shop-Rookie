@@ -21,6 +21,6 @@ public class OrderDetailConfiguration : IEntityTypeConfiguration<OrderDetail>
         builder.HasOne(od => od.Product)
             .WithMany(p => p.OrderDetails)
             .HasForeignKey(p => p.ProductID)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

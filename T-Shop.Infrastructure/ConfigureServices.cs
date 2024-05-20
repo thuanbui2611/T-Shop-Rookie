@@ -5,9 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using T_Shop.Application.Common.Interface;
-using T_Shop.Application.Common.ServiceInterface;
-using T_Shop.Domain.Entity.ServiceEntity.Cloudinary;
 using T_Shop.Domain.Repository;
 using T_Shop.Infrastructure.Data.Queries;
 using T_Shop.Infrastructure.Data.Repository;
@@ -15,6 +12,8 @@ using T_Shop.Infrastructure.Persistence;
 using T_Shop.Infrastructure.Persistence.IdentityModels;
 using T_Shop.Infrastructure.SharedServices.Authentication;
 using T_Shop.Infrastructure.SharedServices.Cloudinary;
+using T_Shop.Infrastructure.SharedServices.CloudinaryService;
+using T_Shop.Infrastructure.SharedServices.StripeService;
 
 namespace T_Shop.Infrastructure;
 
@@ -39,7 +38,7 @@ public static class ConfigureServices
         services.AddDbContextPool<ApplicationContext>(
             option => option.UseNpgsql(configuration.GetConnectionString("postgreSqlConnection")!,
             b => b.MigrationsAssembly(typeof(ApplicationContext).Assembly.FullName))
-            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+           //.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
            //.UseModel(ApplicationContextModel.Instance)
            );
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
@@ -86,12 +85,14 @@ public static class ConfigureServices
 
     public static void RegisterQueriesDependencies(this IServiceCollection services)
     {
+        services.AddScoped<IUserQueries, UserQueries>();
         services.AddScoped<IProductQueries, ProductQueries>();
         services.AddScoped<IBrandQueries, BrandQueries>();
         services.AddScoped<IColorQueries, ColorQueries>();
         services.AddScoped<IModelQueries, ModelQueries>();
         services.AddScoped<ITypeQueries, TypeQueries>();
         services.AddScoped<ICartQueries, CartQueries>();
+        services.AddScoped<IOrderQueries, OrderQueries>();
     }
 
     public static void RegistryDatabaseDependencies(this IServiceCollection services)
@@ -107,6 +108,9 @@ public static class ConfigureServices
         //Cloudinary
         services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
         services.AddScoped<ICloudinaryService, CloudinaryService>();
+
+        //Stripe
+        services.AddScoped<IStripeService, StripeService>();
     }
 }
 

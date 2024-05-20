@@ -8,7 +8,7 @@ using T_Shop.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace T_Shop.Infrastructure.Migrations
+namespace T_Shop.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
     partial class ApplicationContextModelSnapshot : ModelSnapshot
@@ -260,9 +260,11 @@ namespace T_Shop.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("PK_FK_product_id");
 
-                    b.Property<string>("Quantity")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
 
                     b.HasKey("OrderID", "ProductID");
 
@@ -422,13 +424,13 @@ namespace T_Shop.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("008d2609-2d67-49eb-ad91-9329ff2e14ec"),
+                            Id = new Guid("95735f92-cd5f-4d74-b6f3-b39e8df42c25"),
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = new Guid("1770630c-cd71-4d87-8dbd-96e3d9e6c541"),
+                            Id = new Guid("921b5402-9d4b-4171-978a-83dd77a85d70"),
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -619,7 +621,7 @@ namespace T_Shop.Infrastructure.Migrations
                     b.HasOne("T_Shop.Domain.Entity.Product", "Product")
                         .WithMany("OrderDetails")
                         .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Order");

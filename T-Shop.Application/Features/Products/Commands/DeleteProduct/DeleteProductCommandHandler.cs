@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using T_Shop.Domain.Exceptions;
 using T_Shop.Application.Common.Helpers;
-using T_Shop.Application.Common.ServiceInterface;
 using T_Shop.Domain.Entity;
+using T_Shop.Domain.Exceptions;
 using T_Shop.Domain.Repository;
+using T_Shop.Infrastructure.SharedServices.CloudinaryService;
 
 namespace T_Shop.Application.Features.Products.Commands.DeleteProduct
 {
