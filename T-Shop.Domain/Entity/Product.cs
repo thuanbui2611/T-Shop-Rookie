@@ -20,6 +20,9 @@ namespace T_Shop.Domain.Entity
         public virtual TypeProduct Type { get; set; }
         public virtual Color Color { get; set; }
         public virtual Model Model { get; set; }
+        public virtual ICollection<CartItem> CartProducts { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
         public virtual ICollection<ProductImage> ProductImages { get; set; }
+
     }
 }

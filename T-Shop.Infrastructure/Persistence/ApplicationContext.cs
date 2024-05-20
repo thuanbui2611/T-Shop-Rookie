@@ -18,7 +18,11 @@ namespace T_Shop.Infrastructure.Persistence
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Model> Models { get; set; }
         public DbSet<TypeProduct> Types { get; set; }
-
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

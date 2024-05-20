@@ -17,7 +17,7 @@ namespace T_Shop.Shared.DTOs.Product.ResponseModel
         public TypeResponseModel Type { get; set; }
         public ModelProductResponseModel Model { get; set; }
         public ColorResponseModel Color { get; set; }
-        public List<ImageOfProductResponseModel> Images { get; set; }
+        public List<ImageOfProductResponseModel> Images { get; set; } = new();
 
     }
 

@@ -5,7 +5,7 @@ public class UpdateProductCommandValidator : AbstractValidator<UpdateProductComm
 {
     public UpdateProductCommandValidator()
     {
-        RuleFor(up => up.ImagesUpload.Count + up.Images.Count)
+        RuleFor(up => up.ImagesUpload.Count + up.ImagesList.Count)
             .LessThanOrEqualTo(5)
             .WithMessage("Maximum of 5 images allowed.");
 

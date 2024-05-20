@@ -53,11 +53,11 @@ namespace T_Shop.Application.Features.Products.Commands.UpdateProduct
 
             var productUpdate = _mapper.Map<Product>(request);
 
-            var imagesFromRequest = request.Images;
+            var imagesFromRequest = request.ImagesList;
             var imagesInProduct = product.ProductImages.ToList();
             List<ProductImage> imagesToDelete = new();
             //Delete images
-            if (request.Images.Count < product.ProductImages.Count)
+            if (request.ImagesList.Count < product.ProductImages.Count)
             {
                 imagesToDelete = imagesInProduct
                     .Where(imgInProduct =>
