@@ -23,6 +23,7 @@ namespace T_Shop.Domain.Entity
         public virtual ICollection<CartItem> CartProducts { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
         public virtual ICollection<ProductImage> ProductImages { get; set; }
+        public virtual ICollection<ProductReview> ProductReviews { get; set; }
 
     }
 }

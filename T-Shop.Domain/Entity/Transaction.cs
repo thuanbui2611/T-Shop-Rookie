@@ -12,4 +12,5 @@ public class Transaction : BaseModel
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public virtual Order Order { get; set; }
+    public virtual ProductReview ProductReview { get; set; }
 }

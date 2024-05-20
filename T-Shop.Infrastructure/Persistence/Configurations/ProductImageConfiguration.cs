@@ -9,9 +9,9 @@ public class ProductImageConfiguration : IEntityTypeConfiguration<ProductImage>
     {
         builder.ToTable("table_product_image");
 
-        //Image - Product
-        builder.HasKey(p => new { p.ProductID, p.ImageID });
+        builder.HasKey(p => p.ImageID);
 
+        //Image - Product
         builder.HasOne(p => p.Product)
             .WithMany(p => p.ProductImages)
             .HasForeignKey(p => p.ProductID)
