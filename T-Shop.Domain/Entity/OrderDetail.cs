@@ -7,7 +7,7 @@ public class OrderDetail
     public Guid OrderID { get; set; }
     [Column("PK_FK_product_id")]
     public Guid ProductID { get; set; }
-    public string Quantity { get; set; }
+    public int Quantity { get; set; }
 
     public virtual Order Order { get; set; }
     public virtual Product Product { get; set; }

@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using T_Shop.Application.Common.Interface;
+using T_Shop.Infrastructure.SharedServices.Authentication;
 using T_Shop.Shared.DTOs.User.ResponseModels;
 
 namespace T_Shop.Application.Features.Authentication.Commands.Login;

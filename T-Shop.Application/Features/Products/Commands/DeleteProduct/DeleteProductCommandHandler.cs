@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using T_Shop.Application.Common.Exceptions;
+using T_Shop.Domain.Exceptions;
 using T_Shop.Application.Common.Helpers;
 using T_Shop.Application.Common.ServiceInterface;
 using T_Shop.Domain.Entity;

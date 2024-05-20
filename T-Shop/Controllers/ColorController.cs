@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using T_Shop.Application.Common.Exceptions;
+using T_Shop.Domain.Exceptions;
 using T_Shop.Application.Features.Color.Commands.CreateColor;
 using T_Shop.Application.Features.Color.Commands.DeleteColor;
 using T_Shop.Application.Features.Color.Commands.UpdateColor;

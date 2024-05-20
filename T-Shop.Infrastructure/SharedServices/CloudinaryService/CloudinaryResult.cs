@@ -1,4 +1,4 @@
-﻿namespace T_Shop.Domain.Entity.ServiceEntity.Cloudinary;
+﻿namespace T_Shop.Infrastructure.SharedServices.CloudinaryService;
 public class CloudinaryResult
 {
     public string PublicID { get; set; }

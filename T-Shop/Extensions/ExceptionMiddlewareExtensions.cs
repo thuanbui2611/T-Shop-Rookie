@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using System.Text.Json;
-using T_Shop.Application.Common.Exceptions;
+using T_Shop.Domain.Exceptions;
 
 namespace T_Shop.Extensions
 {

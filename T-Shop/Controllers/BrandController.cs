@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using T_Shop.Application.Common.Exceptions;
+using T_Shop.Domain.Exceptions;
 using T_Shop.Application.Features.Brand.Command.CreateBrand;
 using T_Shop.Application.Features.Brand.Command.DeleteBrand;
 using T_Shop.Application.Features.Brand.Command.UpdateBrand;

@@ -4,13 +4,11 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using T_Shop.Application.Common.Exceptions;
-using T_Shop.Application.Common.Interface;
-using T_Shop.Application.Common.ServiceInterface;
+using T_Shop.Domain.Exceptions;
 using T_Shop.Domain.Repository;
 using T_Shop.Infrastructure.Persistence.IdentityModels;
+using T_Shop.Infrastructure.SharedServices.CloudinaryService;
 using T_Shop.Shared.DTOs.User.RequestModels;
-
 namespace T_Shop.Infrastructure.SharedServices.Authentication;
 public class AccountManager : IAccountManager
 {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using T_Shop.Application.Common.Exceptions;
+using T_Shop.Domain.Exceptions;
 using T_Shop.Application.Features.Cart.Commands.AddItemToCartQuery;
 using T_Shop.Application.Features.Cart.Commands.UpdateCart;
 using T_Shop.Application.Features.Cart.Queries.GetCartByUserId;

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using T_Shop.Application.Common.Exceptions;
+using T_Shop.Domain.Exceptions;
 using T_Shop.Application.Features.ModelProduct.Commands.CreateModelProductCommand;
 using T_Shop.Application.Features.ModelProduct.Commands.DeleteModelProduct;
 using T_Shop.Application.Features.ModelProduct.Commands.UpdateModelProduct;

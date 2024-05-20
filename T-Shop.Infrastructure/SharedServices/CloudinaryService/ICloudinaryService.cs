@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using T_Shop.Domain.Entity.ServiceEntity.Cloudinary;
 
-namespace T_Shop.Application.Common.ServiceInterface;
+namespace T_Shop.Infrastructure.SharedServices.CloudinaryService;
 public interface ICloudinaryService
 {
     Task<CloudinaryResult> AddImageAsync(IFormFile? file);

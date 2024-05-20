@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using T_Shop.Application.Common.Exceptions;
+using T_Shop.Domain.Exceptions;
 using T_Shop.Domain.Entity;
 using T_Shop.Domain.Repository;
 using T_Shop.Shared.DTOs.Type.ResponseModel;

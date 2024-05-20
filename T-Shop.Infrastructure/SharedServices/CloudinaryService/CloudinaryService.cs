@@ -2,8 +2,7 @@
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using T_Shop.Application.Common.ServiceInterface;
-using T_Shop.Domain.Entity.ServiceEntity.Cloudinary;
+using T_Shop.Infrastructure.SharedServices.CloudinaryService;
 
 namespace T_Shop.Infrastructure.SharedServices.Cloudinary;
 public class CloudinaryService : ICloudinaryService
