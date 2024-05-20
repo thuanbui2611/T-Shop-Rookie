@@ -14,6 +14,7 @@ using T_Shop.Shared.DTOs.ModelProduct.RequestModel;
 using T_Shop.Shared.DTOs.ModelProduct.ResponseModel;
 using T_Shop.Shared.DTOs.Order.ResponseModel;
 using T_Shop.Shared.DTOs.Product.ResponseModel;
+using T_Shop.Shared.DTOs.Transaction;
 using T_Shop.Shared.DTOs.Type.ResponseModel;
 using static T_Shop.Shared.DTOs.ModelProduct.ResponseModel.ModelProductResponseModel;
 
@@ -70,6 +71,9 @@ namespace T_Shop.Application.Common.Mappings
                 .ForMember(dest => dest.CustomerID, opt => opt.MapFrom(src => src.UserID))
                 .ForMember(dest => dest.OrderDetails, opt => opt.MapFrom(src => src.OrderDetails));
 
+            //Transaction
+            CreateMap<Transaction, TransactionResponseModel>()
+                .ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order));
         }
 
     }

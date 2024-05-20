@@ -10,6 +10,7 @@ public class OrderQueries : BaseQuery<Order>, IOrderQueries
     {
 
     }
+
     public async Task<Order> GetOrderByUserIdAsync(Guid userID)
     {
         return await dbSet
@@ -18,6 +19,15 @@ public class OrderQueries : BaseQuery<Order>, IOrderQueries
             .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Type)
             .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Model).ThenInclude(m => m.Brand)
             .FirstOrDefaultAsync(o => o.UserID.Equals(userID));
+    }
 
+    public async Task<Order> GetOrderByPaymentIntentIdAsync(string paymentIntentId)
+    {
+        return await dbSet
+          .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Color)
+          .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.ProductImages)
+          .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Type)
+          .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Model).ThenInclude(m => m.Brand)
+          .FirstOrDefaultAsync(o => o.PaymentIntentID.Equals(paymentIntentId));
     }
 }

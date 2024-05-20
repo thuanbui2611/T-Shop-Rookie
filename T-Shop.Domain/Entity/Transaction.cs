@@ -7,7 +7,7 @@ public class Transaction : BaseModel
     public Guid CustomerID { get; set; }
     [Column("FK_order_id")]
     public Guid OrderID { get; set; }
-    public string Status { get; set; } = string.Empty;
+    public string Status { get; set; } = string.Empty; //In Process or Success or Canceled
     public string Reason { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
