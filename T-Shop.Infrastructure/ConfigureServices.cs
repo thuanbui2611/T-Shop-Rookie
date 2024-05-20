@@ -91,6 +91,7 @@ public static class ConfigureServices
         services.AddScoped<IColorQueries, ColorQueries>();
         services.AddScoped<IModelQueries, ModelQueries>();
         services.AddScoped<ITypeQueries, TypeQueries>();
+        services.AddScoped<ICartQueries, CartQueries>();
     }
 
     public static void RegistryDatabaseDependencies(this IServiceCollection services)

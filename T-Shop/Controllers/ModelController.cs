@@ -67,7 +67,7 @@ public class ModelController : ApiControllerBase
             throw new BadRequestException("Model ID do not match");
         }
         var model = await Mediator.Send(command);
-        return Created($"model/{model.ID}", model);
+        return Ok(model);
     }
 
     /// <summary>

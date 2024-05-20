@@ -71,7 +71,7 @@ public class TypeController : ApiControllerBase
             throw new BadRequestException("Type ID do not match");
         }
         var type = await Mediator.Send(command);
-        return Created($"type/{type.Id}", type);
+        return Ok(type);
     }
 
     /// <summary>

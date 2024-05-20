@@ -19,4 +19,8 @@
     <ProjectReference Include="..\T-Shop.Shared\T-Shop.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Cart\Queries\GetCartById\" />
+  </ItemGroup>
+
 </Project>

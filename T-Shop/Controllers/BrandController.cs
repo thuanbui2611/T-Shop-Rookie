@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using T_Shop.Application.Common.Exceptions;
 using T_Shop.Application.Features.Brand.Command.CreateBrand;
 using T_Shop.Application.Features.Brand.Command.DeleteBrand;
@@ -20,7 +19,6 @@ public class BrandController : ApiControllerBase
     /// <returns>Status code of the action.</returns>
     /// <response code="200">Successfully get items information.</response>
     /// <response code="500">There is something wrong while execute.</response>
-    [Authorize]
     [HttpGet]
     public async Task<ActionResult<List<BrandResponseModel>>> GetBrandsAsync()
     {
@@ -70,7 +68,7 @@ public class BrandController : ApiControllerBase
             throw new BadRequestException("Brand ID do not match");
         }
         var brand = await Mediator.Send(command);
-        return Created($"brand/{brand.ID}", brand);
+        return Ok(brand);
     }
 
     /// <summary>

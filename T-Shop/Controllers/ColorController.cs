@@ -70,7 +70,7 @@ public class ColorController : ApiControllerBase
             throw new BadRequestException("Color ID do not match");
         }
         var color = await Mediator.Send(command);
-        return Created($"color/{color.ID}", color);
+        return Ok(color);
     }
 
     /// <summary>
