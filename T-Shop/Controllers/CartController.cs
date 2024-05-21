@@ -3,7 +3,6 @@ using T_Shop.Application.Features.Cart.Commands.AddItemToCartQuery;
 using T_Shop.Application.Features.Cart.Commands.UpdateCart;
 using T_Shop.Application.Features.Cart.Queries.GetCartByUserId;
 using T_Shop.Controllers;
-using T_Shop.Domain.Exceptions;
 using T_Shop.Shared.DTOs.Cart.ResponseModel;
 
 namespace T_Shop.WebAPI.Controllers;
@@ -47,13 +46,10 @@ public class CartController : ApiControllerBase
     /// <returns>Status code of the action.</returns>
     /// <response code="200">Successfully updated item.</response>
     /// <response code="500">There is something wrong while execute.</response>
-    [HttpPut("{id}")]
-    public async Task<ActionResult<CartResponseModel>> UpdateCartAsync([FromRoute] Guid id, [FromBody] UpdateCartCommand command)
+    [HttpPut("{userID}")]
+    public async Task<ActionResult<CartResponseModel>> UpdateCartAsync([FromRoute] Guid userID, [FromBody] UpdateCartCommand command)
     {
-        if (id != command.UserID)
-        {
-            throw new BadRequestException("User ID do not match");
-        }
+        command.UserID = userID;
         var cart = await Mediator.Send(command);
         return Created($"cart/{cart.ID}", cart);
     }

@@ -6,4 +6,5 @@ public interface ITransactionQueries
     Task<List<Transaction>> GetTransactionsAsync();
     Task<List<Transaction>> GetTransactionsByUserIdAsync(Guid userID);
     Task<Transaction> GetTransactionByPaymentIntentId(string paymentIntentID);
+    Task<Transaction> GetTransactionsByIdAsync(Guid transactionID);
 }

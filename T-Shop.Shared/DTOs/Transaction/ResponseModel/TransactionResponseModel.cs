@@ -1,6 +1,6 @@
 ﻿using T_Shop.Shared.DTOs.Order.ResponseModel;
 
-namespace T_Shop.Shared.DTOs.Transaction;
+namespace T_Shop.Shared.DTOs.Transaction.ResponseModel;
 public class TransactionResponseModel
 {
     public Guid ID { get; set; }

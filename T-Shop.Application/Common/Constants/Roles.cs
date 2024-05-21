@@ -1,4 +1,4 @@
-﻿namespace T_Shop.Application.Common.Enums
+﻿namespace T_Shop.Application.Common.Constants
 {
     public enum Roles
     {

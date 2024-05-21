@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using T_Shop.Domain.Exceptions;
 using T_Shop.Application.Features.Brand.Command.CreateBrand;
 using T_Shop.Application.Features.Brand.Command.DeleteBrand;
 using T_Shop.Application.Features.Brand.Command.UpdateBrand;
@@ -63,10 +62,7 @@ public class BrandController : ApiControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult<BrandResponseModel>> UpdateBrandAsync([FromRoute] Guid id, [FromBody] UpdateBrandCommand command)
     {
-        if (id != command.ID)
-        {
-            throw new BadRequestException("Brand ID do not match");
-        }
+        command.ID = id;
         var brand = await Mediator.Send(command);
         return Ok(brand);
     }

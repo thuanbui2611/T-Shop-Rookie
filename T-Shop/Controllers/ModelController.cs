@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using T_Shop.Domain.Exceptions;
 using T_Shop.Application.Features.ModelProduct.Commands.CreateModelProductCommand;
 using T_Shop.Application.Features.ModelProduct.Commands.DeleteModelProduct;
 using T_Shop.Application.Features.ModelProduct.Commands.UpdateModelProduct;
@@ -62,10 +61,7 @@ public class ModelController : ApiControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult<ModelProductResponseModel>> UpdateModelAsync([FromRoute] Guid id, [FromBody] UpdateModelProductCommand command)
     {
-        if (id != command.Id)
-        {
-            throw new BadRequestException("Model ID do not match");
-        }
+        command.Id = id;
         var model = await Mediator.Send(command);
         return Ok(model);
     }

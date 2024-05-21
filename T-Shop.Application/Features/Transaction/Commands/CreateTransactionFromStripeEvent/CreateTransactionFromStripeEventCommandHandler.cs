@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
 using Stripe;
+using T_Shop.Application.Common.Constants;
 using T_Shop.Domain.Entity;
 using T_Shop.Domain.Repository;
-using T_Shop.Shared.DTOs.Transaction;
+using T_Shop.Shared.DTOs.Transaction.ResponseModel;
 
 namespace T_Shop.Application.Features.Transaction.Commands.CreateTransactionFromStripeEvent;
 public class CreateTransactionFromStripeEventCommandHandler : IRequestHandler<CreateTransactionFromStripeEventCommand, TransactionResponseModel>
@@ -49,7 +50,7 @@ public class CreateTransactionFromStripeEventCommandHandler : IRequestHandler<Cr
         {
             CustomerID = order.UserID,
             OrderID = order.Id,
-            Status = "In Process"
+            Status = TransactionStatusConstants.PENDING,
         };
         _transactionRepository.Add(transaction);
 

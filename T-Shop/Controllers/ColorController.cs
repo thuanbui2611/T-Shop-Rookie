@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using T_Shop.Domain.Exceptions;
 using T_Shop.Application.Features.Color.Commands.CreateColor;
 using T_Shop.Application.Features.Color.Commands.DeleteColor;
 using T_Shop.Application.Features.Color.Commands.UpdateColor;
@@ -65,10 +64,7 @@ public class ColorController : ApiControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult<ColorResponseModel>> UpdateColorAsync([FromRoute] Guid id, [FromBody] UpdateColorCommand command)
     {
-        if (id != command.ID)
-        {
-            throw new BadRequestException("Color ID do not match");
-        }
+        command.ID = id;
         var color = await Mediator.Send(command);
         return Ok(color);
     }

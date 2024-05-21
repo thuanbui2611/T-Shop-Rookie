@@ -56,7 +56,6 @@ namespace T_Shop.Controllers
         [HttpPost]
         public async Task<ActionResult<ProductResponseModel>> CreateProductAsync([FromForm] CreateProductCommand command)
         {
-
             var createdProduct = await Mediator.Send(command);
             return Created($"product/{createdProduct.Id}", createdProduct);
         }
@@ -70,11 +69,9 @@ namespace T_Shop.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<ProductResponseModel>> UpdateProductAsync([FromRoute] Guid id, [FromForm] UpdateProductCommand command)
         {
-            //Can not retrieve list in formdata
             command.Id = id;
             var updatedProduct = await Mediator.Send(command);
             return Ok(updatedProduct);
-
         }
 
         /// <summary>
@@ -87,7 +84,7 @@ namespace T_Shop.Controllers
         public async Task<IActionResult> DeleteProductAsync([FromRoute] Guid id)
         {
 
-            var result = await Mediator.Send(new DeleteProductCommand()
+            await Mediator.Send(new DeleteProductCommand()
             {
                 Id = id
             });

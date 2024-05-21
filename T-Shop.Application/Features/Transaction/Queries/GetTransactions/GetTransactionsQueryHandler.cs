@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using T_Shop.Domain.Repository;
-using T_Shop.Shared.DTOs.Transaction;
+using T_Shop.Shared.DTOs.Transaction.ResponseModel;
 
 namespace T_Shop.Application.Features.Transaction.Queries.GetTransactions;
 public class GetTransactionsQueryHandler : IRequestHandler<GetTransactionsQuery, List<TransactionResponseModel>>

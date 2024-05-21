@@ -14,7 +14,7 @@ using T_Shop.Shared.DTOs.ModelProduct.RequestModel;
 using T_Shop.Shared.DTOs.ModelProduct.ResponseModel;
 using T_Shop.Shared.DTOs.Order.ResponseModel;
 using T_Shop.Shared.DTOs.Product.ResponseModel;
-using T_Shop.Shared.DTOs.Transaction;
+using T_Shop.Shared.DTOs.Transaction.ResponseModel;
 using T_Shop.Shared.DTOs.Type.ResponseModel;
 using static T_Shop.Shared.DTOs.ModelProduct.ResponseModel.ModelProductResponseModel;
 

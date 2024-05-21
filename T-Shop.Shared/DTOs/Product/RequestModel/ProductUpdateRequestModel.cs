@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using T_Shop.Shared.DTOs.Product.ResponseModel;
 namespace T_Shop.Shared.DTOs.Product.RequestModel;
 public class ProductUpdateRequestModel
 {
+    [JsonIgnore]
     public Guid Id { get; set; }
     public Guid ModelID { get; set; }
     public Guid ColorID { get; set; }

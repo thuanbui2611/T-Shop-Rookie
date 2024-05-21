@@ -67,4 +67,23 @@ public class TransactionQueries : BaseQuery<Transaction>, ITransactionQueries
             .Where(t => t.CustomerID.Equals(userID))
             .ToListAsync();
     }
+
+    public async Task<Transaction> GetTransactionsByIdAsync(Guid transactionID)
+    {
+        return await dbSet
+           .Include(t => t.Order)
+               .ThenInclude(o => o.OrderDetails)
+               .ThenInclude(od => od.Product)
+               .ThenInclude(p => p.Color)
+           .Include(t => t.Order)
+               .ThenInclude(o => o.OrderDetails)
+               .ThenInclude(od => od.Product)
+               .ThenInclude(p => p.Type)
+           .Include(t => t.Order)
+               .ThenInclude(o => o.OrderDetails)
+               .ThenInclude(od => od.Product)
+               .ThenInclude(p => p.Model)
+               .ThenInclude(m => m.Brand)
+            .FirstOrDefaultAsync(t => t.Id.Equals(transactionID));
+    }
 }

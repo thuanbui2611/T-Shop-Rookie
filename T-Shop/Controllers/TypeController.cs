@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using T_Shop.Domain.Exceptions;
 using T_Shop.Application.Features.Type.Commands.CreateType;
 using T_Shop.Application.Features.Type.Commands.DeleteType;
 using T_Shop.Application.Features.Type.Commands.UpdateType;
@@ -66,10 +65,7 @@ public class TypeController : ApiControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult<TypeResponseModel>> UpdateTypeAsync([FromRoute] Guid id, [FromBody] UpdateTypeCommand command)
     {
-        if (id != command.Id)
-        {
-            throw new BadRequestException("Type ID do not match");
-        }
+        command.Id = id;
         var type = await Mediator.Send(command);
         return Ok(type);
     }
