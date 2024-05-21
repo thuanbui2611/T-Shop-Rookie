@@ -14,6 +14,7 @@ using T_Shop.Shared.DTOs.ModelProduct.RequestModel;
 using T_Shop.Shared.DTOs.ModelProduct.ResponseModel;
 using T_Shop.Shared.DTOs.Order.ResponseModel;
 using T_Shop.Shared.DTOs.Product.ResponseModel;
+using T_Shop.Shared.DTOs.ProductReview.ResponseModel;
 using T_Shop.Shared.DTOs.Transaction.ResponseModel;
 using T_Shop.Shared.DTOs.Type.ResponseModel;
 using static T_Shop.Shared.DTOs.ModelProduct.ResponseModel.ModelProductResponseModel;
@@ -31,7 +32,8 @@ namespace T_Shop.Application.Common.Mappings
                 .AfterMap((src, dest) =>
                 {
                     dest.Name = $"{src.Model.Brand.Name} {src.Model.Name} {src.Variant}";
-
+                    dest.Rating = src.ProductReviews.Any() ? (decimal)src.ProductReviews.Average(x => x.Rating) : 0;
+                    dest.totalReviews = src.ProductReviews.Count();
                 });
             CreateMap<CreateProductCommand, Product>();
             CreateMap<UpdateProductCommand, Product>();
@@ -74,6 +76,11 @@ namespace T_Shop.Application.Common.Mappings
             //Transaction
             CreateMap<Transaction, TransactionResponseModel>()
                 .ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order));
+
+            //ProductReview
+            CreateMap<ProductReviewImage, ProductReviewImagesResponseModel>();
+            CreateMap<ProductReview, ProductReviewResponseModel>()
+                .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.ProductReviewImages));
         }
 
     }

@@ -50,7 +50,7 @@ public class CreateTransactionFromStripeEventCommandHandler : IRequestHandler<Cr
         {
             CustomerID = order.UserID,
             OrderID = order.Id,
-            Status = TransactionStatusConstants.PENDING,
+            Status = TransactionConstants.PENDING,
         };
         _transactionRepository.Add(transaction);
 

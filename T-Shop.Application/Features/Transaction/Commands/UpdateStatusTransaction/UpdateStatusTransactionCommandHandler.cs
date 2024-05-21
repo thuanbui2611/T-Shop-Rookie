@@ -26,9 +26,9 @@ public class UpdateStatusTransactionCommandHandler : IRequestHandler<UpdateStatu
     public async Task<TransactionResponseModel> Handle(UpdateStatusTransactionCommand request, CancellationToken cancellationToken)
     {
         //Validate status updated
-        var isValid = TransactionStatusConstants.AVAILABLE_UPDATE_TRANSACTION_STATUS.Contains(request.Status);
+        var isValid = TransactionConstants.AVAILABLE_UPDATE_TRANSACTION_STATUS.Contains(request.Status);
         if (!isValid) throw new BadRequestException($"Only allow update to status: " +
-            $"{String.Join(", ", TransactionStatusConstants.AVAILABLE_UPDATE_TRANSACTION_STATUS)}");
+            $"{String.Join(", ", TransactionConstants.AVAILABLE_UPDATE_TRANSACTION_STATUS)}");
 
         //Validate request
         var transaction = await _transactionQueries.GetTransactionsByIdAsync(request.ID);

@@ -1,5 +1,5 @@
 ﻿namespace T_Shop.Application.Common.Constants;
-public static class TransactionStatusConstants
+public static class TransactionConstants
 {
     public static string PENDING = "Pending";
     public static string INPROCESS = "InProcess";

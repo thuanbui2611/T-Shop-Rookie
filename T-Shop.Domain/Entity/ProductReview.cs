@@ -9,8 +9,8 @@ public class ProductReview : BaseModel
     public int Rating { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    public virtual required Product Product { get; set; }
-    public virtual required Transaction Transaction { get; set; }
+    public virtual Product Product { get; set; }
+    public virtual Transaction Transaction { get; set; }
     public virtual ICollection<ProductReviewImage> ProductReviewImages { get; set; } = [];
 
 }

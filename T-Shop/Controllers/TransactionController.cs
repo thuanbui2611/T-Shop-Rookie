@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using T_Shop.Application.Features.ProductReview.Commands.CreateReviewForProduct;
 using T_Shop.Application.Features.Transaction.Commands.UpdateStatusTransaction;
 using T_Shop.Application.Features.Transaction.Queries.GetTransactions;
 using T_Shop.Controllers;
 using T_Shop.Shared.DTOs.Product.ResponseModel;
+using T_Shop.Shared.DTOs.ProductReview.ResponseModel;
 using T_Shop.Shared.DTOs.Transaction.ResponseModel;
 
 namespace T_Shop.WebAPI.Controllers;
@@ -21,6 +23,19 @@ public class TransactionController : ApiControllerBase
     {
         var transactions = await Mediator.Send(new GetTransactionsQuery());
         return Ok(transactions);
+    }
+
+    /// <summary>
+    /// Create a review for product
+    /// </summary>
+    /// <returns>Status code of the action.</returns>
+    /// <response code="201">Successfully created item.</response>
+    /// <response code="500">There is something wrong while execute.</response>
+    [HttpPost("review")]
+    public async Task<ActionResult<ProductReviewResponseModel>> CreateReviewForProductAsync([FromForm] CreateReviewForProductCommand command)
+    {
+        var createdReview = await Mediator.Send(command);
+        return Created($"transaction/{createdReview.ProductID}/{createdReview.UserID}", createdReview);
     }
 
     /// <summary>

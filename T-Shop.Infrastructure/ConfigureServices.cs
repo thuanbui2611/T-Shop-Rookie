@@ -94,6 +94,7 @@ public static class ConfigureServices
         services.AddScoped<ICartQueries, CartQueries>();
         services.AddScoped<IOrderQueries, OrderQueries>();
         services.AddScoped<ITransactionQueries, TransactionQueries>();
+        services.AddScoped<IProductReviewQueries, ProductReviewQueries>();
     }
 
     public static void RegistryDatabaseDependencies(this IServiceCollection services)

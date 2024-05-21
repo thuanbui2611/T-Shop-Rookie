@@ -19,6 +19,7 @@ namespace T_Shop.Infrastructure.Data.Queries
                     .Include(p => p.Type)
                     .Include(p => p.Model)
                         .ThenInclude(m => m.Brand)
+                    .Include(p => p.ProductReviews)
                     .ToListAsync();
         }
 

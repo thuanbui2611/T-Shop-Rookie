@@ -13,7 +13,8 @@ namespace T_Shop.Shared.DTOs.Product.ResponseModel
         public string CreatedAt { get; set; }
         public string IsOnStock { get; set; }
         public string Variant { get; set; }
-
+        public decimal Rating { get; set; }
+        public int totalReviews { get; set; }
         public TypeResponseModel Type { get; set; }
         public ModelProductResponseModel Model { get; set; }
         public ColorResponseModel Color { get; set; }

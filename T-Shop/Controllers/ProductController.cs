@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using T_Shop.Application.Features.ProductReview.Queries.GetReviewsOfProduct;
 using T_Shop.Application.Features.Products.Commands.CreateProduct;
 using T_Shop.Application.Features.Products.Commands.DeleteProduct;
 using T_Shop.Application.Features.Products.Commands.UpdateProduct;
 using T_Shop.Application.Features.Products.Queries.GetProducts;
 using T_Shop.Application.Features.Products.Queries.GetProductsById;
 using T_Shop.Shared.DTOs.Product.ResponseModel;
+using T_Shop.Shared.DTOs.ProductReview.ResponseModel;
 
 namespace T_Shop.Controllers
 {
@@ -46,6 +48,22 @@ namespace T_Shop.Controllers
 
         }
 
+        /// <summary>
+        /// Acquire reviews of product information
+        /// </summary>
+        /// <returns>Status code of the action.</returns>
+        /// <response code="200">Successfully get items information.</response>
+        /// <response code="500">There is something wrong while execute.</response>
+        [HttpGet("review/{productId}")]
+        public async Task<ActionResult<List<ProductReviewResponseModel>>> GetProductReviewsByProductId(Guid productId)
+        {
+            var reviews = await Mediator.Send(new GetReviewsOfProductQuery()
+            {
+                ProductID = productId
+            });
+            return Ok(reviews);
+
+        }
 
         /// <summary>
         /// Create a product
