@@ -5,6 +5,9 @@ using T_Shop.Application.Features.Products.Commands.DeleteProduct;
 using T_Shop.Application.Features.Products.Commands.UpdateProduct;
 using T_Shop.Application.Features.Products.Queries.GetProducts;
 using T_Shop.Application.Features.Products.Queries.GetProductsById;
+using T_Shop.Extensions;
+using T_Shop.Shared.DTOs.Pagination;
+using T_Shop.Shared.DTOs.Product.QueryModel;
 using T_Shop.Shared.DTOs.Product.ResponseModel;
 using T_Shop.Shared.DTOs.ProductReview.ResponseModel;
 
@@ -21,12 +24,19 @@ namespace T_Shop.Controllers
         /// <response code="200">Successfully get items information.</response>
         /// <response code="500">There is something wrong while execute.</response>
         [HttpGet]
-        public async Task<ActionResult<List<ProductResponseModel>>> GetProductsAsync()
+        public async Task<ActionResult<List<ProductResponseModel>>> GetProductsAsync(
+            [FromQuery] PaginationRequestModel pagination,
+            [FromQuery] ProductQuery productQuery
+            )
         {
+            var (products, paginationMetaData) = await Mediator.Send(new GetProductsQuery()
+            {
+                ProductQuery = productQuery,
+                Pagination = pagination
+            });
 
-            var products = await Mediator.Send(new GetProductQuery());
+            Response.AddPaginationHeader(paginationMetaData);
             return Ok(products);
-
         }
 
         /// <summary>

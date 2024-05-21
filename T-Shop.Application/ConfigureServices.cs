@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using T_Shop.Application.Common.Behaviours;
+using T_Shop.Application.Common.Constants;
 using T_Shop.Application.Common.Mappings;
 
 namespace T_Shop.Application
@@ -24,7 +25,15 @@ namespace T_Shop.Application
             //logger
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingPipelineBehavior<,>));
 
+            services.ConfigureCache();
+
             return services;
+        }
+
+        public static void ConfigureCache(this IServiceCollection services)
+        {
+            services.AddLazyCache();
+            services.AddSingleton<CacheKeyConstants>();
         }
 
     }

@@ -1,5 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
 using System.Reflection;
+using System.Text.Json;
+using T_Shop.Shared.DTOs.Pagination;
 
 namespace T_Shop.Extensions
 {
@@ -62,6 +64,17 @@ namespace T_Shop.Extensions
                     }
                 });
             });
+        }
+
+        public static void AddPaginationHeader(this HttpResponse response, PaginationMetaData pagination)
+        {
+            var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+
+            response.Headers.Add("Access-Control-Allow-Origin", "*");
+
+            response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagination, options));
+
+            response.Headers.Add("Access-Control-Expose-Headers", "X-Pagination");
         }
     }
 }

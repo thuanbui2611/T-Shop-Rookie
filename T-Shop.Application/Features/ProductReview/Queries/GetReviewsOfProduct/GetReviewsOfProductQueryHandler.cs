@@ -17,7 +17,7 @@ public class GetReviewsOfProductQueryHandler : IRequestHandler<GetReviewsOfProdu
 
     public async Task<List<ProductReviewResponseModel>> Handle(GetReviewsOfProductQuery request, CancellationToken cancellationToken)
     {
-        var reviews = await _productReviewQueries.GetAllProductReviewByProductIdAsync(request.ProductId);
+        var reviews = await _productReviewQueries.GetAllProductReviewByProductIdAsync(request.ProductID);
         var result = _mapper.Map<List<ProductReviewResponseModel>>(reviews);
         return result;
     }

@@ -5,6 +5,9 @@ using T_Shop.Application.Features.Type.Commands.UpdateType;
 using T_Shop.Application.Features.Type.Queries.GetTypeById;
 using T_Shop.Application.Features.Type.Queries.GetTypes;
 using T_Shop.Controllers;
+using T_Shop.Extensions;
+using T_Shop.Shared.DTOs.Pagination;
+using T_Shop.Shared.DTOs.Type.QueryModel;
 using T_Shop.Shared.DTOs.Type.ResponseModel;
 
 namespace T_Shop.WebAPI.Controllers;
@@ -19,10 +22,16 @@ public class TypeController : ApiControllerBase
     /// <response code="200">Successfully get items information.</response>
     /// <response code="500">There is something wrong while execute.</response>
     [HttpGet]
-    public async Task<ActionResult<List<TypeResponseModel>>> GetTypesAsync()
+    public async Task<ActionResult<List<TypeResponseModel>>> GetTypesAsync(
+         [FromQuery] PaginationRequestModel pagination,
+         [FromQuery] TypeQuery typeQuery)
     {
-
-        var types = await Mediator.Send(new GetTypesQuery());
+        var (types, paginationMetaData) = await Mediator.Send(new GetTypesQuery()
+        {
+            TypeQuery = typeQuery,
+            Pagination = pagination,
+        });
+        Response.AddPaginationHeader(paginationMetaData);
         return Ok(types);
     }
 

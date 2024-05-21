@@ -5,7 +5,10 @@ using T_Shop.Application.Features.ModelProduct.Commands.UpdateModelProduct;
 using T_Shop.Application.Features.ModelProduct.Queries.GetModelProductById;
 using T_Shop.Application.Features.ModelProduct.Queries.GetModelProducts;
 using T_Shop.Controllers;
+using T_Shop.Extensions;
+using T_Shop.Shared.DTOs.ModelProduct.QueryModel;
 using T_Shop.Shared.DTOs.ModelProduct.ResponseModel;
+using T_Shop.Shared.DTOs.Pagination;
 
 namespace T_Shop.WebAPI.Controllers;
 
@@ -18,9 +21,17 @@ public class ModelController : ApiControllerBase
     /// <response code="200">Successfully get items information.</response>
     /// <response code="500">There is something wrong while execute.</response>
     [HttpGet]
-    public async Task<ActionResult<List<ModelProductResponseModel>>> GetModelsAsync()
+    public async Task<ActionResult<List<ModelProductResponseModel>>> GetModelsAsync(
+        [FromQuery] PaginationRequestModel pagination,
+        [FromQuery] ModelQuery modelQuery)
     {
-        var models = await Mediator.Send(new GetModelsProductQuery());
+        var (models, paginationMetaData) = await Mediator.Send(new GetModelsProductQuery()
+        {
+            ModelQuery = modelQuery,
+            Pagination = pagination,
+        });
+
+        Response.AddPaginationHeader(paginationMetaData);
         return Ok(models);
     }
 
