@@ -34,8 +34,8 @@ namespace T_Shop.Application.Common.Mappings
                     dest.Name = $"{src.Model.Brand.Name} {src.Model.Name} {src.Variant}";
                     if (src.ProductReviews != null)
                     {
-                        dest.Rating = (decimal)src.ProductReviews.Average(x => x.Rating);
-                        dest.totalReviews = src.ProductReviews.Count();
+                        dest.Rating = src.ProductReviews.Any() ? (decimal)src.ProductReviews.Average(x => x.Rating) : 0;
+                        dest.totalReviews = src.ProductReviews.Any() ? src.ProductReviews.Count() : 0;
                     }
 
                 });

@@ -6,7 +6,7 @@ public class ProductImage
     public Guid ImageID { get; set; } = Guid.NewGuid();
     [Column("FK_product_id")]
     public Guid ProductID { get; set; }
-    public required string ImageUrl { get; set; }
+    public string ImageUrl { get; set; }
     public bool IsMain { get; set; } = false;
     public virtual Product Product { get; set; }
 }

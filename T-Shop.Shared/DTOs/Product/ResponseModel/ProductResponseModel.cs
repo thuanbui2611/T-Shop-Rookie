@@ -25,7 +25,7 @@ namespace T_Shop.Shared.DTOs.Product.ResponseModel
     public class ImageOfProductResponseModel
     {
         public Guid ImageID { get; set; }
-        public required string ImageUrl { get; set; }
+        public string ImageUrl { get; set; }
         public bool IsMain { get; set; }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using LazyCache;
 using MediatR;
+using T_Shop.Application.Common.Constants;
 using T_Shop.Application.Common.Helpers;
 using T_Shop.Domain.Entity;
 using T_Shop.Domain.Exceptions;
@@ -20,7 +22,10 @@ namespace T_Shop.Application.Features.Products.Commands.CreateProduct
         private readonly ICloudinaryService _cloudinaryService;
         private readonly IGenericRepository<ProductImage> _productImageRepository;
 
-        public CreateProductCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, IModelQueries modelQueries, ICloudinaryService cloudinaryService)
+        private readonly IAppCache _cache;
+        private CacheKeyConstants _cacheKeyConstants;
+
+        public CreateProductCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, IModelQueries modelQueries, ICloudinaryService cloudinaryService, IAppCache cache, CacheKeyConstants cacheKeyConstants)
         {
             _mapper = mapper;
             _productRepository = unitOfWork.GetBaseRepo<Product>();
@@ -30,6 +35,8 @@ namespace T_Shop.Application.Features.Products.Commands.CreateProduct
             _modelQueries = modelQueries;
             _cloudinaryService = cloudinaryService;
             _productImageRepository = _unitOfWork.GetBaseRepo<ProductImage>();
+            _cache = cache;
+            _cacheKeyConstants = cacheKeyConstants;
         }
 
         public async Task<ProductResponseModel> Handle(CreateProductCommand request, CancellationToken cancellationToken)
@@ -76,8 +83,22 @@ namespace T_Shop.Application.Features.Products.Commands.CreateProduct
             newProduct.Type = type;
             newProduct.Color = color;
             newProduct.ProductImages = productImages;
+
+            UpdateExistedCache(newProduct);
+
             var result = _mapper.Map<ProductResponseModel>(newProduct);
             return result;
+        }
+
+        private async void UpdateExistedCache(Product newProduct)
+        {
+            var key = _cacheKeyConstants.ProductCacheKey;
+            var cacheValues = await _cache.GetAsync<List<Product>>(key);
+            if (cacheValues != null)
+            {
+                cacheValues.Add(newProduct);
+                _cache.Add(key, cacheValues);
+            }
         }
     }
 }

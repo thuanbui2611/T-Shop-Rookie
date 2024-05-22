@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using LazyCache;
 using MediatR;
+using T_Shop.Application.Common.Constants;
 using T_Shop.Application.Common.Helpers;
 using T_Shop.Domain.Entity;
 using T_Shop.Domain.Exceptions;
@@ -17,8 +19,10 @@ namespace T_Shop.Application.Features.Products.Commands.UpdateProduct
         private readonly IProductQueries _productQueries;
         private readonly ICloudinaryService _cloudinaryService;
         private readonly IGenericRepository<ProductImage> _productImageRepository;
+        private readonly IAppCache _cache;
+        private CacheKeyConstants _cacheKeyConstants;
 
-        public UpdateProductCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, IProductQueries productQueries, ICloudinaryService cloudinaryService)
+        public UpdateProductCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, IProductQueries productQueries, ICloudinaryService cloudinaryService, CacheKeyConstants cacheKeyConstants, IAppCache cache)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
@@ -26,6 +30,8 @@ namespace T_Shop.Application.Features.Products.Commands.UpdateProduct
             _productImageRepository = unitOfWork.GetBaseRepo<ProductImage>();
             _productQueries = productQueries;
             _cloudinaryService = cloudinaryService;
+            _cacheKeyConstants = cacheKeyConstants;
+            _cache = cache;
         }
 
         public async Task<ProductResponseModel> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
@@ -114,8 +120,21 @@ namespace T_Shop.Application.Features.Products.Commands.UpdateProduct
             //productUpdate.Color = color;
             //productUpdate.Model = model;
             //productUpdate.Type = type;
+
+            UpdateExistedCache(productUpdate);
             var result = _mapper.Map<ProductResponseModel>(productUpdate);
             return result;
+        }
+
+        private async void UpdateExistedCache(Product deletedProduct)
+        {
+            var key = _cacheKeyConstants.ProductCacheKey;
+            var cacheValues = await _cache.GetAsync<List<Product>>(key);
+            if (cacheValues != null)
+            {
+                cacheValues.RemoveAll(t => t.Id.Equals(deletedProduct.Id));
+                _cache.Add(key, cacheValues);
+            }
         }
     }
 }
