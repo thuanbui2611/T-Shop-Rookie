@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using LazyCache;
 using MediatR;
-using T_Shop.Domain.Exceptions;
+using T_Shop.Application.Common.Constants;
 using T_Shop.Domain.Entity;
+using T_Shop.Domain.Exceptions;
 using T_Shop.Domain.Repository;
 using T_Shop.Shared.DTOs.ModelProduct.ResponseModel;
 
@@ -13,14 +15,17 @@ public class UpdateModelProductCommandHandler : IRequestHandler<UpdateModelProdu
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly IBrandQueries _brandQueries;
-
-    public UpdateModelProductCommandHandler(IModelQueries modelQueries, IUnitOfWork unitOfWork, IMapper mapper, IBrandQueries brandQueries)
+    private readonly IAppCache _cache;
+    private CacheKeyConstants _cacheKeyConstants;
+    public UpdateModelProductCommandHandler(IModelQueries modelQueries, IUnitOfWork unitOfWork, IMapper mapper, IBrandQueries brandQueries, IAppCache cache, CacheKeyConstants cacheKeyConstants)
     {
         _modelQueries = modelQueries;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
         _modelRepository = _unitOfWork.GetBaseRepo<Model>();
         _brandQueries = brandQueries;
+        _cache = cache;
+        _cacheKeyConstants = cacheKeyConstants;
     }
 
     public async Task<ModelProductResponseModel> Handle(UpdateModelProductCommand request, CancellationToken cancellationToken)
@@ -48,6 +53,19 @@ public class UpdateModelProductCommandHandler : IRequestHandler<UpdateModelProdu
             Id = brand.Id,
             Name = brand.Name,
         };
+        UpdateExistedCache(modelToUpdated);
         return _mapper.Map<ModelProductResponseModel>(modelToUpdated);
+    }
+
+    private async void UpdateExistedCache(Model newModel)
+    {
+        var key = _cacheKeyConstants.ModelCacheKey;
+        var cacheValues = await _cache.GetAsync<List<Model>>(key);
+        if (cacheValues != null)
+        {
+            var typeToUpdate = cacheValues.RemoveAll(t => t.Id.Equals(newModel.Id));
+            cacheValues.Add(newModel);
+            _cache.Add(key, cacheValues);
+        }
     }
 }

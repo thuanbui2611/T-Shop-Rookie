@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using LazyCache;
 using MediatR;
-using T_Shop.Domain.Exceptions;
+using T_Shop.Application.Common.Constants;
 using T_Shop.Domain.Entity;
+using T_Shop.Domain.Exceptions;
 using T_Shop.Domain.Repository;
 using T_Shop.Shared.DTOs.ModelProduct.ResponseModel;
 
@@ -14,13 +16,17 @@ public class CreateModelProductCommandHandler : IRequestHandler<CreateModelProdu
     private readonly IModelQueries _modelQueries;
     private readonly IBrandQueries _brandQueries;
 
-    public CreateModelProductCommandHandler(IMapper mapper, IGenericRepository<Model> modelRepository, IUnitOfWork unitOfWork, IModelQueries modelQueries, IBrandQueries brandQueries)
+    private readonly IAppCache _cache;
+    private CacheKeyConstants _cacheKeyConstants;
+    public CreateModelProductCommandHandler(IMapper mapper, IGenericRepository<Model> modelRepository, IUnitOfWork unitOfWork, IModelQueries modelQueries, IBrandQueries brandQueries, IAppCache cache, CacheKeyConstants cacheKeyConstants)
     {
         _mapper = mapper;
         _modelRepository = unitOfWork.GetBaseRepo<Model>();
         _unitOfWork = unitOfWork;
         _modelQueries = modelQueries;
         _brandQueries = brandQueries;
+        _cache = cache;
+        _cacheKeyConstants = cacheKeyConstants;
     }
 
     public async Task<ModelProductResponseModel> Handle(CreateModelProductCommand.CreateModelProductCommand request, CancellationToken cancellationToken)
@@ -48,7 +54,21 @@ public class CreateModelProductCommandHandler : IRequestHandler<CreateModelProdu
             Id = brand.Id,
             Name = brand.Name,
         };
+
+        UpdateExistedCache(newModel);
+
         var result = _mapper.Map<ModelProductResponseModel>(newModel);
         return result;
+    }
+
+    private async void UpdateExistedCache(Model newModel)
+    {
+        var key = _cacheKeyConstants.ModelCacheKey;
+        var cacheValues = await _cache.GetAsync<List<Model>>(key);
+        if (cacheValues != null)
+        {
+            cacheValues.Add(newModel);
+            _cache.Add(key, cacheValues);
+        }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using LazyCache;
 using MediatR;
+using T_Shop.Application.Common.Constants;
 using T_Shop.Domain.Exceptions;
 using T_Shop.Domain.Repository;
 using T_Shop.Shared.DTOs.Brand.ResponseModel;
@@ -11,13 +13,16 @@ public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, Bra
     private readonly IBrandQueries _brandQueries;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-
-    public UpdateBrandCommandHandler(IBrandQueries brandQueries, IUnitOfWork unitOfWork, IMapper mapper)
+    private readonly IAppCache _cache;
+    private CacheKeyConstants _cacheKeyConstants;
+    public UpdateBrandCommandHandler(IBrandQueries brandQueries, IUnitOfWork unitOfWork, IMapper mapper, IAppCache cache, CacheKeyConstants cacheKeyConstants)
     {
         _brandRepository = unitOfWork.GetBaseRepo<Domain.Entity.Brand>();
         _brandQueries = brandQueries;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _cache = cache;
+        _cacheKeyConstants = cacheKeyConstants;
     }
 
     public async Task<BrandResponseModel> Handle(UpdateBrandCommand request, CancellationToken cancellationToken)
@@ -37,6 +42,20 @@ public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, Bra
         _brandRepository.Update(brandUpdated);
         await _unitOfWork.CompleteAsync();
 
+        UpdateExistedCache(brandUpdated);
+
         return _mapper.Map<BrandResponseModel>(brandUpdated);
+    }
+
+    private async void UpdateExistedCache(Domain.Entity.Brand brandUpdated)
+    {
+        var key = _cacheKeyConstants.BrandCacheKey;
+        var cacheValues = await _cache.GetAsync<List<Domain.Entity.Brand>>(key);
+        if (cacheValues != null)
+        {
+            var typeToUpdate = cacheValues.RemoveAll(t => t.Id.Equals(brandUpdated.Id));
+            cacheValues.Add(brandUpdated);
+            _cache.Add(key, cacheValues);
+        }
     }
 }

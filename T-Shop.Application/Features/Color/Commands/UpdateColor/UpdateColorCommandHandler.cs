@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using LazyCache;
 using MediatR;
+using T_Shop.Application.Common.Constants;
 using T_Shop.Domain.Exceptions;
 using T_Shop.Domain.Repository;
 using T_Shop.Shared.DTOs.Color.ResponseModel;
@@ -11,13 +13,16 @@ public class UpdateColorCommandHandler : IRequestHandler<UpdateColorCommand, Col
     private readonly IColorQueries _colorQueries;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-
-    public UpdateColorCommandHandler(IColorQueries colorQueries, IUnitOfWork unitOfWork, IMapper mapper)
+    private readonly IAppCache _cache;
+    private CacheKeyConstants _cacheKeyConstants;
+    public UpdateColorCommandHandler(IColorQueries colorQueries, IUnitOfWork unitOfWork, IMapper mapper, IAppCache cache, CacheKeyConstants cacheKeyConstants)
     {
         _colorRepository = unitOfWork.GetBaseRepo<Domain.Entity.Color>();
         _colorQueries = colorQueries;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _cache = cache;
+        _cacheKeyConstants = cacheKeyConstants;
     }
 
     public async Task<ColorResponseModel> Handle(UpdateColorCommand request, CancellationToken cancellationToken)
@@ -37,6 +42,19 @@ public class UpdateColorCommandHandler : IRequestHandler<UpdateColorCommand, Col
         _colorRepository.Update(colorUpdated);
         await _unitOfWork.CompleteAsync();
 
+        UpdateExistedCache(colorUpdated);
         return _mapper.Map<ColorResponseModel>(colorUpdated);
+    }
+
+    private async void UpdateExistedCache(Domain.Entity.Color colorUpdated)
+    {
+        var key = _cacheKeyConstants.ColorCacheKey;
+        var cacheValues = await _cache.GetAsync<List<Domain.Entity.Color>>(key);
+        if (cacheValues != null)
+        {
+            var typeToUpdate = cacheValues.RemoveAll(t => t.Id.Equals(colorUpdated.Id));
+            cacheValues.Add(colorUpdated);
+            _cache.Add(key, cacheValues);
+        }
     }
 }
