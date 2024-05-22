@@ -35,7 +35,7 @@ public class TypeController : ApiControllerBase
     /// <returns>Status code of the action.</returns>
     /// <response code="200">Successfully get items information.</response>
     /// <response code="500">There is something wrong while execute.</response>
-    [HttpGet]
+    [HttpGet("list")]
     public async Task<ActionResult<List<TypeResponseModel>>> GetTypesPaginationAsync(
          [FromQuery] PaginationRequestModel pagination,
          [FromQuery] TypeQuery typeQuery)

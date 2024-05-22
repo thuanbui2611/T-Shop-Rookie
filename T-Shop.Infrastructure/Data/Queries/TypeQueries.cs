@@ -20,9 +20,11 @@ public class TypeQueries : BaseQuery<TypeProduct>, ITypeQueries
 
     public async Task<TypeProduct> GetTypeByIdAsync(Guid id)
     {
-        return await dbSet
+        return
+            await dbSet
             .Where(t => t.Id.Equals(id))
             .FirstOrDefaultAsync();
+
     }
 
     public async Task<bool> CheckIsTypeExisted(string name)

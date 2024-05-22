@@ -37,7 +37,6 @@ public class CreateOrUpdateOrderCommandHandler : IRequestHandler<CreateOrUpdateO
         }
         else
         {
-
             //Update order
             order = await HandleUpdateOrder(request, order);
         };
@@ -86,6 +85,7 @@ public class CreateOrUpdateOrderCommandHandler : IRequestHandler<CreateOrUpdateO
     private async Task<Domain.Entity.Order> HandleUpdateOrder(CreateOrUpdateOrderCommand request, Domain.Entity.Order order)
     {
         _orderDetailRepository.DeleteRange(order.OrderDetails);
+        //order.OrderDetails.Clear();
 
         order.OrderDetails = new List<OrderDetail>();
 

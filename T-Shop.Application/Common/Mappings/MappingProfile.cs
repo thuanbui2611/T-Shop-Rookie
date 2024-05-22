@@ -32,8 +32,12 @@ namespace T_Shop.Application.Common.Mappings
                 .AfterMap((src, dest) =>
                 {
                     dest.Name = $"{src.Model.Brand.Name} {src.Model.Name} {src.Variant}";
-                    dest.Rating = src.ProductReviews.Any() ? (decimal)src.ProductReviews.Average(x => x.Rating) : 0;
-                    dest.totalReviews = src.ProductReviews.Count();
+                    if (src.ProductReviews != null)
+                    {
+                        dest.Rating = (decimal)src.ProductReviews.Average(x => x.Rating);
+                        dest.totalReviews = src.ProductReviews.Count();
+                    }
+
                 });
             CreateMap<CreateProductCommand, Product>();
             CreateMap<UpdateProductCommand, Product>();
@@ -68,7 +72,8 @@ namespace T_Shop.Application.Common.Mappings
             CreateMap<CartItem, CartItemResponseModel>();
 
             //Order
-            CreateMap<OrderDetail, OrderDetailResponseModel>();
+            CreateMap<OrderDetail, OrderDetailResponseModel>()
+                .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product));
             CreateMap<Order, OrderResponseModel>()
                 .ForMember(dest => dest.CustomerID, opt => opt.MapFrom(src => src.UserID))
                 .ForMember(dest => dest.OrderDetails, opt => opt.MapFrom(src => src.OrderDetails));
