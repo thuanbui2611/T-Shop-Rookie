@@ -22,11 +22,24 @@ public class BrandController : ApiControllerBase
     /// <response code="200">Successfully get items information.</response>
     /// <response code="500">There is something wrong while execute.</response>
     [HttpGet]
-    public async Task<ActionResult<List<BrandResponseModel>>> GetBrandsAsync(
+    public async Task<ActionResult<List<BrandResponseModel>>> GetBrandsAsync()
+    {
+        var brands = await Mediator.Send(new GetBrandsQuery());
+        return Ok(brands);
+    }
+
+    /// <summary>
+    /// Acquire brands with pagination information
+    /// </summary>
+    /// <returns>Status code of the action.</returns>
+    /// <response code="200">Successfully get items information.</response>
+    /// <response code="500">There is something wrong while execute.</response>
+    [HttpGet("list")]
+    public async Task<ActionResult<List<BrandResponseModel>>> GetBrandsPaginationAsync(
         [FromQuery] PaginationRequestModel pagination,
         [FromQuery] BrandQuery brandQuery)
     {
-        var (brands, paginationMetaData) = await Mediator.Send(new GetBrandsQuery()
+        var (brands, paginationMetaData) = await Mediator.Send(new GetBrandsPaginationQuery()
         {
             BrandQuery = brandQuery,
             Pagination = pagination,
