@@ -5,7 +5,10 @@ using T_Shop.Application.Features.Brand.Command.UpdateBrand;
 using T_Shop.Application.Features.Brand.Queries.GetBrandById;
 using T_Shop.Application.Features.Brand.Queries.GetBrands;
 using T_Shop.Controllers;
+using T_Shop.Extensions;
+using T_Shop.Shared.DTOs.Brand.QueryModel;
 using T_Shop.Shared.DTOs.Brand.ResponseModel;
+using T_Shop.Shared.DTOs.Pagination;
 
 namespace T_Shop.WebAPI.Controllers;
 
@@ -19,9 +22,17 @@ public class BrandController : ApiControllerBase
     /// <response code="200">Successfully get items information.</response>
     /// <response code="500">There is something wrong while execute.</response>
     [HttpGet]
-    public async Task<ActionResult<List<BrandResponseModel>>> GetBrandsAsync()
+    public async Task<ActionResult<List<BrandResponseModel>>> GetBrandsAsync(
+        [FromQuery] PaginationRequestModel pagination,
+        [FromQuery] BrandQuery brandQuery)
     {
-        var brands = await Mediator.Send(new GetBrandsQuery());
+        var (brands, paginationMetaData) = await Mediator.Send(new GetBrandsQuery()
+        {
+            BrandQuery = brandQuery,
+            Pagination = pagination,
+        });
+
+        Response.AddPaginationHeader(paginationMetaData);
         return Ok(brands);
     }
 

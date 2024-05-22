@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using T_Shop.Application.Common.Constants;
 
 namespace T_Shop.WebAPI.Controllers;
-[Route("api/[controller]")]
+[Route("api/utility")]
 [ApiController]
 public class UtilityController : ControllerBase
 {

@@ -29,7 +29,7 @@ public class GetTypesQueryHandler : IRequestHandler<GetTypesQuery, (List<TypeRes
 
     public async Task<(List<TypeResponseModel>, PaginationMetaData)> Handle(GetTypesQuery request, CancellationToken cancellationToken)
     {
-        var key = $"{_cacheKeyConstants.TypeCacheKey}-All";
+        var key = _cacheKeyConstants.TypeCacheKey;
 
         var types = await _cache.GetOrAddAsync(
             key,

@@ -29,7 +29,7 @@ namespace T_Shop.Application.Features.Products.Queries.GetProducts
 
         public async Task<(List<ProductResponseModel>, PaginationMetaData)> Handle(GetProductsQuery request, CancellationToken cancellationToken)
         {
-            var key = $"{_cacheKeyConstants.ProductCacheKey}-All";
+            var key = _cacheKeyConstants.ProductCacheKey;
 
             var products = await _cache.GetOrAddAsync(
                 key,

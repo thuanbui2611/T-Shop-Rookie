@@ -28,7 +28,7 @@ public class GetModelsProductQueryHandler : IRequestHandler<GetModelsProductQuer
 
     public async Task<(List<ModelProductResponseModel>, PaginationMetaData)> Handle(GetModelsProductQuery request, CancellationToken cancellationToken)
     {
-        var key = $"{_cacheKeyConstants.ModelCacheKey}-All";
+        var key = _cacheKeyConstants.ModelCacheKey;
 
         var models = await _cache.GetOrAddAsync(
             key,
@@ -45,12 +45,12 @@ public class GetModelsProductQueryHandler : IRequestHandler<GetModelsProductQuer
         return (result, pagination);
     }
 
-    private List<Model> HandleModelQuery(ModelQuery modelQuery, List<Model> models)
+    private List<Model> HandleModelQuery(ModelQuery? modelQuery, List<Model> models)
     {
         //Search
-        if (!modelQuery.Search.IsNullOrEmpty())
+        if (modelQuery != null && !modelQuery.Search.IsNullOrEmpty())
         {
-            string trimmedSearch = modelQuery.Search.Trim().ToLower().RemoveDiacritics();
+            string trimmedSearch = modelQuery.Search!.Trim().ToLower().RemoveDiacritics();
             string[] searchTerms = trimmedSearch.Split(' ');
             models = models.Where(x =>
                 searchTerms.Any(s =>

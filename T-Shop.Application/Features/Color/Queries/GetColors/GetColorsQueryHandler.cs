@@ -23,7 +23,7 @@ public class GetColorsQueryHandler : IRequestHandler<GetColorsQuery, List<ColorR
 
     public async Task<List<ColorResponseModel>> Handle(GetColorsQuery request, CancellationToken cancellationToken)
     {
-        var key = $"{_cacheKeyConstants.ColorCacheKey}-All";
+        var key = _cacheKeyConstants.ColorCacheKey;
 
         var colors = await _cache.GetOrAddAsync(
             key,
