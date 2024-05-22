@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
 using T_Shop.Application.Common.Constants;
-using T_Shop.Application.Common.Helpers;
 using T_Shop.Domain.Entity;
 using T_Shop.Domain.Exceptions;
 using T_Shop.Domain.Repository;
@@ -57,7 +56,7 @@ public class CreateReviewForProductCommandHandler : IRequestHandler<CreateReview
                 ProductReviewImage productImage = new ProductReviewImage()
                 {
                     ProductReviewID = productReview.Id,
-                    ImageUrl = ImageHelpers.RemoveTimestampFromImageUrl(image.ImageUrl)
+                    ImagePublicID = image.PublicID
                 };
                 reviewImages.Add(productImage);
             }

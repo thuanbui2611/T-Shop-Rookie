@@ -13,6 +13,6 @@ public class ProductReviewResponseModel
 public class ProductReviewImagesResponseModel
 {
     public Guid ImageID { get; set; }
-    public required string ImageUrl { get; set; }
+    public string ImageUrl { get; set; } = string.Empty;
 }
 

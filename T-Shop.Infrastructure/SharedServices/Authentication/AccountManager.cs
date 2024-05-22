@@ -65,7 +65,7 @@ public class AccountManager : IAccountManager
         if (registerUser.Avatar.Length > 0)
         {
             var uploadResponse = await _cloudinaryService.AddImageAsync(registerUser.Avatar);
-            newUser.Avatar = uploadResponse.ImageUrl;
+            newUser.Avatar = uploadResponse.PublicID;
         }
 
         // Add user

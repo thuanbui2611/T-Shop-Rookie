@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using T_Shop.Application.Common.Constants;
 using T_Shop.Application.Features.Brand.Command.CreateBrand;
 using T_Shop.Application.Features.Brand.Command.UpdateBrand;
 using T_Shop.Application.Features.Products.Commands.CreateProduct;
@@ -26,7 +27,8 @@ namespace T_Shop.Application.Common.Mappings
         public MappingProfile()
         {
             //Product
-            CreateMap<ProductImage, ImageOfProductResponseModel>();
+            CreateMap<ProductImage, ImageOfProductResponseModel>()
+                .ForMember(dest => dest.ImageUrl, src => src.MapFrom(src => string.Concat(ImageConstants.PathUrl, src.ImagePublicID)));
             CreateMap<Product, ProductResponseModel>()
                 .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.ProductImages))
                 .AfterMap((src, dest) =>
@@ -83,7 +85,8 @@ namespace T_Shop.Application.Common.Mappings
                 .ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order));
 
             //ProductReview
-            CreateMap<ProductReviewImage, ProductReviewImagesResponseModel>();
+            CreateMap<ProductReviewImage, ProductReviewImagesResponseModel>()
+                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => string.Concat(ImageConstants.PathUrl, src.ImagePublicID)));
             CreateMap<ProductReview, ProductReviewResponseModel>()
                 .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.ProductReviewImages));
         }

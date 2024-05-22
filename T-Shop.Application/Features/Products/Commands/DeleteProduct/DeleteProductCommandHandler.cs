@@ -1,7 +1,6 @@
 ﻿using LazyCache;
 using MediatR;
 using T_Shop.Application.Common.Constants;
-using T_Shop.Application.Common.Helpers;
 using T_Shop.Domain.Entity;
 using T_Shop.Domain.Exceptions;
 using T_Shop.Domain.Repository;
@@ -40,7 +39,7 @@ namespace T_Shop.Application.Features.Products.Commands.DeleteProduct
             //Delete product image
             foreach (var image in product.ProductImages)
             {
-                await _cloudinaryService.DeleteImageAsync(ImageHelpers.GetPublicIDFromImageUrl(image.ImageUrl));
+                await _cloudinaryService.DeleteImageAsync(image.ImagePublicID);
             }
             _imageProductRepository.DeleteRange(product.ProductImages);
             _productRepository.Delete(request.Id);

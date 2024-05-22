@@ -2,7 +2,6 @@
 using LazyCache;
 using MediatR;
 using T_Shop.Application.Common.Constants;
-using T_Shop.Application.Common.Helpers;
 using T_Shop.Domain.Entity;
 using T_Shop.Domain.Exceptions;
 using T_Shop.Domain.Repository;
@@ -73,7 +72,7 @@ namespace T_Shop.Application.Features.Products.Commands.UpdateProduct
 
                 foreach (var imageToDelete in imagesToDelete)
                 {
-                    await _cloudinaryService.DeleteImageAsync(ImageHelpers.GetPublicIDFromImageUrl(imageToDelete.ImageUrl));
+                    await _cloudinaryService.DeleteImageAsync(imageToDelete.ImagePublicID);
                 }
             }
 
@@ -89,7 +88,7 @@ namespace T_Shop.Application.Features.Products.Commands.UpdateProduct
                 {
                     for (int i = 0; i < numOfImagesDeleted; i++)
                     {
-                        await _cloudinaryService.UpdateImageAsync(request.ImagesUpload[i], ImageHelpers.GetPublicIDFromImageUrl(imagesInProduct[i].ImageUrl));
+                        await _cloudinaryService.UpdateImageAsync(request.ImagesUpload[i], imagesInProduct[i].ImagePublicID);
                         indexToUpload++;
                         numOfImagesToUpload--;
                     }
@@ -105,7 +104,7 @@ namespace T_Shop.Application.Features.Products.Commands.UpdateProduct
                         ProductImage productImageAdded = new ProductImage()
                         {
                             ProductID = productUpdate.Id,
-                            ImageUrl = imageAdded.ImageUrl
+                            ImagePublicID = imageAdded.PublicID
                         };
                         productImagesUploaded.Add(productImageAdded);
                         numOfImagesToUpload--;
@@ -114,7 +113,8 @@ namespace T_Shop.Application.Features.Products.Commands.UpdateProduct
                     _productImageRepository.AddRange(productImagesUploaded);
                 }
             }
-
+            productUpdate.CreatedAt = product.CreatedAt;
+            productUpdate.LastUpdated = DateTime.UtcNow;
             _productRepository.Update(productUpdate);
             await _unitOfWork.CompleteAsync();
             //productUpdate.Color = color;
@@ -122,6 +122,7 @@ namespace T_Shop.Application.Features.Products.Commands.UpdateProduct
             //productUpdate.Type = type;
 
             UpdateExistedCache(productUpdate);
+
             var result = _mapper.Map<ProductResponseModel>(productUpdate);
             return result;
         }

@@ -38,7 +38,7 @@ public class GetBrandsPaginationQueryHandler : IRequestHandler<GetBrandsPaginati
 
         brands = HandleBrandQuery(request.BrandQuery, brands);
         var (brandsPaginated, pagination) = PaginationHelpers.GetPaginationModel(brands, request.Pagination);
-        var result = _mapper.Map<List<BrandResponseModel>>(brands);
+        var result = _mapper.Map<List<BrandResponseModel>>(brandsPaginated);
         return (result, pagination);
     }
 

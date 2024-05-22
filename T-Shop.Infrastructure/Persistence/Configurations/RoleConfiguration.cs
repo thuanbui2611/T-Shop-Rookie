@@ -10,13 +10,13 @@ public class RoleConfiguration : IEntityTypeConfiguration<ApplicationRole>
         builder.HasData(
             new ApplicationRole
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("55ea57a5-5eb0-446a-bd16-54de57738815"),
                 Name = "User",
                 NormalizedName = "USER"
             },
             new ApplicationRole
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("d2145b7c-6d76-4eb9-9e6c-ab101b754c72"),
                 Name = "Admin",
                 NormalizedName = "ADMIN"
             });

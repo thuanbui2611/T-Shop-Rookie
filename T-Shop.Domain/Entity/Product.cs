@@ -13,9 +13,11 @@ namespace T_Shop.Domain.Entity
         public string Variant { get; set; } = string.Empty;
         public decimal Price { get; set; }
         public string Description { get; set; } = string.Empty;
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public bool IsOnStock { get; set; } = true;
         public int Quantity { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime LastUpdated { get; set; } = DateTime.UtcNow;
 
         public virtual TypeProduct Type { get; set; }
         public virtual Color Color { get; set; }
