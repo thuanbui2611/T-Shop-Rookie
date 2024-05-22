@@ -2,6 +2,7 @@
 using T_Shop.Application.Features.ModelProduct.Commands.CreateModelProductCommand;
 using T_Shop.Application.Features.ModelProduct.Commands.DeleteModelProduct;
 using T_Shop.Application.Features.ModelProduct.Commands.UpdateModelProduct;
+using T_Shop.Application.Features.ModelProduct.Queries.GetModelPagination;
 using T_Shop.Application.Features.ModelProduct.Queries.GetModelProductById;
 using T_Shop.Application.Features.ModelProduct.Queries.GetModelProducts;
 using T_Shop.Controllers;
@@ -21,11 +22,23 @@ public class ModelController : ApiControllerBase
     /// <response code="200">Successfully get items information.</response>
     /// <response code="500">There is something wrong while execute.</response>
     [HttpGet]
-    public async Task<ActionResult<List<ModelProductResponseModel>>> GetModelsAsync(
+    public async Task<ActionResult<List<ModelProductResponseModel>>> GetModelsAsync()
+    {
+        var models = await Mediator.Send(new GetModelsQuery());
+        return Ok(models);
+    }
+    /// <summary>
+    /// Acquire models information with pagination 
+    /// </summary>
+    /// <returns>Status code of the action.</returns>
+    /// <response code="200">Successfully get items information.</response>
+    /// <response code="500">There is something wrong while execute.</response>
+    [HttpGet("list")]
+    public async Task<ActionResult<List<ModelProductResponseModel>>> GetModelsPaginationAsync(
         [FromQuery] PaginationRequestModel pagination,
         [FromQuery] ModelQuery modelQuery)
     {
-        var (models, paginationMetaData) = await Mediator.Send(new GetModelsProductQuery()
+        var (models, paginationMetaData) = await Mediator.Send(new GetModelsPaginationQuery()
         {
             ModelQuery = modelQuery,
             Pagination = pagination,
@@ -44,7 +57,7 @@ public class ModelController : ApiControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<ModelProductResponseModel>> GetModelByIdAsync([FromRoute] Guid id)
     {
-        var model = await Mediator.Send(new GetModelProductByIdQuery()
+        var model = await Mediator.Send(new GetModelByIdQuery()
         {
             ID = id
         });
