@@ -4,6 +4,7 @@ using T_Shop.Application.Features.Type.Commands.DeleteType;
 using T_Shop.Application.Features.Type.Commands.UpdateType;
 using T_Shop.Application.Features.Type.Queries.GetTypeById;
 using T_Shop.Application.Features.Type.Queries.GetTypes;
+using T_Shop.Application.Features.Type.Queries.GetTypesPagination;
 using T_Shop.Controllers;
 using T_Shop.Extensions;
 using T_Shop.Shared.DTOs.Pagination;
@@ -22,11 +23,24 @@ public class TypeController : ApiControllerBase
     /// <response code="200">Successfully get items information.</response>
     /// <response code="500">There is something wrong while execute.</response>
     [HttpGet]
-    public async Task<ActionResult<List<TypeResponseModel>>> GetTypesAsync(
+    public async Task<ActionResult<List<TypeResponseModel>>> GetTypesAsync()
+    {
+        var types = await Mediator.Send(new GetTypesQuery());
+        return Ok(types);
+    }
+
+    /// <summary>
+    /// Acquire Types information with pagination
+    /// </summary>
+    /// <returns>Status code of the action.</returns>
+    /// <response code="200">Successfully get items information.</response>
+    /// <response code="500">There is something wrong while execute.</response>
+    [HttpGet]
+    public async Task<ActionResult<List<TypeResponseModel>>> GetTypesPaginationAsync(
          [FromQuery] PaginationRequestModel pagination,
          [FromQuery] TypeQuery typeQuery)
     {
-        var (types, paginationMetaData) = await Mediator.Send(new GetTypesQuery()
+        var (types, paginationMetaData) = await Mediator.Send(new GetTypesPaginationQuery()
         {
             TypeQuery = typeQuery,
             Pagination = pagination,
