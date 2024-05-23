@@ -11,7 +11,7 @@ namespace T_Shop.Shared.DTOs.Product.ResponseModel
         public decimal Price { get; set; }
         public string Description { get; set; }
         public string CreatedAt { get; set; }
-        public string IsOnStock { get; set; }
+        public bool IsOnStock { get; set; }
         public string Variant { get; set; }
         public decimal? Rating { get; set; }
         public int? totalReviews { get; set; }

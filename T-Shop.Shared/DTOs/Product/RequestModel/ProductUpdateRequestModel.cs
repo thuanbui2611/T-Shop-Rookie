@@ -11,7 +11,7 @@ public class ProductUpdateRequestModel
     public Guid ColorID { get; set; }
     public Guid TypeID { get; set; }
     public string Variant { get; set; }
-    public double Price { get; set; }
+    public decimal Price { get; set; }
     public string? Description { get; set; }
     public string Images { get; set; }
     public List<ImageOfProductResponseModel>? ImagesList

@@ -13,6 +13,7 @@ public class BrandQueries : BaseQuery<Brand>, IBrandQueries
     public async Task<List<Brand>> GetBrandsAsync()
     {
         return await dbSet
+            .Include(b => b.Models)
             .OrderBy(b => b.Name)
             .ToListAsync();
     }

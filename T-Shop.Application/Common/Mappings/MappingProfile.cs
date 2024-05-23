@@ -49,7 +49,9 @@ namespace T_Shop.Application.Common.Mappings
             CreateMap<UpdateTypeCommand, TypeProduct>();
 
             //Brand
-            CreateMap<Brand, BrandResponseModel>();
+            CreateMap<Model, ModelOfBrand>();
+            CreateMap<Brand, BrandResponseModel>()
+                .ForMember(dest => dest.Models, opt => opt.MapFrom(src => src.Models));
             CreateMap<CreateBrandCommand, Brand>();
             CreateMap<UpdateBrandCommand, Brand>();
 
