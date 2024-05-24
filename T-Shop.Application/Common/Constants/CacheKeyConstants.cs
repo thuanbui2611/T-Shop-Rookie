@@ -1,4 +1,6 @@
-﻿namespace T_Shop.Application.Common.Constants;
+﻿using System.Collections.Concurrent;
+
+namespace T_Shop.Application.Common.Constants;
 public class CacheKeyConstants
 {
     public int ExpirationHours = 1;
@@ -9,7 +11,7 @@ public class CacheKeyConstants
     public string ProductCacheKey = "Product";
     public string UserCacheKey = "User";
 
-    public List<string> CacheKeyList = new List<string>();
+    public ConcurrentBag<string> CacheKeyList = new ConcurrentBag<string>();
 
     public void AddKeyToList(string key)
     {

@@ -5,7 +5,7 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
 {
     public CreateProductCommandValidator()
     {
-        RuleFor(p => p.Images)
+        RuleFor(p => p.ImagesUpload)
             .NotEmpty()
             .Must(files => files.Count <= 5)
             .WithMessage("Maximum of 5 images allowed.")

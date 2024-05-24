@@ -1,5 +1,6 @@
 ﻿using LazyCache;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Concurrent;
 using T_Shop.Application.Common.Constants;
 
 namespace T_Shop.WebAPI.Controllers;
@@ -26,7 +27,7 @@ public class UtilityController : ControllerBase
                 _cache.Remove(key);
             }
 
-            _cacheKeyConstants.CacheKeyList = new List<string>();
+            _cacheKeyConstants.CacheKeyList = new ConcurrentBag<string>();
         });
 
         return Ok();

@@ -28,7 +28,8 @@ namespace T_Shop.Application.Common.Mappings
         {
             //Product
             CreateMap<ProductImage, ImageOfProductResponseModel>()
-                .ForMember(dest => dest.ImageUrl, src => src.MapFrom(src => string.Concat(ImageConstants.PathUrl, src.ImagePublicID)));
+                .ForMember(dest => dest.imageUrl, src => src.MapFrom(src => string.Concat(ImageConstants.PathUrl, src.ImagePublicID)))
+                .ForMember(dest => dest.isMain, src => src.MapFrom(src => src.IsMain));
             CreateMap<Product, ProductResponseModel>()
                 .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.ProductImages))
                 .AfterMap((src, dest) =>

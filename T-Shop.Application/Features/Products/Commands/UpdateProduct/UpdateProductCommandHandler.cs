@@ -60,59 +60,59 @@ namespace T_Shop.Application.Features.Products.Commands.UpdateProduct
 
             var imagesFromRequest = request.ImagesList;
             var imagesInProduct = product.ProductImages.ToList();
-            List<ProductImage> imagesToDelete = new();
-            //Delete images
-            if (request.ImagesList.Count < product.ProductImages.Count)
-            {
-                imagesToDelete = imagesInProduct
+
+            List<ProductImage> imagesToDelete = imagesInProduct
                     .Where(imgInProduct =>
                           !imagesFromRequest
-                            .Any(imgFromRequest => imgFromRequest.ImageID.Equals(imgInProduct.ImageID)))
+                            .Any(imgFromRequest => imgFromRequest.imageID.Equals(imgInProduct.ImageID)))
                     .ToList();
 
-                foreach (var imageToDelete in imagesToDelete)
-                {
-                    await _cloudinaryService.DeleteImageAsync(imageToDelete.ImagePublicID);
-                }
-            }
-
-            //Upload images
+            //Handle upload images
             if (request.ImagesUpload.Count > 0)
             {
-                int numOfImagesDeleted = imagesToDelete.Count;
-                int numOfImagesToUpload = request.ImagesUpload.Count;
-                int indexToUpload = 0;
-
+                //int indexToUpload = 0;
                 //Upload replace existed images
-                if (numOfImagesDeleted > 0)
-                {
-                    for (int i = 0; i < numOfImagesDeleted; i++)
-                    {
-                        await _cloudinaryService.UpdateImageAsync(request.ImagesUpload[i], imagesInProduct[i].ImagePublicID);
-                        indexToUpload++;
-                        numOfImagesToUpload--;
-                    }
-                }
+                //if (imagesToDelete.Count > 0)
+                //{
+                //    for (int i = 0; i < imagesToDelete.Count; i++)
+                //    {
+                //        if (numOfImagesToUpload == 0) break;
+
+                //        await _cloudinaryService.UpdateImageAsync(request.ImagesUpload[i], imagesToDelete[i].ImagePublicID);
+
+                //        imagesToDelete.RemoveAt(i);
+                //        indexToUpload++;
+                //        numOfImagesToUpload--;
+                //    }
+                //}
                 //Upload new images
-                if (numOfImagesToUpload > 0)
+                if (request.ImagesUpload.Count > 0)
                 {
                     List<ProductImage> productImagesUploaded = new List<ProductImage>();
-                    while (numOfImagesToUpload > 0)
+                    for (int i = 0; i < request.ImagesUpload.Count; i++)
                     {
-
-                        var imageAdded = await _cloudinaryService.AddImageAsync(request.ImagesUpload[indexToUpload]);
+                        var imageAdded = await _cloudinaryService.AddImageAsync(request.ImagesUpload[i]);
                         ProductImage productImageAdded = new ProductImage()
                         {
                             ProductID = productUpdate.Id,
                             ImagePublicID = imageAdded.PublicID
                         };
                         productImagesUploaded.Add(productImageAdded);
-                        numOfImagesToUpload--;
                     }
                     //Add to db
                     _productImageRepository.AddRange(productImagesUploaded);
                 }
             }
+            //Check if imageDeleted is deleted all
+            if (imagesToDelete.Count > 0)
+            {
+                for (int i = 0; i < imagesToDelete.Count; i++)
+                {
+                    await _cloudinaryService.DeleteImageAsync(imagesToDelete[i].ImagePublicID);
+                }
+                _productImageRepository.DeleteRange(imagesToDelete);
+            }
+
             productUpdate.CreatedAt = product.CreatedAt;
             productUpdate.LastUpdated = DateTime.UtcNow;
             _productRepository.Update(productUpdate);

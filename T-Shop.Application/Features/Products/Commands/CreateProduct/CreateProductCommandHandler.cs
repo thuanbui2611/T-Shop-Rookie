@@ -59,7 +59,7 @@ namespace T_Shop.Application.Features.Products.Commands.CreateProduct
             var newProduct = _mapper.Map<Product>(request);
             _productRepository.Add(newProduct);
             //Upload images
-            var images = await _cloudinaryService.AddImagesAsync(request.Images);
+            var images = await _cloudinaryService.AddImagesAsync(request.ImagesUpload);
             //Add images to table product image
             List<ProductImage> productImages = new List<ProductImage>();
             foreach (var image in images)

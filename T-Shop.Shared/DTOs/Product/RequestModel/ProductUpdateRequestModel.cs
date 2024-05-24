@@ -12,12 +12,17 @@ public class ProductUpdateRequestModel
     public Guid TypeID { get; set; }
     public string Variant { get; set; }
     public decimal Price { get; set; }
+    public int Quantity { get; set; }
     public string? Description { get; set; }
-    public string Images { get; set; }
+    public string? Images { get; set; }
     public List<ImageOfProductResponseModel>? ImagesList
     {
         get
         {
+            if (this.Images == null)
+            {
+                return new List<ImageOfProductResponseModel>();
+            }
             var images = JsonSerializer.Deserialize<List<ImageOfProductResponseModel>>(this.Images);
             return images;
         }
