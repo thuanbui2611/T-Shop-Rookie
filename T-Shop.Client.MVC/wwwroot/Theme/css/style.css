@@ -82,8 +82,11 @@
 }
 
 .topbar {
-    padding: 20px;
-    border-radius: 230px 100px;
+    width: 100%;
+    background-color: #2b2a29;
+    clip-path: polygon(0 0, 100% 0, 96% 100%, 3% 100%);
+    height: auto;
+    padding: 10px 0px;
 }
 
 .topbar .top-info {
@@ -128,12 +131,12 @@
     border-bottom: 1px solid rgba(255, 255, 255, .1);
 }
 
-.navbar .navbar-nav .nav-link:hover,
-.navbar .navbar-nav .nav-link.active,
-.fixed-top.bg-white .navbar .navbar-nav .nav-link:hover,
-.fixed-top.bg-white .navbar .navbar-nav .nav-link.active {
-    color: var(--bs-primary);
-}
+    .navbar .navbar-nav .nav-link:hover,
+    .navbar .navbar-nav .nav-link.active,
+    .fixed-top.bg-white .navbar .navbar-nav .nav-link:hover,
+    .fixed-top.bg-white .navbar .navbar-nav .nav-link.active {
+        color: #f50a0a;
+    }
 
 .navbar .dropdown-toggle::after {
     border: none;
@@ -174,14 +177,20 @@
 #searchModal .modal-content {
     background: rgba(255, 255, 255, .8);
 }
-/*** Navbar End ***/
 
+.cartbtn:hover {
+    filter: brightness(.5);
+}
+.fa-user:hover {
+    filter: brightness(.5);
+}
+/*** Navbar End ***/
 /*** Hero Header ***/
 .hero-header {
-    background: linear-gradient(rgba(248, 223, 173, 0.1), rgba(248, 223, 173, 0.1)), url(../img/hero-img.jpg);
+    background-image: url(../img/hero.jpg);
     background-position: center center;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: contain;
 }
 
 .carousel-item {
