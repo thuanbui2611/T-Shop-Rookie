@@ -24,33 +24,54 @@ namespace T_Shop.Client.MVC.Services.Services
             return null;
         }
 
-        public async Task<List<ProductResponseModel>> GetProductsAsync(ProductRequestParam productRequestParams)
+        public async Task<ProductListVM> GetProductsAsync(ProductRequestParam productRequestParams)
         {
             var query = new Dictionary<string, string>
             {
                 ["pageNumber"] = productRequestParams.PageNumber.ToString(),
-                ["pageSize"] = productRequestParams.PageSize.ToString(),
+                //["pageSize"] = productRequestParams.PageSize.ToString(),
+                ["pageSize"] = "1",
             };
-            if (productRequestParams.Search != null)
+
+            if (!string.IsNullOrEmpty(productRequestParams.Search))
             {
-                query.Add("search", productRequestParams.Search.ToString());
+                query.Add("search", productRequestParams.Search);
             }
 
-            foreach (var brand in productRequestParams.Brands ?? new List<string>())
+            if (!string.IsNullOrEmpty(productRequestParams.Types))
             {
-                query.Add("brands", brand);
+                var types = productRequestParams.Types.Split(",");
+                foreach (var type in types)
+                {
+                    query.Add("types", type);
+                }
             }
-            foreach (var model in productRequestParams.Models ?? new List<string>())
+
+            if (!string.IsNullOrEmpty(productRequestParams.Brands))
             {
-                query.Add("models", model);
+                var brands = productRequestParams.Brands.Split(",");
+                foreach (var brand in brands)
+                {
+                    query.Add("brands", brand);
+                }
             }
-            foreach (var type in productRequestParams.Types ?? new List<string>())
+
+            if (!string.IsNullOrEmpty(productRequestParams.Models))
             {
-                query.Add("types", type);
+                var models = productRequestParams.Models.Split(",");
+                foreach (var model in models)
+                {
+                    query.Add("models", model);
+                }
             }
-            foreach (var color in productRequestParams.Colors ?? new List<string>())
+
+            if (!string.IsNullOrEmpty(productRequestParams.Colors))
             {
-                query.Add("colors", color);
+                var colors = productRequestParams.Colors.Split(",");
+                foreach (var color in colors)
+                {
+                    query.Add("colors", color);
+                }
             }
 
             var queryString = string.Join("&", query.Select(x => $"{x.Key}={x.Value}"));
@@ -59,10 +80,25 @@ namespace T_Shop.Client.MVC.Services.Services
 
             if (response.IsSuccessStatusCode)
             {
-                string data = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<List<ProductResponseModel>>(data);
+                string productsString = await response.Content.ReadAsStringAsync();
+                var products = JsonConvert.DeserializeObject<List<ProductResponseModel>>(productsString);
+
+                ProductListVM productVM = new ProductListVM()
+                {
+                    Products = products,
+                };
+
+                if (response.Headers.TryGetValues("X-Pagination", out IEnumerable<string> paginationValues))
+                {
+                    string paginationHeaderValue = paginationValues.FirstOrDefault();
+                    var pagination = JsonConvert.DeserializeObject<MetaData>(paginationHeaderValue);
+                    //Set value pagination
+                    productVM.PaginationMetaData = pagination;
+                }
+
+                return productVM;
             }
-            return [];
+            return new ProductListVM();
         }
     }
 }

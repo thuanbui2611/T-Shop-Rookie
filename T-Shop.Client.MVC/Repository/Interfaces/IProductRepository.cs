@@ -5,7 +5,7 @@ namespace T_Shop.Client.MVC.Services.Interfaces
 {
     public interface IProductRepository
     {
-        Task<List<ProductResponseModel>> GetProductsAsync(ProductRequestParam productRequestParams);
+        Task<ProductListVM> GetProductsAsync(ProductRequestParam productRequestParams);
         Task<ProductResponseModel> GetProductByIdAsync(Guid productId);
 
     }

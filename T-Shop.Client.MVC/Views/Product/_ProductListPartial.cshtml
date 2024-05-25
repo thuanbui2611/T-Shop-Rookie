@@ -1,0 +1,105 @@
+﻿@using T_Shop.Shared.DTOs.Product.ResponseModel
+@using T_Shop.Shared.ViewModels.ProductsPage
+@model ProductListVM
+
+@{
+    int currentPage = Model.PaginationMetaData.CurrentPage;
+    int totalPageCount = Model.PaginationMetaData.TotalPageCount;
+    int visiblePageCount = 7;
+}
+
+    @if(Model.PaginationMetaData.TotalItemCount == 0)
+    {
+        <div class="text-center h-50 align-content-center">
+            <h2>No item found!</h2>
+            </div>
+    } else
+    {
+    <div class="row g-4 justify-content-center">
+        @foreach (var product in Model.Products)
+        {
+            <div class="col-md-6 col-lg-6 col-xl-4">
+                <div class="rounded position-relative fruite-item">
+                    <div class="fruite-img">
+                        <img src=@product.Images.Find(i => i.isMain)?.imageUrl class="img-fluid w-100 rounded-top" alt="">
+                    </div>
+                    <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">@product.Model.Brand.Name</div>
+                    <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                        <h4>@product.Name</h4>
+                        <p>@product.Description</p>
+                        <div class="d-flex justify-content-between flex-lg-wrap">
+                            <p class="text-dark fs-5 fw-bold mb-0">@product.Price</p>
+                            <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+        <div class="col-12">
+            <div class="pagination d-flex justify-content-center mt-5">
+                @if (currentPage > 1)
+                {
+                    <a href="javascript:void(0);" class="rounded" onclick="paginationProductList('@(currentPage - 1)')"> &laquo; </a>
+                }
+
+                @if (totalPageCount <= visiblePageCount)
+                {
+                    for (int i = 1; i <= totalPageCount; i++)
+                    {
+                        if (i == currentPage)
+                        {
+                            <a href="javascript:void(0);" class="active rounded">@i</a>
+                        }
+                        else
+                        {
+                            <a href="javascript:void(0);" class="rounded" onclick="paginationProductList('@i')">@i</a>
+                        }
+                    }
+                }
+                else
+                {
+                    int startPage = Math.Max(1, currentPage - (visiblePageCount / 2));
+                    int endPage = Math.Min(startPage + visiblePageCount - 1, totalPageCount);
+
+                    if (startPage > 1)
+                    {
+                        <a href="javascript:void(0);" class="rounded" onclick="paginationProductList('1')">1</a>
+                        if (startPage > 2)
+                        {
+                            <span class="rounded">...</span>
+                        }
+                    }
+
+                    for (int i = startPage; i <= endPage; i++)
+                    {
+                        if (i == currentPage)
+                        {
+                            <a href="javascript:void(0);" class="active rounded">@i</a>
+                        }
+                        else
+                        {
+                            <a href="javascript:void(0);" class="rounded" onclick="paginationProductList('@i')">@i</a>
+                        }
+                    }
+
+                    if (endPage < totalPageCount)
+                    {
+                        if (endPage < totalPageCount - 1)
+                        {
+                            <span class="rounded">...</span>
+                        }
+                        <a href="javascript:void(0);" class="rounded" onclick="paginationProductList('@totalPageCount')">@totalPageCount</a>
+                    }
+                }
+
+                @if (currentPage < totalPageCount)
+                {
+                    <a href="javascript:void(0);" class="rounded" onclick="paginationProductList('@(currentPage + 1)')"> &raquo; </a>
+                }
+            </div>
+        </div>
+    </div>
+    }
+

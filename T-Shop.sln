@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "T-Shop.Infrastructure", "T-
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "T-Shop.Application", "T-Shop.Application\T-Shop.Application.csproj", "{E394EA8E-A566-4635-9BB4-F6B9B996C65C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T-Shop.Shared", "T-Shop.Shared\T-Shop.Shared.csproj", "{5CDAD677-F0FF-4A01-8AD4-8F96CAC97FFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "T-Shop.Shared", "T-Shop.Shared\T-Shop.Shared.csproj", "{5CDAD677-F0FF-4A01-8AD4-8F96CAC97FFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T-Shop.WebClient.MVC", "T-Shop.Client.MVC\T-Shop.WebClient.MVC.csproj", "{79EB5A47-288C-4427-886D-727AD34483DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "T-Shop.WebClient.MVC", "T-Shop.Client.MVC\T-Shop.WebClient.MVC.csproj", "{79EB5A47-288C-4427-886D-727AD34483DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
