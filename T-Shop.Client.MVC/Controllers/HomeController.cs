@@ -4,7 +4,7 @@ using T_Shop.Client.MVC.Models;
 
 namespace T_Shop.Client.MVC.Controllers
 {
-    public class HomeController : ControllerBase
+    public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
 

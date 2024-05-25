@@ -1,34 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using T_Shop.Client.MVC.Services.Interfaces;
+using T_Shop.Shared.ViewModels.ProductsPage;
 
 namespace T_Shop.Client.MVC.Controllers
 {
-    public class ProductController : ControllerBase
+    public class ProductController : Controller
     {
         private readonly ILogger<ProductController> _logger;
+        private readonly IProductService _productService;
 
-        public ProductController(ILogger<ProductController> logger)
+        public ProductController(ILogger<ProductController> logger, IProductService productService)
         {
             _logger = logger;
+            _productService = productService;
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index(ProductRequestParam? productRequestParam)
         {
-            //List<ProductResponseModel> productList = new List<ProductResponseModel>();
-            //HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "api/product").Result;
 
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    string data = response.Content.ReadAsStringAsync().Result;
-            //    productList = JsonConvert.DeserializeObject<List<ProductResponseModel>>(data);
-            //}
-            //return View(productList);
-            return View();
+
+            var products = await _productService.GetProductsAsync(productRequestParam);
+            return View(products);
         }
 
-        public IActionResult Details()
+        public async Task<IActionResult> Details(Guid id)
         {
-            return View();
+            var product = await _productService.GetProductByIdAsync(id);
+            return View(product);
         }
     }
 }
