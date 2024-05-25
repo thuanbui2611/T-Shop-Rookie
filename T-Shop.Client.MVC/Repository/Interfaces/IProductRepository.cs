@@ -3,7 +3,7 @@ using T_Shop.Shared.ViewModels.ProductsPage;
 
 namespace T_Shop.Client.MVC.Services.Interfaces
 {
-    public interface IProductService
+    public interface IProductRepository
     {
         Task<List<ProductResponseModel>> GetProductsAsync(ProductRequestParam productRequestParams);
         Task<ProductResponseModel> GetProductByIdAsync(Guid productId);

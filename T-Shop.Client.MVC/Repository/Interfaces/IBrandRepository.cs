@@ -2,8 +2,8 @@
 
 namespace T_Shop.Client.MVC.Services.Interfaces
 {
-    public interface IBrandService
+    public interface IBrandRepository
     {
-        Task<BrandResponseModel> GetBrandsAsync();
+        Task<List<BrandResponseModel>> GetBrandsAsync();
     }
 }

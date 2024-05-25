@@ -7,9 +7,9 @@ namespace T_Shop.Client.MVC.Controllers
     public class ProductController : Controller
     {
         private readonly ILogger<ProductController> _logger;
-        private readonly IProductService _productService;
+        private readonly IProductRepository _productService;
 
-        public ProductController(ILogger<ProductController> logger, IProductService productService)
+        public ProductController(ILogger<ProductController> logger, IProductRepository productService)
         {
             _logger = logger;
             _productService = productService;

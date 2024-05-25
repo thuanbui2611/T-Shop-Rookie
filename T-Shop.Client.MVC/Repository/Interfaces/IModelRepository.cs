@@ -2,8 +2,8 @@
 
 namespace T_Shop.Client.MVC.Services.Interfaces
 {
-    public interface IModelService
+    public interface IModelRepository
     {
-        Task<ModelProductResponseModel> GetModelsAsync();
+        Task<List<ModelProductResponseModel>> GetModelsAsync();
     }
 }

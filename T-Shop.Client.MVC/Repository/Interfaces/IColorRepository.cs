@@ -2,8 +2,8 @@
 
 namespace T_Shop.Client.MVC.Services.Interfaces
 {
-    public interface IColorService
+    public interface IColorRepository
     {
-        Task<ColorResponseModel> GetColorsAsync();
+        Task<List<ColorResponseModel>> GetColorsAsync();
     }
 }

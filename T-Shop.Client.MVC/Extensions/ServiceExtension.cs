@@ -12,7 +12,11 @@ namespace T_Shop.Client.MVC.Extensions
                 client.BaseAddress = new Uri("https://localhost:5001");
             });
 
-            services.AddHttpClient<IProductService, ProductService>();
+            services.AddHttpClient<IProductRepository, ProductRepository>();
+            services.AddHttpClient<IBrandRepository, BrandRepository>();
+            services.AddHttpClient<ITypeRepository, TypeRepository>();
+            services.AddHttpClient<IColorRepository, ColorRepository>();
+            services.AddHttpClient<IModelRepository, ModelRepository>();
         }
     }
 }

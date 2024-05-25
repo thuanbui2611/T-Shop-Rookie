@@ -5,16 +5,16 @@ using T_Shop.Shared.ViewModels.ProductsPage;
 
 namespace T_Shop.Client.MVC.Services.Services
 {
-    public class ProductService : BaseService, IProductService
+    public class ProductRepository : BaseRepository, IProductRepository
     {
-        public ProductService(HttpClient httpClient) : base(httpClient)
+        public ProductRepository(HttpClient httpClient) : base(httpClient)
         {
         }
 
         public async Task<ProductResponseModel> GetProductByIdAsync(Guid productId)
         {
             var requestUrl = $"api/product/{productId}";
-            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + requestUrl).Result;
+            HttpResponseMessage response = _httpClient.GetAsync(requestUrl).Result;
 
             if (response.IsSuccessStatusCode)
             {
