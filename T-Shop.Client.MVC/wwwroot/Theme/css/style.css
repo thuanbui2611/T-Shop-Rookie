@@ -1,3 +1,20 @@
+/*Base*/
+.text-logo-color {
+    background: #C30000;
+    background: linear-gradient(to right, #C30000 6%, #D82E10 42%, #FF0000 61%, #FF5222 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.text-gradient-1 {
+    background: #A70000;
+    background: linear-gradient(to right, #A70000 6%, #E73B3B 42%, #FF552F 61%, #FF7636 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.bg-gradient-1 {
+    background-image: linear-gradient(to right, #670404, #74080a, #810d0f, #8e1213, #9c1717, #a81818, #b31818, #bf1919, #cc1515, #d91011, #e50809, #f20000);
+}
 
 /*** Spinner Start ***/
 #spinner {
@@ -135,7 +152,10 @@
     .navbar .navbar-nav .nav-link.active,
     .fixed-top.bg-white .navbar .navbar-nav .nav-link:hover,
     .fixed-top.bg-white .navbar .navbar-nav .nav-link.active {
-        color: #f50a0a;
+        background: #C30000;
+        background: linear-gradient(to right, #C30000 6%, #D82E10 42%, #FF0000 61%, #FF5222 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 
 .navbar .dropdown-toggle::after {
@@ -179,7 +199,7 @@
 }
 
 .cartbtn:hover {
-    filter: brightness(.5);
+    color: #A70000;
 }
 .fa-user:hover {
     filter: brightness(.5);
@@ -257,18 +277,18 @@
     height: 120px;
 }
 
-.featurs .featurs-item .featurs-icon::after {
-    content: "";
-    width: 35px;
-    height: 35px;
-    background: var(--bs-secondary);
-    position: absolute;
-    bottom: -10px;
-    transform: translate(-50%);
-    transform: rotate(45deg);
-    background: var(--bs-secondary);
-    
-}
+    .featurs .featurs-item .featurs-icon::after {
+        content: "";
+        width: 35px;
+        height: 35px;
+        background: #C30000;
+        background: linear-gradient(to right, #C30000 20%, #D82E10 42%, #FF0000 61%, #FF5222 100%);
+        -webkit-text-fill-color: transparent;
+        position: absolute;
+        bottom: -10px;
+        transform: translate(-50%);
+        transform: rotate(45deg);
+    }
 /*** featurs End ***/
 
 
