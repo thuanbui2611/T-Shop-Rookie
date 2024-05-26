@@ -8,6 +8,7 @@ builder.Services.AddControllersWithViews();
 // Add service extensions
 builder.Services.RegisterServices();
 builder.Services.ConfigureAuthentication(builder.Configuration);
+builder.Services.ConfigureCors();
 
 var app = builder.Build();
 

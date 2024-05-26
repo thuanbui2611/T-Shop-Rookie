@@ -23,6 +23,7 @@ namespace T_Shop.Client.MVC.Extensions
             services.AddHttpClient<ITypeRepository, TypeRepository>();
             services.AddHttpClient<IColorRepository, ColorRepository>();
             services.AddHttpClient<IModelRepository, ModelRepository>();
+            services.AddHttpClient<ICartRepository, CartRepository>();
         }
 
         public static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
@@ -44,6 +45,29 @@ namespace T_Shop.Client.MVC.Extensions
                     ValidAudience = configuration["JwtSettings:validAudience"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:secret"]))
                 };
+            });
+
+            //services.AddAuthorization();
+
+            //services.ConfigureApplicationCookie(options =>
+            //{
+            //    options.LoginPath = "/authentication/login";
+            //    options.AccessDeniedPath = "/authentication/AccessDenied";
+            //});
+        }
+
+        public static void ConfigureCors(this IServiceCollection services)
+        {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllHeaders",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyHeader()
+                               .AllowAnyMethod()
+                               .WithExposedHeaders("Authorization");
+                    });
             });
         }
     }

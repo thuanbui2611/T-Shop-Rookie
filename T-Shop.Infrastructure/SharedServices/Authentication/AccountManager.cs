@@ -124,6 +124,7 @@ public class AccountManager : IAccountManager
         {
             claims.Add(new Claim("Avatar", string.Empty));
         }
+        claims.Add(new Claim("UserId", _user.Id.ToString()));
 
         var roles = await _userManager.GetRolesAsync(_user);
         foreach (var role in roles)

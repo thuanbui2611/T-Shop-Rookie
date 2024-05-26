@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using T_Shop.Client.MVC.Models;
-using T_Shop.Shared.DTOs.User.ResponseModels;
 
 namespace T_Shop.Client.MVC.Controllers
 {
@@ -18,7 +17,8 @@ namespace T_Shop.Client.MVC.Controllers
         {
             if (HttpContext.User.Identity.IsAuthenticated)
             {
-                var user = HttpContext.Items["CurrentUser"] as UserResponseModel;
+                //var user = HttpContext.Items["CurrentUser"] as UserResponseModel;
+                Console.WriteLine("Logined");
             }
             return View();
         }

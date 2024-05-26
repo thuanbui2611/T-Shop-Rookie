@@ -29,7 +29,7 @@
                         <p>@product.Description</p>
                         <div class="d-flex justify-content-between flex-lg-wrap">
                             <p class="text-dark fs-5 fw-bold mb-0">@product.Price</p>
-                            <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                            <button data-product-id="@product.Id" class="btn border border-secondary rounded-pill px-3 text-primary add-to-cart-button"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</button>
                         </div>
                     </div>
                 </div>
@@ -103,3 +103,32 @@
     </div>
     }
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $(document).on('click', '.add-to-cart-button', function (e) {
+            e.preventDefault(); 
+
+            var productId = $(this).data('product-id');
+
+            $.ajax({
+                url: '@Url.Action("AddToCart", "Cart")',
+                type: 'POST',
+                data: { productId: productId },
+                success: function (response) {
+                    if (response.success) {
+                        // alert(response.message);
+                        // Optionally update the cart summary or other UI elements
+                        // $('#cart-summary').html('Total Items: ' + response.cart.items.length);
+                    } else {
+                        // alert(response.message);
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while adding the item to the cart.');
+                }
+            });
+        });
+    });
+</script>
