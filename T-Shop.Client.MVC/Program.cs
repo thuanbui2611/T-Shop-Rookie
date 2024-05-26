@@ -7,6 +7,7 @@ builder.Services.AddControllersWithViews();
 
 // Add service extensions
 builder.Services.RegisterServices();
+builder.Services.ConfigureAuthentication(builder.Configuration);
 
 var app = builder.Build();
 
@@ -23,7 +24,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<JwtCookieMiddleware>();
 
 app.MapControllerRoute(
     name: "default",

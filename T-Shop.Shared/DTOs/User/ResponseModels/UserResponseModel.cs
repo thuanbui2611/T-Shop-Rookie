@@ -10,7 +10,7 @@ public class UserResponseModel
     public string? Full_name { get; set; }
 
     [JsonPropertyName("date_of_birth")]
-    public DateTime Date_of_birth { get; set; }
+    public DateTime? Date_of_birth { get; set; }
 
     [JsonPropertyName("username")]
     public string? Username { get; set; }
@@ -32,5 +32,7 @@ public class UserResponseModel
 
     [JsonPropertyName("is_locked")]
     public string? Is_locked { get; set; }
+    [JsonPropertyName("role")]
+    public string? Role { get; set; }
 
 }

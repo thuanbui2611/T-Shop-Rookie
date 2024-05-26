@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using T_Shop.Client.MVC.Models;
+using T_Shop.Shared.DTOs.User.ResponseModels;
 
 namespace T_Shop.Client.MVC.Controllers
 {
@@ -15,6 +16,10 @@ namespace T_Shop.Client.MVC.Controllers
 
         public IActionResult Index()
         {
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                var user = HttpContext.Items["CurrentUser"] as UserResponseModel;
+            }
             return View();
         }
 

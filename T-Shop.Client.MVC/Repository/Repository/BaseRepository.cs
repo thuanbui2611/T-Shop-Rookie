@@ -2,7 +2,7 @@
 {
     public class BaseRepository
     {
-        Uri baseUriApi = new Uri("https://648c-116-110-41-101.ngrok-free.app");
+        Uri baseUriApi = new Uri("https://a187-116-110-41-86.ngrok-free.app");
         protected readonly HttpClient _httpClient;
         public BaseRepository(HttpClient httpClient)
         {
