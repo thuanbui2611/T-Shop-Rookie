@@ -39,4 +39,31 @@ public class CartController : Controller
 
         await _cartRepository.AddToCartAsync(newItem);
     }
+
+    [HttpPut]
+    public async void UpdateCartItem(Guid productId, int quantity)
+    {
+        var user = HttpContext.Items["CurrentUser"] as UserResponseModel;
+        CartRequestModel updatedItem = new CartRequestModel()
+        {
+            ProductID = productId,
+            Quantity = quantity,
+            UserID = user.Id
+        };
+
+        await _cartRepository.UpdateCartItemAsync(updatedItem);
+    }
+
+    [HttpDelete]
+    public async Task<bool> DeleteCartItem(Guid productId)
+    {
+        var user = HttpContext.Items["CurrentUser"] as UserResponseModel;
+        CartItemDeleteRequestModel itemDeleted = new CartItemDeleteRequestModel()
+        {
+            ProductID = productId,
+            UserID = user.Id
+        };
+
+        return await _cartRepository.DeleteCartItemAsync(itemDeleted);
+    }
 }

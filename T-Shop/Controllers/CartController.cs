@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using T_Shop.Application.Features.Cart.Commands.AddItemToCartQuery;
+using T_Shop.Application.Features.Cart.Commands.DeleteIItemCart;
 using T_Shop.Application.Features.Cart.Commands.UpdateCart;
 using T_Shop.Application.Features.Cart.Queries.GetCartByUserId;
 using T_Shop.Controllers;
@@ -52,5 +53,24 @@ public class CartController : ApiControllerBase
         command.UserID = userID;
         var cart = await Mediator.Send(command);
         return Created($"cart/{cart.ID}", cart);
+    }
+
+    /// <summary>
+    /// Delete a item in cart
+    /// </summary>
+    /// <returns>Status code of the action.</returns>
+    /// <response code="204">Successfully deleted item.</response>
+    /// <response code="500">There is something wrong while execute.</response>
+    [HttpDelete("{userID}/{productID}")]
+    public async Task<IActionResult> DeleteItemInCartAsync([FromRoute] Guid userID, [FromRoute] Guid productID)
+    {
+
+        await Mediator.Send(new DeleteItemCartCommand()
+        {
+            ProductID = productID,
+            UserID = userID
+        });
+        return NoContent();
+
     }
 }

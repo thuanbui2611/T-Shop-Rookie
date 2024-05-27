@@ -8,5 +8,7 @@ namespace T_Shop.Client.MVC.Repository.Interfaces
         CartResponseModel GetCart();
         Task<CartResponseModel> GetCartByUserIdAsync(Guid userId);
         Task<CartResponseModel> AddToCartAsync(CartRequestModel cartRequestModel);
+        Task<CartResponseModel> UpdateCartItemAsync(CartRequestModel cartRequestModel);
+        Task<bool> DeleteCartItemAsync(CartItemDeleteRequestModel cartItemRequestModel);
     }
 }

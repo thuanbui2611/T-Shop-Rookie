@@ -39,7 +39,6 @@ namespace T_Shop.Client.MVC.Controllers
                 });
                 return RedirectToAction("Index", "Home");
             }
-
             ModelState.AddModelError("", "Invalid login attempt.");
             return View(user);
         }

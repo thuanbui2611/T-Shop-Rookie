@@ -19,7 +19,6 @@ namespace T_Shop.Client.MVC.Extensions
         {
             if (context.Request.Cookies.TryGetValue("AuthToken", out var token))
             {
-
                 context.Request.Headers.Add("Authorization", $"Bearer {token}");
 
                 var handler = new JwtSecurityTokenHandler();

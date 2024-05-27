@@ -13,8 +13,10 @@ public class CartQueries : BaseQuery<Cart>, ICartQueries
     public async Task<Cart> GetCartByIdAsync(Guid id)
     {
         return await dbSet
-            .Include(c => c.CartItems)
-                .ThenInclude(ci => ci.Product)
+            .Include(c => c.CartItems).ThenInclude(ci => ci.Product).ThenInclude(p => p.Color)
+            .Include(c => c.CartItems).ThenInclude(ci => ci.Product).ThenInclude(p => p.Model).ThenInclude(m => m.Brand)
+            .Include(c => c.CartItems).ThenInclude(ci => ci.Product).ThenInclude(p => p.Type)
+            .Include(c => c.CartItems).ThenInclude(ci => ci.Product).ThenInclude(p => p.ProductImages)
             .Where(c => c.Id.Equals(id))
             .FirstOrDefaultAsync();
     }

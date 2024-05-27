@@ -42,6 +42,13 @@ namespace T_Shop.Client.MVC.Extensions
                 };
             });
 
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            //    .AddCookie(options =>
+            //{
+            //    options.LoginPath = "/authentication/Login";
+            //    options.AccessDeniedPath = "/authentication/AccessDenied";
+            //});
+
             //services.AddAuthorization();
 
             //services.ConfigureApplicationCookie(options =>

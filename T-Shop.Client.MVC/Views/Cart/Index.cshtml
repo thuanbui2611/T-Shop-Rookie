@@ -17,7 +17,7 @@
 <div class="container-fluid py-5">
     <div class="container py-5">
         <div class="table-responsive">
-            <table class="table">
+            <table class="table" id="cart-table">
                 <thead>
                     <tr>
                         <th scope="col">Products</th>
@@ -42,16 +42,17 @@
                                     </div>
                                 </th>
                                 <td>
-                                    <p class="mb-0 mt-4">@item.Product.Price</p>
+                                    <p class="mb-0 mt-4 text-success">@item.Product.Price</p>
                                 </td>
                                 <td>
-                                    <div class="input-group quantity mt-4" style="width: 100px;">
+                                    <div class="input-group mt-4" style="width: 100px;">
                                         <div class="input-group-btn">
                                             <button class="btn btn-sm btn-minus rounded-circle bg-light border">
                                                 <i class="fa fa-minus"></i>
                                             </button>
                                         </div>
-                                        <input type="text" class="form-control form-control-sm text-center border-0" value="@item.Quantity" data-item-id="@item.Product.Id">
+                                        <input type="text" class="form-control form-control-sm text-center border-0 quantity-input" 
+                                        value="@item.Quantity" data-item-id="@item.Product.Id" data-original-quantity="@item.Quantity">
                                         <div class="input-group-btn">
                                             <button class="btn btn-sm btn-plus rounded-circle bg-light border">
                                                 <i class="fa fa-plus"></i>
@@ -60,25 +61,24 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <p class="mb-0 mt-4">
+                                    <p class="mb-0 mt-4 text-success">
                                         @{
                                             var totalPrice = item.Quantity * item.Product.Price;
                                         }
                                         @totalPrice
                                     </p>
                                 </td>
-                                <td>
-                                    <button class="btn btn-md rounded-circle bg-light border mt-4 save-change-button" name="saveChange" hidden>
+                                <td id="actionFields_@item.Product.Id">
+                          @*           <button class="btn btn-md rounded-circle bg-light border mt-4 save-change-button" name="saveChange" data-product-id="@item.Product.Id">
                                         <i class="fa fa-times text-success"></i>
-                                    </button>
-                                    <button class="btn btn-md rounded-circle bg-light border mt-4" name="removeItem">
+                                    </button> *@
+                                    <button class="btn btn-md rounded-circle bg-light border mt-4 delete-item" name="removeItem" data-product-id="@item.Product.Id">
                                         <i class="fa fa-times text-danger"></i>
                                     </button>
                                 </td>
 
                             </tr>
                         }
-
                     }
                    
                 </tbody>
@@ -117,7 +117,130 @@
     </div>
 </div>
 <!-- Cart Page End -->
+@section Scripts{
 
-<script>
+ @* <cache expires-after="" *@
 
-</script>
+    <script>
+        // Function to handle quantity change
+        $(document).on('input', '.quantity-input', handleQuantityChange);
+        // Event handlers for plus buttons
+        $(document).on('click', '.btn-minus', function () {
+            var input = $(this).closest('.input-group').find('.quantity-input');
+            var currentQuantity = parseInt(input.val());
+
+            if (currentQuantity > 1) {
+                input.val(currentQuantity - 1).trigger('input');
+                handleQuantityChange.call(input);
+            }
+        });
+        // Event handlers for plus buttons
+        $(document).on('click', '.btn-plus', function () {
+            var input = $(this).closest('.input-group').find('.quantity-input');
+            var currentQuantity = parseInt(input.val());
+
+            input.val(currentQuantity + 1).trigger('input');
+            handleQuantityChange.call(input);
+        });
+
+        function handleQuantityChange() {
+            var input = $(this);
+            var actionFields = input.closest('tr').find('[id^="actionFields_"]');
+            var originalQuantity = parseInt(input.data('original-quantity'));
+            var currentQuantity = parseInt(input.val());
+            debugger;
+            var saveChangeButton = actionFields.find('.save-change-button');
+
+            if (currentQuantity != originalQuantity) {
+                if (saveChangeButton.length == 0) {
+                    var productId = input.data('item-id');
+                    var saveChangeButtonHtml = '<button class="btn btn-md rounded-circle bg-light border mt-4 save-change-button" name="saveChange" data-product-id="' + productId + '"><i class="fa fa-times text-success"></i></button>';
+                    actionFields.append(saveChangeButtonHtml);
+                }
+            } else {
+                saveChangeButton.remove();
+            }
+        }
+        // Event handler for saveChange button
+        $(document).on('click', '.save-change-button', function () {
+            var productId = $(this).data('product-id');
+            var quantity = $(this).closest('tr').find('input').val();
+
+            $.ajax({
+                url: '/Cart/UpdateCartItem',
+                type: 'PUT',
+                data: { productId: productId, quantity: quantity },
+                success: function (response) {
+                    // Fetch the updated content of the CartController index page
+                    alert("Update cart success");
+                    $.ajax({
+                        url: '/Cart',
+                        type: 'GET',
+                        success: function (data) {
+                            // Extract the cart item rows from the fetched HTML content
+                            var cartItems = $(data).find('#cart-table tbody').html();
+
+                            // Replace the existing cart item rows with the updated content
+                            $('#cart-table tbody').html(cartItems);
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle the error response, if needed
+                            console.log('Error loading cart page: ' + error);
+                        }
+                    });
+
+                    console.log('Cart item edited successfully');
+                },
+                error: function (xhr, status, error) {
+                    // Handle the error response, if needed
+                    console.log('Error editing cart item: ' + error);
+                }
+            });
+        });
+        //Delete item
+        $(document).ready(function () {
+            $(document).on('click', '.delete-item', function (e) {
+                e.preventDefault();
+                var productId = $(this).data('product-id');
+
+                $.ajax({
+                    url: '/Cart/DeleteCartItem',
+                    type: 'DELETE',
+                    data: { productId: productId },
+                    success: function (response) {
+                        // Handle the success response, if needed
+                        if(response === true)
+                        {
+                            alert("Item deleted successfully")
+                            // Fetch the updated content of the CartController index page
+                            $.ajax({
+                                url: '/Cart',
+                                type: 'GET',
+                                success: function (data) {
+                                    // Extract the cart item rows from the fetched HTML content
+                                    var cartItems = $(data).find('#cart-table tbody').html();
+
+                                    // Replace the existing cart item rows with the updated content
+                                    $('#cart-table tbody').html(cartItems);
+
+                                },
+                                error: function (xhr, status, error) {
+                                    // Handle the error response, if needed
+                                    console.log('Error loading cart page: ' + error);
+                                }
+                            });
+                        } else {
+
+                            alert("Item failed successfully")
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle the error response, if needed
+                        alert("Item deleted failed")
+                        console.log('Error deleting item: ' + error);
+                    }
+                });
+            });
+        });
+    </script>
+}
