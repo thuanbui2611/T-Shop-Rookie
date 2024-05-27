@@ -12,11 +12,6 @@ namespace T_Shop.Client.MVC.Extensions
     {
         public static void RegisterServices(this IServiceCollection services)
         {
-            //services.AddHttpClient("BaseHttpClient", client =>
-            //{
-            //    client.BaseAddress = new Uri("https://localhost:5001");
-            //});
-
             services.AddHttpClient<IAuthenticationRepository, AuthenticationRepository>();
             services.AddHttpClient<IProductRepository, ProductRepository>();
             services.AddHttpClient<IBrandRepository, BrandRepository>();

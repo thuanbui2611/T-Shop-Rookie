@@ -9,7 +9,7 @@ namespace T_Shop.Client.MVC.Repository.Repository
     public class CartRepository : BaseRepository, ICartRepository
     {
         private static CartResponseModel? _cart = null;
-        public CartRepository(HttpClient httpClient) : base(httpClient)
+        public CartRepository(HttpClient httpClient, IConfiguration configuration) : base(httpClient, configuration)
         {
 
         }

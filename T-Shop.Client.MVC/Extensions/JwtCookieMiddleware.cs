@@ -48,9 +48,8 @@ namespace T_Shop.Client.MVC.Extensions
                     context.User = principal;
                     context.Items["CurrentUser"] = user;
                 };
-
-                await _next(context);
             }
+            await _next(context);
         }
     }
 }

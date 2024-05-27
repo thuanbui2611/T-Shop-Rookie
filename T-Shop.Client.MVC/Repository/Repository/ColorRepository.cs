@@ -6,7 +6,7 @@ namespace T_Shop.Client.MVC.Services.Services
 {
     public class ColorRepository : BaseRepository, IColorRepository
     {
-        public ColorRepository(HttpClient httpClient) : base(httpClient)
+        public ColorRepository(HttpClient httpClient, IConfiguration configuration) : base(httpClient, configuration)
         {
 
         }

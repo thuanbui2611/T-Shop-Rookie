@@ -2,12 +2,12 @@
 {
     public class BaseRepository
     {
-        Uri baseUriApi = new Uri("https://a187-116-110-41-86.ngrok-free.app");
+        protected readonly IConfiguration _configuration;
         protected readonly HttpClient _httpClient;
-        public BaseRepository(HttpClient httpClient)
+        public BaseRepository(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = new HttpClient();
-            _httpClient.BaseAddress = baseUriApi;
+            _httpClient.BaseAddress = new Uri(configuration["ApiConnectionString"]);
         }
     }
 }

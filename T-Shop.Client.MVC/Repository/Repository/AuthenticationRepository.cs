@@ -8,9 +8,8 @@ namespace T_Shop.Client.MVC.Repository.Repository
 {
     public class AuthenticationRepository : BaseRepository, IAuthenticationRepository
     {
-        public AuthenticationRepository(HttpClient httpClient) : base(httpClient)
+        public AuthenticationRepository(HttpClient httpClient, IConfiguration configuration) : base(httpClient, configuration)
         {
-
         }
 
         public async Task<UserAuthenResponseModel> Login(UserAuthenRequestModel user)

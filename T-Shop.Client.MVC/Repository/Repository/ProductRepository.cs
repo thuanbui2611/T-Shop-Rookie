@@ -7,7 +7,7 @@ namespace T_Shop.Client.MVC.Services.Services
 {
     public class ProductRepository : BaseRepository, IProductRepository
     {
-        public ProductRepository(HttpClient httpClient) : base(httpClient)
+        public ProductRepository(HttpClient httpClient, IConfiguration configuration) : base(httpClient, configuration)
         {
         }
 
