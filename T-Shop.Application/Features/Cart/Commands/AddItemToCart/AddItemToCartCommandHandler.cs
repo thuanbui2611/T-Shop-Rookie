@@ -73,7 +73,7 @@ public class AddItemToCartCommandHandler : IRequestHandler<AddItemToCartCommand,
             {
                 CartID = cartID,
                 ProductID = request.ProductID,
-                Quantity = request.Quantity
+                Quantity = request.Quantity,
             };
             _cartItemRepository.Add(itemInCart);
         }
@@ -83,7 +83,7 @@ public class AddItemToCartCommandHandler : IRequestHandler<AddItemToCartCommand,
             var productOfCart = await _productRepository.GetById(itemInCart.ProductID);
             if (productOfCart.Quantity >= request.Quantity)
             {
-                itemInCart.Quantity = request.Quantity;
+                itemInCart.Quantity += 1;
                 _cartItemRepository.Update(itemInCart);
             }
             else throw new BadRequestException($"The product only has {productOfCart.Quantity} on stock");

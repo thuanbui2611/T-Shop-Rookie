@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
-using T_Shop.Domain.Exceptions;
 using T_Shop.Domain.Entity;
+using T_Shop.Domain.Exceptions;
 using T_Shop.Domain.Repository;
 using T_Shop.Shared.DTOs.Cart.ResponseModel;
 
@@ -12,15 +12,15 @@ public class UpdateCartCommandHandler : IRequestHandler<UpdateCartCommand, CartR
     private readonly ICartQueries _cartQueries;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IGenericRepository<Domain.Entity.Cart> _cartRepository;
     private readonly IGenericRepository<CartItem> _cartItemRepository;
     private readonly IGenericRepository<Product> _productRepository;
-
     public UpdateCartCommandHandler(ICartQueries cartQueries, IMapper mapper, IUnitOfWork unitOfWork)
     {
         _cartQueries = cartQueries;
         _mapper = mapper;
         _unitOfWork = unitOfWork;
+        _cartItemRepository = unitOfWork.GetBaseRepo<CartItem>();
+        _productRepository = unitOfWork.GetBaseRepo<Product>();
     }
 
     public async Task<CartResponseModel> Handle(UpdateCartCommand request, CancellationToken cancellationToken)
@@ -33,14 +33,14 @@ public class UpdateCartCommandHandler : IRequestHandler<UpdateCartCommand, CartR
         else
         {
             var isProductInCart = await _cartQueries.CheckIfItemExistedInCart(cartID, request.ProductID);
-            if (isProductInCart)
+            if (!isProductInCart)
             {
                 throw new BadRequestException("Product in cart not found");
             }
 
             var cartItem = await _cartItemRepository.FindOne(x => x.CartID.Equals(cartID) && x.ProductID.Equals(request.ProductID));
-            var productOfCart = await _productRepository.GetById(cartItem.ProductID);
-            if (cartItem.Quantity > request.Quantity)
+            var productInCart = await _productRepository.FindOne(x => x.Id.Equals(request.ProductID));
+            if (productInCart.Quantity > request.Quantity)
             {
                 cartItem.Quantity = request.Quantity;
             }
