@@ -18,7 +18,7 @@ public class StripeService : IStripeService
         var service = new PaymentIntentService();
 
         var intent = new PaymentIntent();
-        var subTotal = order.OrderDetails.Sum(orderDetail => orderDetail.Quantity * orderDetail.Product.Price);
+        var subTotal = order.OrderDetails.Sum(orderDetail => orderDetail.Quantity * orderDetail.Price);
         if (string.IsNullOrEmpty(order.PaymentIntentID))
         {
             var options = new PaymentIntentCreateOptions

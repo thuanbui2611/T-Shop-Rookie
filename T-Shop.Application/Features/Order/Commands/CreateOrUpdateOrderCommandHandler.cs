@@ -28,21 +28,17 @@ public class CreateOrUpdateOrderCommandHandler : IRequestHandler<CreateOrUpdateO
     }
     public async Task<OrderResponseModel> Handle(CreateOrUpdateOrderCommand request, CancellationToken cancellationToken)
     {
-        var order = await _orderQueries.GetOrderByUserIdAsync(request.UserID);
-
-        if (order == null)
+        var orderId = await _orderQueries.GetOrderIdByUserId(request.UserID);
+        //Delete old order
+        if (!orderId.Equals(Guid.Empty))
         {
-            //Create new order
-            order = await HandleCreateNewOrder(request, order);
+            _orderRepository.Delete(orderId);
+            await _unitOfWork.CompleteAsync();
         }
-        else
-        {
-            //Update order
-            order = await HandleUpdateOrder(request, order);
-        };
-        _unitOfWork.Detach(order);
 
-        //var lastestOrder = await _orderQueries.GetOrderByUserIdAsync(order.UserID);
+        //Create new order
+        var order = await HandleCreateNewOrder(request);
+
         var paymentIntent = await _stripeService.CreateOrUpdatePaymentIntent(order);
         order.PaymentIntentID = paymentIntent.Id ?? order.PaymentIntentID;
         order.ClientSecret = paymentIntent.ClientSecret ?? order.ClientSecret;
@@ -50,16 +46,17 @@ public class CreateOrUpdateOrderCommandHandler : IRequestHandler<CreateOrUpdateO
         _orderRepository.Update(order);
         await _unitOfWork.CompleteAsync();
 
-        var result = _mapper.Map<OrderResponseModel>(order);
+        var orderReturn = await _orderQueries.GetOrderByUserIdAsync(order.UserID);
+        var result = _mapper.Map<OrderResponseModel>(orderReturn);
         return result;
     }
 
-    private async Task<Domain.Entity.Order> HandleCreateNewOrder(CreateOrUpdateOrderCommand request, Domain.Entity.Order order)
+    private async Task<Domain.Entity.Order> HandleCreateNewOrder(CreateOrUpdateOrderCommand request)
     {
         var isUserExist = await _userQueries.CheckIfUserExisted(request.UserID);
         if (!isUserExist) throw new NotFoundException("User not found");
 
-        order = new Domain.Entity.Order
+        var order = new Domain.Entity.Order
         {
             UserID = request.UserID,
             ShippingAddress = request.ShippingAddress,

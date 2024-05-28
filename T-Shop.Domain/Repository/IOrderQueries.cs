@@ -5,5 +5,6 @@ public interface IOrderQueries
 {
     Task<Order> GetOrderByUserIdAsync(Guid id);
     Task<Order> GetOrderByPaymentIntentIdAsync(string paymentIntentId);
+    Task<Guid> GetOrderIdByUserId(Guid userId);
 
 }

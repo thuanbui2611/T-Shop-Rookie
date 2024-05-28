@@ -30,4 +30,12 @@ public class OrderQueries : BaseQuery<Order>, IOrderQueries
           .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Model).ThenInclude(m => m.Brand)
           .FirstOrDefaultAsync(o => o.PaymentIntentID.Equals(paymentIntentId));
     }
+
+    public async Task<Guid> GetOrderIdByUserId(Guid userId)
+    {
+        return await dbSet
+            .Where(o => o.UserID.Equals(userId))
+            .Select(o => o.Id)
+            .FirstOrDefaultAsync();
+    }
 }
