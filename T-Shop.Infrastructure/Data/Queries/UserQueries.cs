@@ -18,4 +18,5 @@ public class UserQueries : BaseQuery<ApplicationUser>, IUserQueries
         return await dbSet
             .AnyAsync(x => x.Id.Equals(userId));
     }
+
 }

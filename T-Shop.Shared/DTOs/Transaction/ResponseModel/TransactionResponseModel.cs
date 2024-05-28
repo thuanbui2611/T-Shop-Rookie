@@ -7,5 +7,5 @@ public class TransactionResponseModel
     public required string Status { get; set; }
     public string? Reason { get; set; }
     public DateTime CreatedAt { get; set; }
-    public required OrderResponseModel Order { get; set; }
+    public OrderResponseModel Order { get; set; }
 }
