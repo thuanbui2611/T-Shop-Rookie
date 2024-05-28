@@ -75,6 +75,11 @@ namespace T_Shop.Client.MVC.Repository.Repository
             return false;
         }
 
+        public async void ClearCart()
+        {
+            _cart = null;
+        }
+
 
     }
 }

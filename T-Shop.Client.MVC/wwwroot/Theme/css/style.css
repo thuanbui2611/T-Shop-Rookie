@@ -44,6 +44,13 @@
 }
 /*** Spinner End ***/
 
+/*Stripe Form*/
+#card-element {
+    width: 400px; /* Adjust width as needed */
+    margin: 10px auto; /* Center the form */
+    padding: 10px; /* Add some padding */
+    border: 1px solid #ccc; /* Optional border */
+}
 
 /*** Button Start ***/
 .btn {

@@ -1,6 +1,9 @@
 ﻿@{
     @using T_Shop.Shared.DTOs.Cart.ResponseModel
+    @using T_Shop.Shared.DTOs.User.ResponseModels
     @model CartResponseModel
+
+    var currentUser = ViewContext.HttpContext.Items["CurrentUser"] as UserResponseModel;
 }
 
 <!-- Single Page Header start -->
@@ -42,7 +45,7 @@
                                     </div>
                                 </th>
                                 <td>
-                                    <p class="mb-0 mt-4 text-success">@item.Product.Price</p>
+                                    <p class="mb-0 mt-4 text-success">@item.Product.Price.ToString("N0")</p>
                                 </td>
                                 <td>
                                     <div class="input-group mt-4" style="width: 100px;">
@@ -65,7 +68,7 @@
                                         @{
                                             var totalPrice = item.Quantity * item.Product.Price;
                                         }
-                                        @totalPrice
+                                        @totalPrice.ToString("N0")
                                     </p>
                                 </td>
                                 <td id="actionFields_@item.Product.Id">
@@ -84,33 +87,24 @@
                 </tbody>
             </table>
         </div>
-        <div class="mt-5">
-            <input type="text" class="border-0 border-bottom rounded me-5 py-3 mb-4" placeholder="Coupon Code">
-            <button class="btn border-secondary rounded-pill px-4 py-3 text-primary" type="button">Apply Coupon</button>
-        </div>
         <div class="row g-4 justify-content-end">
             <div class="col-8"></div>
             <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
                 <div class="bg-light rounded">
-                    <div class="p-4">
-                        <h1 class="display-6 mb-4">Cart <span class="fw-normal">Total</span></h1>
-                        <div class="d-flex justify-content-between mb-4">
-                            <h5 class="mb-0 me-4">Subtotal:</h5>
-                            <p class="mb-0">$96.00</p>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <h5 class="mb-0 me-4">Shipping</h5>
-                            <div class="">
-                                <p class="mb-0">Flat rate: $3.00</p>
-                            </div>
-                        </div>
-                        <p class="mb-0 text-end">Shipping to Ukraine.</p>
-                    </div>
+
                     <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
                         <h5 class="mb-0 ps-4 me-4">Total</h5>
-                        <p class="mb-0 pe-4">$99.00</p>
-                    </div>
-                    <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button">Proceed Checkout</button>
+                        <p class="mb-0 pe-4">@{
+                                decimal total = 0;    
+                                foreach(var item in Model.CartItems)
+                                {
+                                    total += item.Quantity * item.Product.Price;
+                                }
+                            }
+                            @total.ToString("N0")
+                                </p>
+                                </div>
+                    <button id="checkout-button" class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button">Checkout</button>
                 </div>
             </div>
         </div>
@@ -122,6 +116,7 @@
  @* <cache expires-after="" *@
 
     <script>
+        var cartData = @Html.Raw(Json.Serialize(Model));
         // Function to handle quantity change
         $(document).on('input', '.quantity-input', handleQuantityChange);
         // Event handlers for plus buttons
@@ -172,6 +167,9 @@
                 data: { productId: productId, quantity: quantity },
                 success: function (response) {
                     // Fetch the updated content of the CartController index page
+
+                    cartData = response;
+                    debugger;
                     alert("Update cart success");
                     $.ajax({
                         url: '/Cart',
@@ -179,7 +177,6 @@
                         success: function (data) {
                             // Extract the cart item rows from the fetched HTML content
                             var cartItems = $(data).find('#cart-table tbody').html();
-
                             // Replace the existing cart item rows with the updated content
                             $('#cart-table tbody').html(cartItems);
                         },
@@ -208,18 +205,19 @@
                     type: 'DELETE',
                     data: { productId: productId },
                     success: function (response) {
-                        // Handle the success response, if needed
+                        // Fetch the updated content of the CartController index page
                         if(response === true)
                         {
+                            //update model cart
+                            cartData = cartData.cartItems.filter(c => c.productId !== productId);
+
                             alert("Item deleted successfully")
-                            // Fetch the updated content of the CartController index page
                             $.ajax({
                                 url: '/Cart',
                                 type: 'GET',
                                 success: function (data) {
                                     // Extract the cart item rows from the fetched HTML content
                                     var cartItems = $(data).find('#cart-table tbody').html();
-
                                     // Replace the existing cart item rows with the updated content
                                     $('#cart-table tbody').html(cartItems);
 
@@ -230,9 +228,10 @@
                                 }
                             });
                         } else {
-
-                            alert("Item failed successfully")
+                            alert("Item deleted failed")
                         }
+                        
+                
                     },
                     error: function (xhr, status, error) {
                         // Handle the error response, if needed
@@ -240,6 +239,41 @@
                         console.log('Error deleting item: ' + error);
                     }
                 });
+            });
+        });
+
+        //Checkout
+        $(document).on('click', '#checkout-button', function () {
+            debugger;
+            var orderData = {
+                UserID: cartData.userId,
+                ShippingAddress: '123 Main St, City',
+                Products: []
+            };
+            for (var i = 0; i < cartData.cartItems.length; i++) {
+                var cartItem = cartData.cartItems[i];
+                var productOfOrder = {
+                    ProductID: cartItem.product.id,
+                    Price: cartItem.product.price,
+                    Quantity: cartItem.quantity
+                }
+                orderData.Products.push(productOfOrder);
+            }
+            debugger;
+            // Send AJAX request to trigger the OrderController's Index action
+            $.ajax({
+                url: '/Order/CreateOrder',
+                type: 'POST',
+                data: { orderStr: JSON.stringify(orderData) },
+                success: function (response) {
+                    // Handle the success response from the server, if needed
+                    console.log('Order placed successfully:', response);
+                    window.location.href = response.redirectUrl;
+                },
+                error: function (xhr, status, error) {
+                    // Handle any errors that occur during the AJAX request
+                    console.error('Error placing order:', error);
+                }
             });
         });
     </script>

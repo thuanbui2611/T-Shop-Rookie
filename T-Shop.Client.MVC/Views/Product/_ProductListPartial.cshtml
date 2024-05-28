@@ -26,9 +26,8 @@
                     <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">@product.Model.Brand.Name</div>
                     <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                         <h4>@product.Name</h4>
-                        <p>@product.Description</p>
-                        <div class="d-flex justify-content-between flex-lg-wrap">
-                            <p class="text-dark fs-5 fw-bold mb-0">@product.Price</p>
+                        <div class="d-flex justify-content-between flex-column">
+                            <p class=" fs-5 fw-bold mb-0 text-success">@product.Price.ToString("N0") VND</p>
                             <button data-product-id="@product.Id" class="btn border border-secondary rounded-pill px-3 text-primary add-to-cart-button"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</button>
                         </div>
                     </div>
@@ -105,31 +104,5 @@
 
 
 @section Scripts{
-    <script>
-        $(document).ready(function () {
-            $(document).on('click', '.add-to-cart-button', function (e) {
-                e.preventDefault();
-
-                var productId = $(this).data('product-id');
-
-                $.ajax({
-                    url: '@Url.Action("AddToCart", "Cart")',
-                    type: 'POST',
-                    data: { productId: productId },
-                    success: function (response) {
-                        if (response.success) {
-                            // alert(response.message);
-                            // Optionally update the cart summary or other UI elements
-                            // $('#cart-summary').html('Total Items: ' + response.cart.items.length);
-                        } else {
-                            // alert(response.message);
-                        }
-                    },
-                    error: function () {
-                        alert('An error occurred while adding the item to the cart.');
-                    }
-                });
-            });
-        });
-    </script>
+    
 }

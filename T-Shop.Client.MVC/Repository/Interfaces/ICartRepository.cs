@@ -10,5 +10,6 @@ namespace T_Shop.Client.MVC.Repository.Interfaces
         Task<CartResponseModel> AddToCartAsync(CartRequestModel cartRequestModel);
         Task<CartResponseModel> UpdateCartItemAsync(CartRequestModel cartRequestModel);
         Task<bool> DeleteCartItemAsync(CartItemDeleteRequestModel cartItemRequestModel);
+        void ClearCart();
     }
 }

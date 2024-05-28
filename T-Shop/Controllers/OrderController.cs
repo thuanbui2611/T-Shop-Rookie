@@ -4,7 +4,7 @@ using Stripe;
 using T_Shop.Application.Features.Order.Commands;
 using T_Shop.Application.Features.Transaction.Commands.CreateTransactionFromStripeEvent;
 using T_Shop.Controllers;
-using T_Shop.Shared.DTOs.Cart.ResponseModel;
+using T_Shop.Shared.DTOs.Order.ResponseModel;
 
 namespace T_Shop.WebAPI.Controllers;
 [Route("api/[controller]")]
@@ -23,7 +23,7 @@ public class OrderController : ApiControllerBase
     /// <response code="201">Successfully created item.</response>
     /// <response code="500">There is something wrong while execute.</response>
     [HttpPost]
-    public async Task<ActionResult<CartResponseModel>> CreateOrUpdateOrderAsync([FromBody] CreateOrUpdateOrderCommand command)
+    public async Task<ActionResult<OrderResponseModel>> CreateOrUpdateOrderAsync([FromBody] CreateOrUpdateOrderCommand command)
     {
         var order = await Mediator.Send(command);
         return Ok(order);
@@ -48,4 +48,5 @@ public class OrderController : ApiControllerBase
             throw new Exception(ex.Message);
         }
     }
+
 }

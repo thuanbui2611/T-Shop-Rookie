@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <Folder Include="ViewModels\HomePage\" />
-    <Folder Include="ViewModels\CartPage\" />
     <Folder Include="ViewModels\CheckoutPage\" />
   </ItemGroup>
 

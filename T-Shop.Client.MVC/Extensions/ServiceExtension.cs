@@ -19,6 +19,7 @@ namespace T_Shop.Client.MVC.Extensions
             services.AddHttpClient<IColorRepository, ColorRepository>();
             services.AddHttpClient<IModelRepository, ModelRepository>();
             services.AddHttpClient<ICartRepository, CartRepository>();
+            services.AddHttpClient<IOrderRepository, OrderRepository>();
         }
 
         public static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)

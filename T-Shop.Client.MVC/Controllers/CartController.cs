@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using T_Shop.Client.MVC.Repository.Interfaces;
 using T_Shop.Shared.DTOs.Cart.RequestModel;
+using T_Shop.Shared.DTOs.Cart.ResponseModel;
 using T_Shop.Shared.DTOs.User.ResponseModels;
 
 namespace T_Shop.Client.MVC.Controllers;
@@ -41,7 +42,7 @@ public class CartController : Controller
     }
 
     [HttpPut]
-    public async void UpdateCartItem(Guid productId, int quantity)
+    public async Task<CartResponseModel> UpdateCartItem(Guid productId, int quantity)
     {
         var user = HttpContext.Items["CurrentUser"] as UserResponseModel;
         CartRequestModel updatedItem = new CartRequestModel()
@@ -51,7 +52,7 @@ public class CartController : Controller
             UserID = user.Id
         };
 
-        await _cartRepository.UpdateCartItemAsync(updatedItem);
+        return await _cartRepository.UpdateCartItemAsync(updatedItem);
     }
 
     [HttpDelete]
@@ -65,5 +66,11 @@ public class CartController : Controller
         };
 
         return await _cartRepository.DeleteCartItemAsync(itemDeleted);
+    }
+
+    [HttpDelete]
+    public void ClearCart()
+    {
+        _cartRepository.ClearCart();
     }
 }
