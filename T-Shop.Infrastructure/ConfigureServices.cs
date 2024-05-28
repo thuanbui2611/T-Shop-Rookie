@@ -13,6 +13,7 @@ using T_Shop.Infrastructure.Persistence.IdentityModels;
 using T_Shop.Infrastructure.SharedServices.Authentication;
 using T_Shop.Infrastructure.SharedServices.Cloudinary;
 using T_Shop.Infrastructure.SharedServices.CloudinaryService;
+using T_Shop.Infrastructure.SharedServices.EmailService;
 using T_Shop.Infrastructure.SharedServices.StripeService;
 
 namespace T_Shop.Infrastructure;
@@ -113,6 +114,9 @@ public static class ConfigureServices
 
         //Stripe
         services.AddScoped<IStripeService, StripeService>();
+
+        //Gmail
+        services.AddScoped<IEmailService, EmailService>();
     }
 }
 
