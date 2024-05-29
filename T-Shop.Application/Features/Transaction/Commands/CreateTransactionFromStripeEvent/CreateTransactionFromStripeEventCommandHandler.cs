@@ -59,9 +59,15 @@ public class CreateTransactionFromStripeEventCommandHandler : IRequestHandler<Cr
 
     private async Task CreateNewTransaction(Charge charge)
     {
-        //Update order status
         var order = await _orderQueries.GetOrderByPaymentIntentIdAsync(charge.PaymentIntentId);
+        //Update order status
         order.IsPayment = true;
+        //Update quantity of product
+        foreach (var item in order.OrderDetails)
+        {
+            item.Product.Quantity = item.Product.Quantity - item.Quantity;
+        }
+
         _orderRepository.Update(order);
         //Add new transaction
         var transaction = new Domain.Entity.Transaction
