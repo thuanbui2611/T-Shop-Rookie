@@ -21,7 +21,7 @@ public class CreateTransactionFromStripeEventCommandHandler : IRequestHandler<Cr
     private readonly IGenericRepository<Domain.Entity.Transaction> _transactionRepository;
     private readonly IGenericRepository<CartItem> _cartItemRepository;
     private readonly IGenericRepository<Domain.Entity.Cart> _cartRepository;
-
+    private readonly IGenericRepository<Domain.Entity.Order> _orderRepository;
 
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IEmailService _emailService;
@@ -33,6 +33,7 @@ public class CreateTransactionFromStripeEventCommandHandler : IRequestHandler<Cr
         _transactionRepository = unitOfWork.GetBaseRepo<Domain.Entity.Transaction>();
         _cartItemRepository = unitOfWork.GetBaseRepo<CartItem>();
         _cartRepository = unitOfWork.GetBaseRepo<Domain.Entity.Cart>();
+        _orderRepository = unitOfWork.GetBaseRepo<Domain.Entity.Order>();
         _transactionQueries = transactionQueries;
         _mapper = mapper;
         _userManager = userManager;
@@ -58,7 +59,10 @@ public class CreateTransactionFromStripeEventCommandHandler : IRequestHandler<Cr
 
     private async Task CreateNewTransaction(Charge charge)
     {
+        //Update order status
         var order = await _orderQueries.GetOrderByPaymentIntentIdAsync(charge.PaymentIntentId);
+        order.IsPayment = true;
+        _orderRepository.Update(order);
         //Add new transaction
         var transaction = new Domain.Entity.Transaction
         {
@@ -74,11 +78,10 @@ public class CreateTransactionFromStripeEventCommandHandler : IRequestHandler<Cr
         {
             //Find cart to delete cart items
             var cart = await _cartRepository.FindOne(c => c.UserID.Equals(order.UserID));
-            var cartItem = new CartItem();
             if (cart != null)
             {
                 //Find cart item to delete
-                cartItem = await _cartItemRepository.FindOne(ci =>
+                var cartItem = await _cartItemRepository.FindOne(ci =>
                             ci.ProductID.Equals(orderDetail.ProductID)
                             && ci.CartID.Equals(cart.Id));
                 if (cartItem != null)
@@ -91,7 +94,6 @@ public class CreateTransactionFromStripeEventCommandHandler : IRequestHandler<Cr
         {
             _cartItemRepository.DeleteRange(productInCartToDelete);
         }
-
         await _unitOfWork.CompleteAsync();
     }
 
@@ -103,7 +105,7 @@ public class CreateTransactionFromStripeEventCommandHandler : IRequestHandler<Cr
             string content = await reader.ReadToEndAsync();
             content = Regex.Replace(content, "###ORDER_ID###", transaction.Id.ToString());
             content = Regex.Replace(content, "###NUM_ITEM_PURCHASED###", transaction.Order.OrderDetails.Count().ToString());
-            content = Regex.Replace(content, "###TOTAL_PAYMENT###", transaction.Order.OrderDetails.Sum(o => o.Price * o.Quantity).ToString();
+            content = Regex.Replace(content, "###TOTAL_PAYMENT###", transaction.Order.OrderDetails.Sum(o => o.Price * o.Quantity).ToString());
             content = Regex.Replace(content, "###SHIPPING_ADDRESS###", transaction.Order.ShippingAddress);
             content = Regex.Replace(content, "###ESTIMATED_DELIVERY_DATE###", DateTime.Now.AddDays(3).ToShortDateString());
             var emailOptions = new SendEmailOptions

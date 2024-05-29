@@ -11,14 +11,14 @@ public class OrderQueries : BaseQuery<Order>, IOrderQueries
 
     }
 
-    public async Task<Order> GetOrderByUserIdAsync(Guid userID)
+    public async Task<Order> GetOrderNotPaymentByUserIdAsync(Guid userID)
     {
         return await dbSet
             .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Color)
             .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.ProductImages)
             .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Type)
             .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Model).ThenInclude(m => m.Brand)
-            .FirstOrDefaultAsync(o => o.UserID.Equals(userID));
+            .FirstOrDefaultAsync(o => o.UserID.Equals(userID) && !o.IsPayment);
     }
 
     public async Task<Order> GetOrderByPaymentIntentIdAsync(string paymentIntentId)

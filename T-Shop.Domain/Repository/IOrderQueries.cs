@@ -3,7 +3,7 @@
 namespace T_Shop.Domain.Repository;
 public interface IOrderQueries
 {
-    Task<Order> GetOrderByUserIdAsync(Guid id);
+    Task<Order> GetOrderNotPaymentByUserIdAsync(Guid userId);
     Task<Order> GetOrderByPaymentIntentIdAsync(string paymentIntentId);
     Task<Guid> GetOrderIdByUserId(Guid userId);
 

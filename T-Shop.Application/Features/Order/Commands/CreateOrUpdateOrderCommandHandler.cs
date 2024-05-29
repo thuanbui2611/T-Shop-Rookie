@@ -28,25 +28,28 @@ public class CreateOrUpdateOrderCommandHandler : IRequestHandler<CreateOrUpdateO
     }
     public async Task<OrderResponseModel> Handle(CreateOrUpdateOrderCommand request, CancellationToken cancellationToken)
     {
-        var orderId = await _orderQueries.GetOrderIdByUserId(request.UserID);
-        //Delete old order
-        if (!orderId.Equals(Guid.Empty))
+        var order = await _orderQueries.GetOrderNotPaymentByUserIdAsync(request.UserID);
+        if (order == null)
         {
-            _orderRepository.Delete(orderId);
-            await _unitOfWork.CompleteAsync();
+            //Create new order
+            order = await HandleCreateNewOrder(request);
+        }
+        else
+        {
+            //Update existed order
+            order = await HandleUpdateOrder(request, order);
+        }
+        var paymentIntent = await _stripeService.CreateOrUpdatePaymentIntent(order);
+        if (paymentIntent.Id != null || paymentIntent.ClientSecret != null)
+        {
+            //Create new payment
+            order.PaymentIntentID = paymentIntent.Id ?? order.PaymentIntentID;
+            order.ClientSecret = paymentIntent.ClientSecret ?? order.ClientSecret;
         }
 
-        //Create new order
-        var order = await HandleCreateNewOrder(request);
-
-        var paymentIntent = await _stripeService.CreateOrUpdatePaymentIntent(order);
-        order.PaymentIntentID = paymentIntent.Id ?? order.PaymentIntentID;
-        order.ClientSecret = paymentIntent.ClientSecret ?? order.ClientSecret;
-
-        _orderRepository.Update(order);
         await _unitOfWork.CompleteAsync();
 
-        var orderReturn = await _orderQueries.GetOrderByUserIdAsync(order.UserID);
+        var orderReturn = await _orderQueries.GetOrderNotPaymentByUserIdAsync(order.UserID);
         var result = _mapper.Map<OrderResponseModel>(orderReturn);
         return result;
     }
@@ -75,15 +78,10 @@ public class CreateOrUpdateOrderCommandHandler : IRequestHandler<CreateOrUpdateO
         }
 
         _orderRepository.Add(order);
-        _orderDetailRepository.AddRange(order.OrderDetails);
-        await _unitOfWork.CompleteAsync();
         return order;
     }
     private async Task<Domain.Entity.Order> HandleUpdateOrder(CreateOrUpdateOrderCommand request, Domain.Entity.Order order)
     {
-        _orderDetailRepository.DeleteRange(order.OrderDetails);
-        //order.OrderDetails.Clear();
-
         order.OrderDetails = new List<OrderDetail>();
 
         foreach (var productInOrder in request.Products)
@@ -92,12 +90,11 @@ public class CreateOrUpdateOrderCommandHandler : IRequestHandler<CreateOrUpdateO
             {
                 OrderID = order.Id,
                 ProductID = productInOrder.ProductID,
-                Quantity = productInOrder.Quantity
+                Quantity = productInOrder.Quantity,
+                Price = productInOrder.Price,
             });
         }
-
-        _orderDetailRepository.AddRange(order.OrderDetails);
-        await _unitOfWork.CompleteAsync();
+        _orderRepository.Update(order);
         return order;
     }
 

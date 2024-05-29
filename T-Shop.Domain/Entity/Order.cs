@@ -8,6 +8,7 @@ public class Order : BaseModel
     public string ShippingAddress { get; set; }
     public string PaymentIntentID { get; set; } = string.Empty;
     public string ClientSecret { get; set; } = string.Empty;
+    public bool IsPayment { get; set; }
 
     public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     public virtual Transaction Transaction { get; set; }
