@@ -31,7 +31,7 @@ public class UserResponseModel
     public string? Avatar { get; set; }
 
     [JsonPropertyName("is_locked")]
-    public string? Is_locked { get; set; }
+    public bool? Is_locked { get; set; }
     [JsonPropertyName("role")]
     public string? Role { get; set; }
 

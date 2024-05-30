@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
 using T_Shop.Domain.Repository;
+using T_Shop.Shared.DTOs.Pagination;
 using T_Shop.Shared.DTOs.Transaction.ResponseModel;
 
 namespace T_Shop.Application.Features.Transaction.Queries.GetTransactions;
-public class GetTransactionsQueryHandler : IRequestHandler<GetTransactionsQuery, List<TransactionResponseModel>>
+public class GetTransactionsQueryHandler : IRequestHandler<GetTransactionsQuery, (List<TransactionResponseModel>, PaginationMetaData)>
 {
     private readonly IMapper _mapper;
     private readonly ITransactionQueries _transactionQueries;
@@ -15,10 +16,10 @@ public class GetTransactionsQueryHandler : IRequestHandler<GetTransactionsQuery,
         _transactionQueries = transactionQueries;
     }
 
-    public async Task<List<TransactionResponseModel>> Handle(GetTransactionsQuery request, CancellationToken cancellationToken)
+    public async Task<(List<TransactionResponseModel>, PaginationMetaData)> Handle(GetTransactionsQuery request, CancellationToken cancellationToken)
     {
-        var transactions = await _transactionQueries.GetTransactionsAsync();
+        var (transactions, pagination) = await _transactionQueries.GetTransactionsAsync(request.Pagination);
         var result = _mapper.Map<List<TransactionResponseModel>>(transactions);
-        return result;
+        return (result, pagination);
     }
 }

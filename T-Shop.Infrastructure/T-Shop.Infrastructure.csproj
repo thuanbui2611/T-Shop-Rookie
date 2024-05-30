@@ -31,7 +31,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\T-Shop.Domain\T-Shop.Domain.csproj" />
-    <ProjectReference Include="..\T-Shop.Shared\T-Shop.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
