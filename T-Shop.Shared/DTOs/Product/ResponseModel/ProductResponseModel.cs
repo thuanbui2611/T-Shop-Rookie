@@ -12,7 +12,7 @@ namespace T_Shop.Shared.DTOs.Product.ResponseModel
         public string Description { get; set; }
         public string Variant { get; set; }
         public int Quantity { get; set; }
-        public decimal? Rating { get; set; }
+        public decimal Rating { get; set; }
         public int? totalReviews { get; set; }
         public bool IsOnStock { get; set; }
         public DateTime CreatedAt { get; set; }

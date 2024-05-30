@@ -29,6 +29,10 @@ namespace T_Shop.Infrastructure.Data.Queries
                     .Where(p => p.Id.Equals(id))
                     .Include(p => p.Color)
                     .Include(p => p.ProductImages)
+                    .Include(p => p.Type)
+                    .Include(p => p.Model)
+                        .ThenInclude(m => m.Brand)
+                    .Include(p => p.ProductReviews)
                     .FirstOrDefaultAsync();
         }
     }
