@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using T_Shop.Client.MVC.Helpers;
 using T_Shop.Client.MVC.Services.Interfaces;
 using T_Shop.Shared.ViewModels.ProductsPage;
 
@@ -31,7 +32,6 @@ namespace T_Shop.Client.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-
             var brands = await _brandRepository.GetBrandsAsync();
             var models = await _modelRepository.GetModelsAsync();
             var types = await _typeRepository.GetTypesAsync();
@@ -54,13 +54,23 @@ namespace T_Shop.Client.MVC.Controllers
             return PartialView("_ProductListPartial", products);
         }
 
-        public async Task<IActionResult> Details(Guid id)
+
+        public async Task<IActionResult> Details()
         {
+            var idRoute = RouteData.Values["id"];
+            if (idRoute == null) return NotFound();
+
+            Guid id;
+            var isGuid = Guid.TryParse(idRoute.ToString(), out id);
+            if (!isGuid) return NotFound();
+
             var product = await _productRepository.GetProductByIdAsync(id);
+            if (product == null) return NotFound();
+            //Get rating svg
+            decimal decimalRatingTest = 4.5m;
+            var ratingDetails = RatingHelper.GetRatingDetails(decimalRatingTest);
+            ViewBag.RatingDetails = ratingDetails;
             return View(product);
         }
-
-
-
     }
 }

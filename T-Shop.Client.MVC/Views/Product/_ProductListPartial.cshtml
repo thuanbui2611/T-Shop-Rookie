@@ -1,4 +1,5 @@
-﻿@using T_Shop.Shared.DTOs.Product.ResponseModel
+﻿@using T_Shop.Client.MVC.Helpers
+@using T_Shop.Shared.DTOs.Product.ResponseModel
 @using T_Shop.Shared.ViewModels.ProductsPage
 @model ProductListVM
 
@@ -6,6 +7,7 @@
     int currentPage = Model.PaginationMetaData.CurrentPage;
     int totalPageCount = Model.PaginationMetaData.TotalPageCount;
     int visiblePageCount = 7;
+
 }
 
     @if(Model.PaginationMetaData.TotalItemCount == 0)
@@ -18,7 +20,9 @@
     <div class="row g-4 justify-content-center">
         @foreach (var product in Model.Products)
         {
-            <div class="col-md-6 col-lg-6 col-xl-4">
+            var ratingDetails = T_Shop.Client.MVC.Helpers.RatingHelper.GetRatingDetails(product.Rating);
+
+            <a asp-controller="Product" asp-action="Details" class="col-md-6 col-lg-6 col-xl-4" asp-route-id="@product.Id">
                 <div class="rounded position-relative fruite-item">
                     <div class="fruite-img">
                         <img src=@product.Images.Find(i => i.isMain)?.imageUrl class="img-fluid w-100 rounded-top" alt="">
@@ -26,13 +30,42 @@
                     <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">@product.Model.Brand.Name</div>
                     <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                         <h4>@product.Name</h4>
+                        
+                        @if (ratingDetails != null)
+                        {
+                            <div class="d-flex">
+                                <p style="font-size: 23px; margin: 0 0 0 0; margin-right: 4px; color: #ffc73a">@product.Rating</p>
+                                    @foreach (var detail in ratingDetails)
+                                    {
+                                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 30px; height: 30px">
+                                            <defs>
+                                                @{
+                                                    var idLinear = "colorGradient" + detail.Key + product.Id;
+                                                    var idFill = "#colorGradient" + detail.Key + product.Id;
+                                                }
+                                                <linearGradient id=@idLinear
+                                                                x1="0" y1="0" x2="1" y2="0">
+                                                    <stop offset="@detail.PercentageColor" stop-color="#ffc73a" />
+                                                    <stop offset="@detail.PercentageColor2" stop-color="#dee0e3" />
+                                                </linearGradient>
+                                            </defs>
+                                            <path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"
+                                                  pathLength="360" fill="url(@idFill)"></path>
+                                        </svg>
+                                    }
+
+
+                                <span class="align-content-center text-black-50" style="font-size: 12px; font-weight: 600; margin-left: 4px">@product.totalReviews Reviews</span>
+                            </div>
+                        }
+
                         <div class="d-flex justify-content-between flex-column">
-                            <p class=" fs-5 fw-bold mb-0 text-success">@product.Price.ToString("N0") VND</p>
+                            <p class="fs-5 fw-bold mb-0 text-success mt-1 mb-2">@product.Price.ToString("N0") VND</p>
                             <button data-product-id="@product.Id" class="btn border border-secondary rounded-pill px-3 text-primary add-to-cart-button"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</button>
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         }
 
 

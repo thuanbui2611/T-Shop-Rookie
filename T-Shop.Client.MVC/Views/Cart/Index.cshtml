@@ -68,13 +68,10 @@
                                         @{
                                             var totalPrice = item.Quantity * item.Product.Price;
                                         }
-                                        @totalPrice.ToString("N0")
+                                        <span class="total-price-item">@totalPrice.ToString("N0")</span>
                                     </p>
                                 </td>
                                 <td id="actionFields_@item.Product.Id">
-                          @*           <button class="btn btn-md rounded-circle bg-light border mt-4 save-change-button" name="saveChange" data-product-id="@item.Product.Id">
-                                        <i class="fa fa-times text-success"></i>
-                                    </button> *@
                                     <button class="btn btn-md rounded-circle bg-light border mt-4 delete-item" name="removeItem" data-product-id="@item.Product.Id">
                                         <i class="fa fa-times text-danger"></i>
                                     </button>
@@ -91,7 +88,6 @@
             <div class="col-8"></div>
             <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
                 <div class="bg-light rounded">
-
                     <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
                         <h5 class="mb-0 ps-4 me-4">Total</h5>
                         <p class="mb-0 pe-4">@{
@@ -101,9 +97,9 @@
                                     total += item.Quantity * item.Product.Price;
                                 }
                             }
-                            @total.ToString("N0")
-                                </p>
-                                </div>
+                            <span class="cart-total-price">@total.ToString("N0")</span>
+                        </p>
+                    </div>
                     <button id="checkout-button" class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button">Checkout</button>
                 </div>
             </div>
@@ -143,7 +139,6 @@
             var actionFields = input.closest('tr').find('[id^="actionFields_"]');
             var originalQuantity = parseInt(input.data('original-quantity'));
             var currentQuantity = parseInt(input.val());
-            debugger;
             var saveChangeButton = actionFields.find('.save-change-button');
 
             if (currentQuantity != originalQuantity) {
@@ -152,6 +147,7 @@
                     var saveChangeButtonHtml = '<button class="btn btn-md rounded-circle bg-light border mt-4 save-change-button" name="saveChange" data-product-id="' + productId + '"><i class="fa fa-times text-success"></i></button>';
                     actionFields.append(saveChangeButtonHtml);
                 }
+
             } else {
                 saveChangeButton.remove();
             }
@@ -169,7 +165,6 @@
                     // Fetch the updated content of the CartController index page
 
                     cartData = response;
-                    debugger;
                     alert("Update cart success");
                     $.ajax({
                         url: '/Cart',
@@ -179,6 +174,10 @@
                             var cartItems = $(data).find('#cart-table tbody').html();
                             // Replace the existing cart item rows with the updated content
                             $('#cart-table tbody').html(cartItems);
+
+                            var totalCartPrice = calculateTotalCartPrice(cartData.cartItems);
+                            $('.cart-total-price').text(totalCartPrice.toLocaleString());
+                            $('.cart-total-price').data('total', totalCartPrice.toLocaleString());
                         },
                         error: function (xhr, status, error) {
                             // Handle the error response, if needed
@@ -194,6 +193,7 @@
                 }
             });
         });
+
         //Delete item
         $(document).ready(function () {
             $(document).on('click', '.delete-item', function (e) {
@@ -210,7 +210,7 @@
                         {
                             //update model cart
                             cartData = cartData.cartItems.filter(c => c.productId !== productId);
-
+                            debugger;
                             alert("Item deleted successfully")
                             $.ajax({
                                 url: '/Cart',
@@ -220,7 +220,9 @@
                                     var cartItems = $(data).find('#cart-table tbody').html();
                                     // Replace the existing cart item rows with the updated content
                                     $('#cart-table tbody').html(cartItems);
-
+                                    var totalCartPrice = calculateTotalCartPrice(cartData);
+                                    $('.cart-total-price').text(totalCartPrice.toLocaleString());
+                                    $('.cart-total-price').data('total', totalCartPrice.toLocaleString());
                                 },
                                 error: function (xhr, status, error) {
                                     // Handle the error response, if needed
@@ -242,9 +244,18 @@
             });
         });
 
+        function calculateTotalCartPrice(cartData) {
+            debugger;
+            var total = 0;
+            for (var i = 0; i < cartData.length; i++) {
+                total += cartData[i].product.price * cartData[i].quantity;
+            }
+            debugger;
+            return total;
+        }
+
         //Checkout
         $(document).on('click', '#checkout-button', function () {
-            debugger;
             var orderData = {
                 UserID: cartData.userId,
                 ShippingAddress: '123 Main St, City',
@@ -259,7 +270,6 @@
                 }
                 orderData.Products.push(productOfOrder);
             }
-            debugger;
             // Send AJAX request to trigger the OrderController's Index action
             $.ajax({
                 url: '/Order/CreateOrder',

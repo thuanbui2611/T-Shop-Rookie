@@ -1,10 +1,10 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using T_Shop.Client.MVC.Helpers
+@using T_Shop.Shared.DTOs.Product.ResponseModel
+
+@model ProductResponseModel
 @{
-
+    var ratingDetails = ViewBag.RatingDetails as List<RatingHelper.RatingDetail>;
 }
-
 <!-- Modal Search Start -->
 <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
@@ -34,10 +34,10 @@
 </div>
 <!-- Single Page Header End -->
 <!-- Single Product Start -->
-<div class="container-fluid py-5 mt-5">
+<div class="container-fluid py-5">
     <div class="container py-5">
-        <div class="row g-4 mb-5">
-            <div class="">
+        <div class="row g-4 mb-5 p-5 shadow rounded" style="background-color: #f3f4f6">
+            <div>
                 <div class="row g-4">
                     <div class="col-lg-6">
                         <div class="border rounded">
@@ -47,37 +47,60 @@
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <h4 class="fw-bold mb-3">Brocoli</h4>
-                        <p class="mb-3">Category: Vegetables</p>
-                        <h5 class="fw-bold mb-3">3,35 $</h5>
-                        <div class="d-flex mb-4">
-                            <i class="fa fa-star text-secondary"></i>
-                            <i class="fa fa-star text-secondary"></i>
-                            <i class="fa fa-star text-secondary"></i>
-                            <i class="fa fa-star text-secondary"></i>
-                            <i class="fa fa-star"></i>
-                        </div>
-                        <p class="mb-4">The generated Lorem Ipsum is therefore always free from repetition injected humour, or non-characteristic words etc.</p>
-                        <p class="mb-4">Susp endisse ultricies nisi vel quam suscipit. Sabertooth peacock flounder; chain pickerel hatchetfish, pencilfish snailfish</p>
-                        <div class="input-group quantity mb-5" style="width: 100px;">
-                            <div class="input-group-btn">
-                                <button class="btn btn-sm btn-minus rounded-circle bg-light border">
-                                    <i class="fa fa-minus"></i>
-                                </button>
+                        <div class="flex-column d-flex gap-2">
+                            <h3 class="fw-bold mb-2" style="color: black">@Model.Name</h3>
+                            <div class="d-flex mb-2 rating-list" style="justify-content: left; align-content: center">
+                                <p style="font-size: 28px; margin: 0 0 0 0; margin-right: 4px; color: #ffc73a">@Model.Rating</p>
+                                @if (ratingDetails != null)
+                                {
+                                    foreach (var detail in ratingDetails)
+                                    {
+                                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 35px; height: 35px">
+                                            <defs>
+                                                @{
+                                                    var idLinear = "colorGradient" + detail.Key;
+                                                    var idFill = "#colorGradient" + detail.Key;
+                                                }
+                                                <linearGradient id=@idLinear
+                                                                x1="0" y1="0" x2="1" y2="0">
+                                                    <stop offset="@detail.PercentageColor" stop-color="#ffc73a" />
+                                                    <stop offset="@detail.PercentageColor2" stop-color="#ffffff" />
+                                                </linearGradient>
+                                            </defs>
+                                            <path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"
+                                                    pathLength="360" fill="url(@idFill)"></path>
+                                        </svg>
+                                    }
+                                }
+                                <span class="align-content-center">@Model.totalReviews Reviews</span>
+
                             </div>
-                            <input type="text" class="form-control form-control-sm text-center border-0" value="1">
-                            <div class="input-group-btn">
-                                <button class="btn btn-sm btn-plus rounded-circle bg-light border">
-                                    <i class="fa fa-plus"></i>
-                                </button>
+                            <h4 class="fw-bold mb-2 text-success">@Model.Price.ToString("N0") $</h4>
+                            <div class="input-group quantity mb-3" style="width: 100px;">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-sm btn-minus rounded-circle bg-light border">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                                <input type="text" class="form-control form-control-sm text-center border-0" value="1">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-sm btn-plus rounded-circle bg-light border">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <h6 class=" mb-3" style="color:black">On Stock: @Model.Quantity </h6>
+                            <div class="d-flex gap-3">
+                                <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Buy Now</a>
                             </div>
                         </div>
-                        <div class="d-flex gap-3">
-                            <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                            <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Buy Now</a>
-                        </div>
-                      
+
+
                     </div>
+
+                 
+                    @* Description *@
                     <div class="col-lg-12">
                         <nav>
                             <div class="nav nav-tabs mb-3">
@@ -95,43 +118,42 @@
                         </nav>
                         <div class="tab-content mb-5">
                             <div class="tab-pane active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
-                               
-                                <p>
-                                    Description
+                                <p style="color:black">
+                                    @Model.Description
                                 </p>
                                 <div class="px-2">
                                     <div class="row g-4">
-                                        <div class="col-6">
-                                            <div class="row bg-light align-items-center text-center justify-content-center py-2">
-                                                <div class="col-6">
+                                        <div class="col-6 shadow-sm rounded">
+                                            <div class="row bg-white align-items-center text-center justify-content-center py-2 rounded-top">
+                                                <h6 class="col-6" style="color:black">
                                                     <p class="mb-0">Type</p>
-                                                </div>
-                                                <div class="col-6">
-                                                    <p class="mb-0">1 kg</p>
-                                                </div>
-                                            </div>
-                                            <div class="row text-center align-items-center justify-content-center py-2">
-                                                <div class="col-6">
-                                                    <p class="mb-0">Brand</p>
-                                                </div>
-                                                <div class="col-6">
-                                                    <p class="mb-0">Agro Farm</p>
-                                                </div>
-                                            </div>
-                                            <div class="row bg-light text-center align-items-center justify-content-center py-2">
-                                                <div class="col-6">
-                                                    <p class="mb-0">Model</p>
-                                                </div>
-                                                <div class="col-6">
-                                                    <p class="mb-0">Organic</p>
+                                                </h6>
+                                                <div class="col-6" style="color:black">
+                                                    <p class="mb-0" >@Model.Type.Name</p>
                                                 </div>
                                             </div>
                                             <div class="row text-center align-items-center justify-content-center py-2">
                                                 <div class="col-6">
-                                                    <p class="mb-0">Сolor</p>
+                                                    <h6 class="mb-0" style="color:black">Brand</h6>
+                                                </div>
+                                                <div class="col-6" style="color:black">
+                                                    <div class="mb-0" style="color:black">@Model.Model.Brand.Name</div>
+                                                </div>
+                                            </div>
+                                            <div class="row bg-white text-center align-items-center justify-content-center py-2">
+                                                <div class="col-6">
+                                                    <h6 class="mb-0" style="color:black">Model</h6>
+                                                </div>
+                                                <div class="col-6" >
+                                                    <div class="mb-0" style="color:black">@Model.Model.Name</div>
+                                                </div>
+                                            </div>
+                                            <div class="row text-center align-items-center justify-content-center py-2">
+                                                <div class="col-6">
+                                                    <h6 class="mb-0" style="color:black">Сolor</h6>
                                                 </div>
                                                 <div class="col-6">
-                                                    <p class="mb-0">Healthy</p>
+                                                    <div class="mb-0" style="color:black">@Model.Color.Name</div>
                                                 </div>
                                             </div>
 
@@ -139,47 +161,10 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="tab-pane" id="nav-mission" role="tabpanel" aria-labelledby="nav-mission-tab">
-                                <div class="d-flex">
-                                    <img src="https://cafebiz.cafebizcdn.vn/2018/6/16/h1xfzvz1nb-1506908574320-1529139802884198701797.png" class="img-fluid rounded-circle p-3" style="width: 100px; height: 100px;" alt="">
-                                    <div class="">
-                                        <p class="mb-2" style="font-size: 14px;">April 12, 2024</p>
-                                        <div class="d-flex justify-content-between">
-                                            <h5>Jason Smith</h5>
-                                            <div class="d-flex mb-3">
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
-                                        </div>
-                                        <p>
-                                            The generated Lorem Ipsum is therefore always free from repetition injected humour, or non-characteristic
-                                            words etc. Susp endisse ultricies nisi vel quam suscipit
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="d-flex">
-                                    <img src="img/avatar.jpg" class="img-fluid rounded-circle p-3" style="width: 100px; height: 100px;" alt="">
-                                    <div class="">
-                                        <p class="mb-2" style="font-size: 14px;">April 12, 2024</p>
-                                        <div class="d-flex justify-content-between">
-                                            <h5>Sam Peters</h5>
-                                            <div class="d-flex mb-3">
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
-                                        </div>
-                                        <p class="text-dark">
-                                            The generated Lorem Ipsum is therefore always free from repetition injected humour, or non-characteristic
-                                            words etc. Susp endisse ultricies nisi vel quam suscipit
-                                        </p>
-                                    </div>
-                                </div>
+                               
+                              
                             </div>
                             <div class="tab-pane" id="nav-vision" role="tabpanel">
                                 <p class="text-dark">
@@ -193,44 +178,55 @@
                             </div>
                         </div>
                     </div>
-                    <form action="#">
-                        <h4 class="mb-5 fw-bold">Leave a Reply</h4>
-                        <div class="row g-4">
-                            <div class="col-lg-6">
-                                <div class="border-bottom rounded">
-                                    <input type="text" class="form-control border-0 me-4" placeholder="Yur Name *">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="border-bottom rounded">
-                                    <input type="email" class="form-control border-0" placeholder="Your Email *">
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="border-bottom rounded my-4">
-                                    <textarea name="" id="" class="form-control border-0" cols="30" rows="8" placeholder="Your Review *" spellcheck="false"></textarea>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="d-flex justify-content-between py-3 mb-5">
-                                    <div class="d-flex align-items-center">
-                                        <p class="mb-0 me-3">Please rate:</p>
-                                        <div class="d-flex align-items-center" style="font-size: 12px;">
-                                            <i class="fa fa-star text-muted"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="btn border border-secondary text-primary rounded-pill px-4 py-3"> Post Comment</a>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
                 </div>
             </div>
-        
+        </div>
+        @* Reviews *@
+        <div>
+            <h3>Reviews (@Model.totalReviews)</h3>
+            <div class="d-flex flex-column py-4 gap-4" style="width: 100%">
+                @* Start Review*@
+                <div class="d-flex shadow rounded p-4" style="background-color: #f3f4f6; width: 100%">
+                    <img src="https://cafebiz.cafebizcdn.vn/2018/6/16/h1xfzvz1nb-1506908574320-1529139802884198701797.png" class="img-fluid rounded-circle p-3" style="width: 100px; height: 100px;" alt="">
+                    <div class="flex-fill">
+                        <p class="mb-2" style="font-size: 14px;">April 12, 2024</p>
+                        <div class="d-flex justify-content-between">
+                            <h5>Jason Smith</h5>
+                            <div class="d-flex mb-3">
+                                <i class="fa fa-star text-secondary"></i>
+                                <i class="fa fa-star text-secondary"></i>
+                                <i class="fa fa-star text-secondary"></i>
+                                <i class="fa fa-star text-secondary"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                        </div>
+                        <span>
+                            The generated Lorem Ipsum is therefore always free from repet
+                        </span>
+                    </div>
+                </div>
+
+                <div class="d-flex shadow rounded p-4" style="background-color: #f3f4f6; width: 100%">
+                    <img src="https://cafebiz.cafebizcdn.vn/2018/6/16/h1xfzvz1nb-1506908574320-1529139802884198701797.png" class="img-fluid rounded-circle p-3" style="width: 100px; height: 100px;" alt="">
+                    <div class="flex-fill">
+                        <p class="mb-2" style="font-size: 14px;">April 12, 2024</p>
+                        <div class="d-flex justify-content-between">
+                            <h5>Jason Smith</h5>
+                            <div class="d-flex mb-3">
+                                <i class="fa fa-star text-secondary"></i>
+                                <i class="fa fa-star text-secondary"></i>
+                                <i class="fa fa-star text-secondary"></i>
+                                <i class="fa fa-star text-secondary"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                        </div>
+                        <span>
+                            The generated Lorem Ipsum is therefore always free from repet
+                        </span>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 </div>
