@@ -137,11 +137,10 @@
         });
         const cardElement = elements.create('payment');
 
-        cardElement.mount('#checkout'); // Replace with the appropriate container ID
+        cardElement.mount('#checkout'); 
 
         document.getElementById('paymentForm').addEventListener('submit', async (event) => {
             event.preventDefault();
-            // Use Stripe.js to confirm the payment
             stripe.confirmPayment({
                 elements,
                 confirmParams: {
@@ -150,8 +149,7 @@
             })
                 .then((result) => {
                     if (result.error) {
-                        // Inform the customer that there was an error.
-                        alert("Payment failed with: ", result.error.toString());
+                        toastR.error("Payment failed with: ", result.error.toString());
                     } else {
                         window.location.href = '/order/successpayment';
                     }

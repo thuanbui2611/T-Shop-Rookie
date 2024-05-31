@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>T_Shop.Client.MVC</RootNamespace>
+    <UserSecretsId>8f200044-4ea4-46fd-9658-aaf5326a5a85</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

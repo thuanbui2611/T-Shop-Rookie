@@ -21,22 +21,25 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="~/theme/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-    <link href="~/theme/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="~/theme/lib/lightbox/css/lightbox.min.css" rel="stylesheet" asp-append-version="true">
+    <link href="~/theme/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" asp-append-version="true">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="~/theme/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/theme/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true">
 
     <!-- Template Stylesheet -->
-    <link href="~/theme/css/style.css" rel="stylesheet">
+    <link href="~/theme/css/style.css" rel="stylesheet" asp-append-version="true">
+
+    @* ToastR *@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
 
 </head>
 <body>
     
         <!-- Spinner Start -->
-        <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+@*         <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
             <div class="spinner-grow text-primary" role="status"></div>
-        </div>
+        </div> *@
         <!-- Spinner End -->
 
 
@@ -176,12 +179,15 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/theme/lib/easing/easing.min.js"></script>
-    <script src="~/theme/lib/waypoints/waypoints.min.js"></script>
-    <script src="~/theme/lib/lightbox/js/lightbox.min.js"></script>
-    <script src="~/theme/lib/owlcarousel/owl.carousel.min.js"></script>
-    <!-- Template Javascript -->
-    <script src="~/theme/js/main.js"></script>
+    <script src="~/theme/lib/easing/easing.min.js" asp-append-version="true"></script>
+    <script src="~/theme/lib/waypoints/waypoints.min.js" asp-append-version="true"></script>
+    <script src="~/theme/lib/lightbox/js/lightbox.min.js" asp-append-version="true"></script>
+    <script src="~/theme/lib/owlcarousel/owl.carousel.min.js" asp-append-version="true"></script>
+    <script src="~/theme/js/main.js" asp-append-version="true"></script>
+
+    @* ToastR *@
+    <script src="~/Theme/"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -1,0 +1,254 @@
+﻿@using T_Shop.Client.MVC.Helpers.Constants
+@using T_Shop.Shared.DTOs.Transaction.ResponseModel
+
+@model TransactionResponseModel
+<style>
+    body {
+        background: #eee;
+    }
+
+    .card {
+        box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+    }
+
+    .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 0 solid rgba(0,0,0,.125);
+        border-radius: 1rem;
+    }
+
+    .text-reset {
+        --bs-text-opacity: 1;
+        color: inherit !important;
+    }
+
+    .line-clamp-1{
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+    }
+
+</style>
+
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">Order Details</h1>
+    <ol class="breadcrumb justify-content-center mb-0">
+    </ol>
+</div>
+
+<div class="container-fluid">
+    <div class="container py-5">
+        <!-- Title -->
+        <div class="d-flex justify-content-between align-items-center py-3">
+            <h2 class="mb-0"> Order <span style=" color: #146cd9"> #@Model.ID</span></h2>
+            <span id="statusSpan" class="d-inline-block px-2 py-1 fw-bold lead rounded-pill text-sm
+                @(Model.Status == TransactionConstants.PENDING ? "bg-pending text-info" :
+                  Model.Status == TransactionConstants.COMPLETED ? "bg-success text-success" : 
+                  Model.Status == TransactionConstants.CANCELED ? "bg-deny text-danger" :
+                  "bg-ongoing text-warning"
+
+                )">@Model.Status</span>
+        </div>
+
+        <!-- Main content -->
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Details -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="mb-3 d-flex justify-content-between">
+                            <div>
+                                <span class="me-3 fw-bold" style="color: black">@Model.CreatedAt</span>
+                            </div>
+                        </div>
+                        <table class="table table-borderless">
+                            <tbody>
+                                @foreach(var orderDetail in Model.Order.OrderDetails)
+                                {
+                                    <tr class="border-bottom">
+                                        <td class="mt-2">
+                                            <div class="d-flex mb-2">
+                                                <div class="flex-shrink-0">
+                                                    <img src=@orderDetail.Product.Images.Find(i => i.isMain).imageUrl alt="Image Product" width="80" class="img-fluid">
+                                                </div>
+                                                <div class="flex-lg-grow-1 ms-3">
+                                                    <h5 class="mb-0  line-clamp-1"><a href="#" class="text-reset">@orderDetail.Product.Name</a></h5>
+                                                    <span class="">Color: @orderDetail.Product.Color.Name</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="mt-2" style="color: black">@orderDetail.Quantity</td>
+                                        <td class="text-end text-success fw-bold mt-2">$@orderDetail.Price.ToString("N0")</td>
+
+                                        
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2" class="text-end">Subtotal</td>
+                                    <td class="text-end">$0</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="text-end">Shipping</td>
+                                    <td class="text-end">$0</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="text-end">Discount</td>
+                                    <td class="text-danger text-end">-$0</td>
+                                </tr>
+                                <tr class="fw-bold">
+                                    <td colspan="2" class="text-end" style="font-size: 20px; color: black">TOTAL</td>
+                                    <td class="text-end text-success fw-bold" style="font-size: 20px">
+                                        @{
+                                            decimal totalPayment = 0;
+                                            foreach (var item in Model.Order.OrderDetails)
+                                            {
+                                                totalPayment += item.Price * item.Quantity;
+                                            }
+                                        }
+                                        $@totalPayment.ToString("N0")
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <!-- Payment -->
+             @*    <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <h3 class="h6">Payment Method</h3>
+                                <p>
+                                    Visa -1234 <br>
+                                    Total: $169,98 <span class="badge bg-success rounded-pill">PAID</span>
+                                </p>
+                            </div>
+                            <div class="col-lg-6">
+                                <h3 class="h6">Billing address</h3>
+                                <address>
+                                    <strong>John Doe</strong><br>
+                                    1355 Market St, Suite 900<br>
+                                    San Francisco, CA 94103<br>
+                                    <abbr title="Phone">P:</abbr> (123) 456-7890
+                                </address>
+                            </div>
+                        </div>
+                    </div>
+                </div> *@
+            </div>
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-body" style="color:black">
+                        <h4>Contact Information</h4>
+                        <p>
+                            Full Name: abc
+                        </p>
+                        <p>
+                            Email: abc
+                        </p>
+                        <p>
+                            Phone: 0987
+                        </p>
+                        <hr />
+                        <h4>Shipping Address</h4>
+                        <p>
+                            <strong>Name of customer</strong><br>
+                            @Model.Order.ShippingAddress
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (Model.Status == TransactionConstants.PENDING)
+        {
+            <div id="container-update-status" class="align-content-center justify-content-center d-flex">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelOrder">
+                    Cancel Order
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="cancelOrder" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="cancelOrderLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                        <form id="formCancel" class="modal-content">
+                            <div class="modal-header bg-light">
+                                <h4 class="modal-title text-center text-danger fw-bold" id="cancelOrderLabel">Confirm Cancel Order</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container">
+                                    <div id="contact-form" role="form">
+                                        <div class="controls">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="form_message fw-bold" style="color: black">Message</label>
+                                                        <textarea id="form_message" name="message" class="form-control" placeholder="Write your message here." rows="4" required="required" data-error="Please, leave us a message."></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button id="confirmBtn" type="submit" class="btn btn-primary">Confirm</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        }
+      
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('#formCancel').on('submit', function (e) {
+                e.preventDefault();
+
+                var transactionId = "@Model.ID";
+                var reason = $('#form_message').val();
+                var status = "Canceled";
+
+                $.ajax({
+                    url: '/myorder/UpdateTransactionStatus',
+                    type: 'PUT',
+                    data: { id: transactionId, reason: reason, status: status },
+                    success: function (response) {
+                        debugger;
+                        // Update the status display
+                        if (response !== null && response !== undefined) {
+                            var statusSpan = $('#statusSpan');
+                            statusSpan.text('Canceled');
+                            statusSpan.removeClass().addClass('d-inline-block px-2 py-1 fw-bold lead rounded-pill text-sm bg-deny text-danger');
+                            $('#container-update-status').remove();
+                            $('#cancelOrder').modal('hide');
+                            toastR.success("Cancel order successful!");
+                        } else {
+                            toastR.error("Error, can not cancel order!");
+                        }
+                        
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+                             

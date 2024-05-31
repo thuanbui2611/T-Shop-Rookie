@@ -29,8 +29,7 @@ namespace T_Shop.Client.MVC.Services.Services
             var query = new Dictionary<string, string>
             {
                 ["pageNumber"] = productRequestParams.PageNumber.ToString(),
-                //["pageSize"] = productRequestParams.PageSize.ToString(),
-                ["pageSize"] = "1",
+                ["pageSize"] = productRequestParams.PageSize.ToString(),
             };
 
             if (!string.IsNullOrEmpty(productRequestParams.Search))

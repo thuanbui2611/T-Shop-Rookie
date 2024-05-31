@@ -1,3 +1,4 @@
+
 /*Base*/
 .text-logo-color {
     background: #C30000;
@@ -12,10 +13,35 @@
     -webkit-text-fill-color: transparent;
 }
 
+
 .bg-gradient-1 {
     background-image: linear-gradient(to right, #670404, #74080a, #810d0f, #8e1213, #9c1717, #a81818, #b31818, #bf1919, #cc1515, #d91011, #e50809, #f20000);
 }
 
+.hover-onClick {
+    transition: background-color 0.3s;
+}
+
+.hover-onClick:hover {
+    filter: brightness(.9);
+    cursor: pointer;
+}
+
+.bg-deny {
+    background-color: #f5dfe1 !important
+}
+
+.bg-pending {
+    background-color: #d5e5f7 !important
+}
+
+.bg-success {
+    background-color: #dff5eb !important
+}
+
+.bg-ongoing {
+    background-color: #f5f1df !important
+}
 /*** Spinner Start ***/
 #spinner {
     opacity: 0;
@@ -43,6 +69,7 @@
     z-index: 99;
 }
 /*** Spinner End ***/
+
 
 /*Stripe Form*/
 #card-element {
