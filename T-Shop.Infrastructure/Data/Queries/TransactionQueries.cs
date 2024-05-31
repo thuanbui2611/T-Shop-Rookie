@@ -85,6 +85,9 @@ public class TransactionQueries : BaseQuery<Transaction>, ITransactionQueries
                .ThenInclude(od => od.Product)
                .ThenInclude(p => p.ProductImages)
             .Where(t => t.CustomerID.Equals(userID))
+            .OrderByDescending(t => t.CreatedAt)
+            .Skip(pagination.pageSize * (pagination.pageNumber - 1))
+            .Take(pagination.pageSize)
             .ToListAsync();
 
         return (transactionsOfUser, paginationMetaData);
