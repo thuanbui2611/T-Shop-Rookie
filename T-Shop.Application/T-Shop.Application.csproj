@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Folder Include="Features\Cart\Queries\GetCartById\" />
+    <Folder Include="Features\Order\Queries\" />
   </ItemGroup>
 
 </Project>

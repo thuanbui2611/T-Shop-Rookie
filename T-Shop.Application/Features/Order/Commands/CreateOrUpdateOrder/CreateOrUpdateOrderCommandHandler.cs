@@ -6,7 +6,7 @@ using T_Shop.Domain.Repository;
 using T_Shop.Infrastructure.SharedServices.StripeService;
 using T_Shop.Shared.DTOs.Order.ResponseModel;
 
-namespace T_Shop.Application.Features.Order.Commands;
+namespace T_Shop.Application.Features.Order.Commands.CreateOrUpdateOrder;
 public class CreateOrUpdateOrderCommandHandler : IRequestHandler<CreateOrUpdateOrderCommand, OrderResponseModel>
 {
     private readonly IUnitOfWork _unitOfWork;

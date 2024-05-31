@@ -59,9 +59,14 @@ public class TransactionQueries : BaseQuery<Transaction>, ITransactionQueries
         return (transactions, paginationMetaData);
     }
 
-    public async Task<List<Transaction>> GetTransactionsByUserIdAsync(Guid userID)
+    public async Task<(List<Transaction>, PaginationMetaData)> GetTransactionsByUserIdAsync(PaginationRequestModel pagination, Guid userID)
     {
-        return await dbSet
+        var totalItemCount = await dbSet
+            .Where(t => t.CustomerID.Equals(userID))
+            .CountAsync();
+        var paginationMetaData = new PaginationMetaData(totalItemCount, pagination.pageSize, pagination.pageNumber);
+
+        var transactionsOfUser = await dbSet
            .Include(t => t.Order)
                .ThenInclude(o => o.OrderDetails)
                .ThenInclude(od => od.Product)
@@ -81,6 +86,8 @@ public class TransactionQueries : BaseQuery<Transaction>, ITransactionQueries
                .ThenInclude(p => p.ProductImages)
             .Where(t => t.CustomerID.Equals(userID))
             .ToListAsync();
+
+        return (transactionsOfUser, paginationMetaData);
     }
 
     public async Task<Transaction> GetTransactionsByIdAsync(Guid transactionID)

@@ -3,6 +3,7 @@ using T_Shop.Application.Features.ProductReview.Commands.CreateReviewForProduct;
 using T_Shop.Application.Features.Transaction.Commands.UpdateStatusTransaction;
 using T_Shop.Application.Features.Transaction.Queries.GetTransactionById;
 using T_Shop.Application.Features.Transaction.Queries.GetTransactions;
+using T_Shop.Application.Features.Transaction.Queries.GetTransactionsOfUser;
 using T_Shop.Controllers;
 using T_Shop.Extensions;
 using T_Shop.Shared.DTOs.Pagination;
@@ -62,6 +63,27 @@ public class TransactionController : ApiControllerBase
         });
         return Ok(transaction);
 
+    }
+
+    /// <summary>
+    /// Acquire transaction information of user
+    /// </summary>
+    /// <returns>Status code of the action.</returns>
+    /// <response code="200">Successfully get items information.</response>
+    /// <response code="500">There is something wrong while execute.</response>
+    [HttpGet("user/{userId}")]
+    public async Task<ActionResult<TransactionResponseModel>> GetTransactionByIdAsync(
+        [FromRoute] Guid userId,
+        [FromQuery] PaginationRequestModel pagination)
+    {
+
+        var (transactions, paginationMetaData) = await Mediator.Send(new GetTransactionsOfUserQuery()
+        {
+            UserId = userId,
+            Pagination = pagination
+        });
+        Response.AddPaginationHeader(paginationMetaData);
+        return Ok(transactions);
     }
 
     /// <summary>
