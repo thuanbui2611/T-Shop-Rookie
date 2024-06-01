@@ -979,4 +979,13 @@
     </div>
 </div>
 <!-- Tastimonial End -->
-
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var errorMessage = '@TempData["ErrorMessage"]';
+            if (errorMessage) {
+                toastr.error(errorMessage,);
+            }
+        });
+    </script>
+}

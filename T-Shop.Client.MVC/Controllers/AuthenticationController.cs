@@ -15,12 +15,17 @@ namespace T_Shop.Client.MVC.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("login");
         }
 
         [HttpGet]
         public IActionResult Login()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                TempData["ErrorMessage"] = "You have logined!";
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 

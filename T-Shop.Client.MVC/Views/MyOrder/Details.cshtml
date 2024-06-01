@@ -28,13 +28,6 @@
         color: inherit !important;
     }
 
-    .line-clamp-1{
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 1;
-    }
-
 </style>
 
 <div class="container-fluid page-header py-5">
@@ -74,18 +67,100 @@
                                 {
                                     <tr class="border-bottom">
                                         <td class="mt-2">
-                                            <div class="d-flex mb-2">
+                                            <div class="d-flex mb-2 gap-2">
                                                 <div class="flex-shrink-0">
                                                     <img src=@orderDetail.Product.Images.Find(i => i.isMain).imageUrl alt="Image Product" width="80" class="img-fluid">
                                                 </div>
-                                                <div class="flex-lg-grow-1 ms-3">
+                                                <div class=" flex-grow-1">
                                                     <h5 class="mb-0  line-clamp-1"><a href="#" class="text-reset">@orderDetail.Product.Name</a></h5>
                                                     <span class="">Color: @orderDetail.Product.Color.Name</span>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="mt-2" style="color: black">@orderDetail.Quantity</td>
-                                        <td class="text-end text-success fw-bold mt-2">$@orderDetail.Price.ToString("N0")</td>
+                                        <td>
+                                            <div class="text-end text-success fw-bold">$@orderDetail.Price.ToString("N0")</div>
+                                            <div id="container-rating-product" class="align-content-end justify-content-end d-flex">
+                                                <!-- Button trigger modal -->
+                                                <button type="button" class="btn btn-success py-1 px-2" style="font-size: 14px" data-bs-toggle="modal" data-bs-target="#ratingProduct">
+                                                    Rating
+                                                </button>
+                                                <!-- Modal Review Form-->
+                                                <div class="modal fade" id="ratingProduct" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ratingProductLabel" aria-hidden="true">
+                                                    <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable  modal-lg">
+                                                        <form id="formReview" class="modal-content" data-product-id="@orderDetail.Product.Id">
+                                                            <div class="modal-header bg-light">
+                                                                <h4 class="modal-title text-center text-danger fw-bold" id="cancelOrderLabel">Review Product</h4>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="container">
+                                                                    <div role="form">
+                                                                        <div class="controls mb-2">
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    <div class="form-group">
+                                                                                        <label for="title-input fw-bold" style="color: black">Title</label>
+                                                                                        <input id="title-input" name="title" class="form-control" placeholder="The car is perfect..." required="required" data-error="Please, leave us a message."></input>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="controls">
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    <div class="form-group">
+                                                                                        <label for="content-input fw-bold" style="color: black">Content</label>
+                                                                                        <textarea id="content-input" name="content" class="form-control" placeholder="I love this car..." rows="4" required="required" data-error="Please, leave us a message."></textarea>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        @* rating *@
+                                                                        <div class="mt-2">
+                                                                            <input id="rating-input" name="rating-input" class="rating rating-loading" data-min="0" data-max="5" data-step="1" value="5">
+
+                                                                        </div>
+                                                                        @* Upload images  *@
+                                                                        <div class="mb-3">
+                                                                            <label for="file-input" class="form-label">Select Images</label>
+                                                                            <input id="file-input" name="files" type="file" multiple class="form-control" />
+                                                                        </div>
+                                                                            
+                                                                            <div id="image-preview" class="d-flex gap-3 mb-4 rounded-md bg-light py-2 px-4 overflow-auto w-100 d-none" style="height: 220px">
+                                                                            <!-- Preview images will be displayed here -->
+@*                                                                             <div style="width: 20%">
+                                                                                <div class="d-flex justify-content-between ">
+                                                                                    <span class="line-clamp-1" style="font-size: 12px; color:black; max-height: 18px">Xe-Toyota-Camry.jpg</span>
+                                                                                    <div class="text-danger cursor-pointer hover-text-danger">
+                                                                                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 8px">
+                                                                                            <path fill-rule="evenodd"
+                                                                                                  clip-rule="evenodd"
+                                                                                                  d="M0.279337 0.279338C0.651787 -0.0931121 1.25565 -0.0931121 1.6281 0.279338L9.72066 8.3719C10.0931 8.74435 10.0931 9.34821 9.72066 9.72066C9.34821 10.0931 8.74435 10.0931 8.3719 9.72066L0.279337 1.6281C-0.0931125 1.25565 -0.0931125 0.651788 0.279337 0.279338Z"
+                                                                                                  fill="currentColor"></path>
+                                                                                            <path fill-rule="evenodd"
+                                                                                                  clip-rule="evenodd"
+                                                                                                  d="M0.279337 9.72066C-0.0931125 9.34821 -0.0931125 8.74435 0.279337 8.3719L8.3719 0.279338C8.74435 -0.0931127 9.34821 -0.0931123 9.72066 0.279338C10.0931 0.651787 10.0931 1.25565 9.72066 1.6281L1.6281 9.72066C1.25565 10.0931 0.651787 10.0931 0.279337 9.72066Z"
+                                                                                                  fill="currentColor"></path>
+                                                                                        </svg>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <img class="h-75 w-100" src="https://live.staticflickr.com/65535/49932658111_30214a4229_b.jpg" alt="Product Image" />
+                                                                            </div> *@
+                                                                            </div>
+                                                                     </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                                                <button id="confirmReviewBtn" type="submit" class="btn btn-success">Confirm</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </td>
 
                                         
                                     </tr>
@@ -107,6 +182,7 @@
                                 <tr class="fw-bold">
                                     <td colspan="2" class="text-end" style="font-size: 20px; color: black">TOTAL</td>
                                     <td class="text-end text-success fw-bold" style="font-size: 20px">
+                                        <div></div>
                                         @{
                                             decimal totalPayment = 0;
                                             foreach (var item in Model.Order.OrderDetails)
@@ -215,6 +291,7 @@
 
 @section Scripts {
     <script>
+        //Handle Cancel form
         $(function () {
             $('#formCancel').on('submit', function (e) {
                 e.preventDefault();
@@ -236,9 +313,9 @@
                             statusSpan.removeClass().addClass('d-inline-block px-2 py-1 fw-bold lead rounded-pill text-sm bg-deny text-danger');
                             $('#container-update-status').remove();
                             $('#cancelOrder').modal('hide');
-                            toastR.success("Cancel order successful!");
+                            toastr.success("Cancel order successful!");
                         } else {
-                            toastR.error("Error, can not cancel order!");
+                            toastr.error("Error, can not cancel order!");
                         }
                         
                     },
@@ -248,6 +325,156 @@
                 });
             });
         });
+
+        //Handle upload images
+        var filesToUpload = [];
+        $(function () {
+            $('#file-input').on('change', function (e) {
+                debugger;
+                const imagePreviewContainer = document.getElementById("image-preview");
+                imagePreviewContainer.innerHTML = "";
+
+                // Get selected files
+                const files = Array.from(event.target.files);
+                filesToUpload.push(...files);
+
+                if (filesToUpload.length > 0) {
+                    imagePreviewContainer.classList.remove("d-none");
+                } else {
+                    imagePreviewContainer.classList.add("d-none");
+                }
+                // Display preview images
+                filesToUpload.forEach(function (file, index) {
+                    const reader = new FileReader();
+                    debugger;
+                    reader.onload = function () {
+                        const imageURL = reader.result;
+
+                        // Create image preview container
+                        const previewContainer = document.createElement("div");
+                        previewContainer.id = `image-preview-${index}`;
+                        previewContainer.style.width = "20%";
+
+                        // Create div container for image name and remove button
+                        const divContainer = document.createElement("div");
+                        divContainer.className = "d-flex justify-content-between";
+
+                        // Create image name span
+                        const imageNameSpan = document.createElement("span");
+                        imageNameSpan.className = "line-clamp-1";
+                        imageNameSpan.style.fontSize = "12px";
+                        imageNameSpan.style.color = "black";
+                        imageNameSpan.style.maxHeight = "18px";
+                        imageNameSpan.textContent = file.name;
+
+                        // Create remove button
+                        const removeBtn = document.createElement("div");
+                        removeBtn.className = "text-danger cursor-pointer hover-text-danger";
+                        removeBtn.innerHTML = `<svg class="removeBtn" data-index="${index}" data-file-name="${file.name}" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 8px">
+                                                                                                    <path fill-rule="evenodd"
+                                                                                                          clip-rule="evenodd"
+                                                                                                          d="M0.279337 0.279338C0.651787 -0.0931121 1.25565 -0.0931121 1.6281 0.279338L9.72066 8.3719C10.0931 8.74435 10.0931 9.34821 9.72066 9.72066C9.34821 10.0931 8.74435 10.0931 8.3719 9.72066L0.279337 1.6281C-0.0931125 1.25565 -0.0931125 0.651788 0.279337 0.279338Z"
+                                                                                                          fill="currentColor"></path>
+                                                                                                    <path fill-rule="evenodd"
+                                                                                                          clip-rule="evenodd"
+                                                                                                          d="M0.279337 9.72066C-0.0931125 9.34821 -0.0931125 8.74435 0.279337 8.3719L8.3719 0.279338C8.74435 -0.0931127 9.34821 -0.0931123 9.72066 0.279338C10.0931 0.651787 10.0931 1.25565 9.72066 1.6281L1.6281 9.72066C1.25565 10.0931 0.651787 10.0931 0.279337 9.72066Z"
+                                                                                                          fill="currentColor"></path>
+                                                                                                </svg>`;
+                        // Append elements to the preview container
+                        divContainer.appendChild(imageNameSpan);
+                        divContainer.appendChild(removeBtn);
+
+                        // Create image element
+                        const image = document.createElement("img");
+                        image.className = "h-75 w-100";
+                        image.src = imageURL;
+                        image.alt = "Product Image";
+
+                        // Append elements to the preview container
+                        previewContainer.appendChild(divContainer);
+                        previewContainer.appendChild(image);
+
+                        // Append the preview container to the image preview container
+                        imagePreviewContainer.appendChild(previewContainer);
+                    };
+
+                    // Read the file as data URL
+                    reader.readAsDataURL(file);
+                })
+            });
+        });
+
+        // Remove file button click event listener
+        $(document).on('click', '.removeBtn', function () {
+          
+            const index = $(this).data('index');
+            const fileName = $(this).data('file-name');
+            debugger;
+            var indexToDelete = filesToUpload.findIndex(file => file.name === fileName);
+            if(indexToDelete !== -1)
+            {
+                filesToUpload.splice(indexToDelete, 1);
+            }
+
+            // Display none for container
+            if (filesToUpload.length === 0) {
+                const imagePreviewContainer = document.getElementById("image-preview");
+                imagePreviewContainer.classList.add("d-none");
+            } 
+          
+            // Remove the image preview element
+            const imageId = `#image-preview-${index}`;
+            $(imageId).remove();
+        });
+
+        //Handle submit form review/rating
+        $(function () {
+            $('#formReview').on('submit', function (e) {
+                e.preventDefault();
+                var productId = $(this).data('product-id');
+                var transactionId = "@Model.ID";
+                var title = $('#title-input').val();
+                var content = $('#content-input').val();
+                var rating = $('#rating-input').val();
+
+                const formData = new FormData();
+
+                formData.append('ProductID', productId);
+                formData.append('TransactionID', transactionId);
+                formData.append('Title', title);
+                formData.append('Content', content);
+                formData.append('Rating', rating);
+
+                for (let i = 0; i < filesToUpload.length; i++) {
+                    const file = filesToUpload[i];
+                    formData.append('imagesUpload', file);
+                }
+
+                debugger;
+                $.ajax({
+                    url: '/myorder/ReviewProductInTransaction',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        debugger;
+                        if (response !== null && response !== undefined) {
+                            $('#container-rating-product').remove();
+                            $('#formReview').modal('hide');
+                            toastr.success("Review success, thanks for your rating!");
+                        } else {
+                            toastr.error("Review failed!");
+                        }
+
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
+        });
+
     </script>
 }
 

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using T_Shop.Client.MVC.Repository.Interfaces;
+using T_Shop.Shared.DTOs.ProductReview.RequestModel;
+using T_Shop.Shared.DTOs.ProductReview.ResponseModel;
 using T_Shop.Shared.DTOs.Transaction.RequestModel;
 using T_Shop.Shared.DTOs.Transaction.ResponseModel;
 using T_Shop.Shared.DTOs.User.ResponseModels;
@@ -17,16 +19,18 @@ public class MyOrderController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
+        var user = HttpContext.Items["CurrentUser"] as UserResponseModel;
+        if (user == null)
+        {
+            TempData["ErrorMessage"] = "You need to login to view your orders.";
+            return RedirectToAction("Login", "Authentication");
+        }
         return View();
     }
 
     public async Task<IActionResult> TransactionListPartial(TransactionRequestParam transactionRequestParam)
     {
         var user = HttpContext.Items["CurrentUser"] as UserResponseModel;
-        if (user == null)
-        {
-            //handle not login
-        }
         var transactions = await _transactionRepository.GetTransactionsOfUserAsync(transactionRequestParam, user.Id);
         return PartialView("_TransactionListPartial", transactions);
     }
@@ -49,6 +53,16 @@ public class MyOrderController : Controller
     {
         var user = HttpContext.Items["CurrentUser"] as UserResponseModel;
         return await _transactionRepository.UpdateTransactionStatusAsync(request);
+
+    }
+
+
+    [HttpPost]
+    public async Task<ProductReviewResponseModel> ReviewProductInTransaction(ProductReviewCreationRequestModel review)
+    {
+        var user = HttpContext.Items["CurrentUser"] as UserResponseModel;
+        review.UserID = user.Id;
+        return await _transactionRepository.CreateReviewForProduct(review);
 
     }
 }
