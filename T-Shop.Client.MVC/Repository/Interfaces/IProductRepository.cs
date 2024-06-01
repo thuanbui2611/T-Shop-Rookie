@@ -7,6 +7,6 @@ namespace T_Shop.Client.MVC.Services.Interfaces
     {
         Task<ProductListVM> GetProductsAsync(ProductRequestParam productRequestParams);
         Task<ProductResponseModel> GetProductByIdAsync(Guid productId);
-
+        Task<ProductReviewListVM> GetProductReviewsByIdAsync(ProductReviewRequestParam productReviewRequestParams, Guid productId);
     }
 }

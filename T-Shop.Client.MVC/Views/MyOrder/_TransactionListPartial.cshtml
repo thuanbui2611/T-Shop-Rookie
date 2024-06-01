@@ -60,7 +60,7 @@
 <div class="pagination d-flex justify-content-center mt-3">
     @if (currentPage > 1)
     {
-        <a href="javascript:void(0);" class="rounded" onclick="paginationProductList('@(currentPage - 1)')"> &laquo; </a>
+        <a href="javascript:void(0);" class="rounded" onclick="paginationTransactionList('@(currentPage - 1)')"> &laquo; </a>
     }
 
     @if (totalPageCount <= visiblePageCount)
@@ -73,7 +73,7 @@
             }
             else
             {
-                <a href="javascript:void(0);" class="rounded" onclick="paginationProductList('@i')">@i</a>
+                <a href="javascript:void(0);" class="rounded" onclick="paginationTransactionList('@i')">@i</a>
             }
         }
     }
@@ -84,7 +84,7 @@
 
         if (startPage > 1)
         {
-            <a href="javascript:void(0);" class="rounded" onclick="paginationProductList('1')">1</a>
+            <a href="javascript:void(0);" class="rounded" onclick="paginationTransactionList('1')">1</a>
             if (startPage > 2)
             {
                 <span class="rounded">...</span>
@@ -99,7 +99,7 @@
             }
             else
             {
-                <a href="javascript:void(0);" class="rounded" onclick="paginationProductList('@i')">@i</a>
+                <a href="javascript:void(0);" class="rounded" onclick="paginationTransactionList('@i')">@i</a>
             }
         }
 
@@ -109,12 +109,12 @@
             {
                 <span class="rounded">...</span>
             }
-            <a href="javascript:void(0);" class="rounded" onclick="paginationProductList('@totalPageCount')">@totalPageCount</a>
+            <a href="javascript:void(0);" class="rounded" onclick="paginationTransactionList('@totalPageCount')">@totalPageCount</a>
         }
     }
 
     @if (currentPage < totalPageCount)
     {
-        <a href="javascript:void(0);" class="rounded" onclick="paginationProductList('@(currentPage + 1)')"> &raquo; </a>
+        <a href="javascript:void(0);" class="rounded" onclick="paginationTransactionList('@(currentPage + 1)')"> &raquo; </a>
     }
 </div>

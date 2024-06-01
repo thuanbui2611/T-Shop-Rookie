@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using T_Shop.Client.MVC.Services.Interfaces;
 using T_Shop.Shared.DTOs.Product.ResponseModel;
+using T_Shop.Shared.DTOs.ProductReview.ResponseModel;
 using T_Shop.Shared.ViewModels.ProductsPage;
 
 namespace T_Shop.Client.MVC.Services.Services
@@ -23,6 +24,7 @@ namespace T_Shop.Client.MVC.Services.Services
             }
             return null;
         }
+
 
         public async Task<ProductListVM> GetProductsAsync(ProductRequestParam productRequestParams)
         {
@@ -99,5 +101,43 @@ namespace T_Shop.Client.MVC.Services.Services
             }
             return new ProductListVM();
         }
+
+        public async Task<ProductReviewListVM> GetProductReviewsByIdAsync(ProductReviewRequestParam productReviewRequestParams, Guid productId)
+        {
+            var query = new Dictionary<string, string>
+            {
+                ["pageNumber"] = productReviewRequestParams.PageNumber.ToString(),
+                ["pageSize"] = productReviewRequestParams.PageSize.ToString(),
+            };
+
+            var queryString = string.Join("&", query.Select(x => $"{x.Key}={x.Value}"));
+            var requestUrl = $"api/product/review/{productId}?{queryString}";
+            HttpResponseMessage response = _httpClient.GetAsync(requestUrl).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                string productReviewsString = await response.Content.ReadAsStringAsync();
+                var productReviews = JsonConvert.DeserializeObject<List<ProductReviewResponseModel>>(productReviewsString);
+
+                ProductReviewListVM productReviewVM = new ProductReviewListVM()
+                {
+                    ProductReviews = productReviews,
+                };
+
+                if (response.Headers.TryGetValues("X-Pagination", out IEnumerable<string> paginationValues))
+                {
+                    string paginationHeaderValue = paginationValues.FirstOrDefault();
+                    var pagination = JsonConvert.DeserializeObject<MetaData>(paginationHeaderValue);
+                    productReviewVM.PaginationMetaData = pagination;
+                }
+
+                return productReviewVM;
+            }
+            return new ProductReviewListVM();
+
+
+        }
+
+
     }
 }

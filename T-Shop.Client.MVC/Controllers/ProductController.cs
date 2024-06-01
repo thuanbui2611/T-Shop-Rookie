@@ -67,10 +67,15 @@ namespace T_Shop.Client.MVC.Controllers
             var product = await _productRepository.GetProductByIdAsync(id);
             if (product == null) return NotFound();
             //Get rating svg
-            decimal decimalRatingTest = 4.5m;
-            var ratingDetails = RatingHelper.GetRatingDetails(decimalRatingTest);
+            var ratingDetails = RatingHelper.GetRatingDetails(product.Rating);
             ViewBag.RatingDetails = ratingDetails;
             return View(product);
+        }
+
+        public async Task<IActionResult> ProductReviewListPartial(ProductReviewRequestParam request, Guid productId)
+        {
+            var productReviews = await _productRepository.GetProductReviewsByIdAsync(request, productId);
+            return PartialView("_ProductReviewListPartial", productReviews);
         }
     }
 }

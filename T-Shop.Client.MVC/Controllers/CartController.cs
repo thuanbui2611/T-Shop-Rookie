@@ -28,7 +28,7 @@ public class CartController : Controller
     }
 
     [HttpPost]
-    public async void AddToCart(Guid productId)
+    public async Task<bool> AddToCart(Guid productId)
     {
         var user = HttpContext.Items["CurrentUser"] as UserResponseModel;
         CartRequestModel newItem = new CartRequestModel()
@@ -37,8 +37,8 @@ public class CartController : Controller
             Quantity = 1,
             UserID = user.Id
         };
-
-        await _cartRepository.AddToCartAsync(newItem);
+        var newCart = await _cartRepository.AddToCartAsync(newItem);
+        return newCart != null ? true : false;
     }
 
     [HttpPut]

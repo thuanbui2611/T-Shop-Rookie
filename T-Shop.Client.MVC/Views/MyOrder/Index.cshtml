@@ -94,7 +94,7 @@
     <script>
         $('#transactionList').load("/myorder/TransactionListPartial");
 
-        function paginationProductList(pageNumber) {
+        function paginationTransactionList(pageNumber) {
             debugger;
             var params = new URLSearchParams(window.location.search);
             params.set('PageNumber', pageNumber);

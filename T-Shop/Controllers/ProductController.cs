@@ -65,12 +65,17 @@ namespace T_Shop.Controllers
         /// <response code="200">Successfully get items information.</response>
         /// <response code="500">There is something wrong while execute.</response>
         [HttpGet("review/{productId}")]
-        public async Task<ActionResult<List<ProductReviewResponseModel>>> GetProductReviewsByProductId(Guid productId)
+        public async Task<ActionResult<List<ProductReviewResponseModel>>> GetProductReviewsByProductId(
+            [FromRoute] Guid productId,
+            [FromQuery] PaginationRequestModel pagination)
         {
-            var reviews = await Mediator.Send(new GetReviewsOfProductQuery()
+            var (reviews, paginationMetaData) = await Mediator.Send(new GetReviewsOfProductQuery()
             {
-                ProductID = productId
+                ProductID = productId,
+                Pagination = pagination
+
             });
+            Response.AddPaginationHeader(paginationMetaData);
             return Ok(reviews);
 
         }

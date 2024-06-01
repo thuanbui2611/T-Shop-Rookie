@@ -149,8 +149,33 @@
 
 })(jQuery);
 
-//Rating
 
+
+//Add to cart
+$(document).ready(function () {
+    $(document).on('click', '.add-to-cart-button', function (e) {
+        e.preventDefault();
+        var productId = $(this).data('product-id');
+
+        $.ajax({
+            url: '/cart/AddToCart',
+            type: 'POST',
+            data: { productId: productId },
+            success: function (response) {
+                if (response) {
+                    toastr.success("Add to cart successfull!");
+                } else {
+                    toastr.error("Add to cart failed!");
+                }
+            },
+            error: function () {
+                alert('An error occurred while adding the item to the cart.');
+            }
+        });
+    });
+});
+
+//Rating select
 ! function (e) {
     "use strict";
     "function" == typeof define && define.amd ? define(["jquery"], e) : "object" == typeof module && module.exports ? module.exports = e(require("jquery")) : e(window.jQuery)
@@ -502,3 +527,4 @@
         t.length && t.removeClass("rating-loading").addClass("rating-loading").rating()
     })
 });
+
