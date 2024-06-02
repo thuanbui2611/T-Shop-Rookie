@@ -40,8 +40,10 @@
                         {
                             <tr>
                                 <th scope="row">
-                                    <div class="d-flex align-items-center">
-                                        <img src="@item.Product.Images.Find(i => i.isMain).imageUrl" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="Image product">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <img src="@item.Product.Images?.Find(i => i.isMain)?.imageUrl" class="img-fluid rounded-circle border shadow-sm" style="width: 80px; height: 80px;" alt="Image product">
+
+                                        <h5 style="color:black">@item.Product.Name</h5>
                                     </div>
                                 </th>
                                 <td>
