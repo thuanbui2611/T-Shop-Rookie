@@ -1,4 +1,5 @@
 ﻿using T_Shop.Shared.DTOs.Product.ResponseModel;
+using T_Shop.Shared.DTOs.ProductReview.ResponseModel;
 
 namespace T_Shop.Shared.DTOs.Order.ResponseModel;
 public class OrderResponseModel
@@ -13,7 +14,13 @@ public class OrderResponseModel
 
 public class OrderDetailResponseModel
 {
-    public ProductResponseModel Product { get; set; }
+    public ProductOfOrderResponseModel Product { get; set; }
     public decimal Price { get; set; }
     public int Quantity { get; set; }
+    public ProductReviewResponseModel ProductReview { get; set; }
+}
+
+public class ProductOfOrderResponseModel : ProductResponseModel
+{
+    public bool IsReviewed { get; set; } = false;
 }

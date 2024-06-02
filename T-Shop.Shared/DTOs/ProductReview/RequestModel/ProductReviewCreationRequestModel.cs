@@ -6,6 +6,7 @@ public class ProductReviewCreationRequestModel
     public Guid UserID { get; set; }
     public Guid ProductID { get; set; }
     public Guid TransactionID { get; set; }
+    public Guid OrderID { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Content { get; set; } = string.Empty;
     public int Rating { get; set; }

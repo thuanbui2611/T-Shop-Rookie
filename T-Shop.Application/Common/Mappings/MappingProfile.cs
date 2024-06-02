@@ -77,8 +77,22 @@ namespace T_Shop.Application.Common.Mappings
             CreateMap<CartItem, CartItemResponseModel>();
 
             //Order
+            CreateMap<Product, ProductOfOrderResponseModel>()
+                .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.ProductImages))
+                .ForMember(dest => dest.IsReviewed, opt => opt.MapFrom(src => src.OrderDetails.Any(od => od.ProductReview != null)))
+                .AfterMap((src, dest) =>
+                {
+                    dest.Name = $"{src.Model.Brand.Name} {src.Model.Name} {src.Variant}";
+                    if (src.ProductReviews != null)
+                    {
+                        dest.Rating = src.ProductReviews.Any() ? (decimal)src.ProductReviews.Average(x => x.Rating) : 0;
+                        dest.totalReviews = src.ProductReviews.Any() ? src.ProductReviews.Count() : 0;
+                    }
+                });
+
             CreateMap<OrderDetail, OrderDetailResponseModel>()
                 .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product));
+
             CreateMap<Order, OrderResponseModel>()
                 .ForMember(dest => dest.CustomerID, opt => opt.MapFrom(src => src.UserID))
                 .ForMember(dest => dest.OrderDetails, opt => opt.MapFrom(src => src.OrderDetails));

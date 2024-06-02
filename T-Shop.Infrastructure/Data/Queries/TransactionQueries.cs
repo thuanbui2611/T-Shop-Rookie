@@ -96,6 +96,9 @@ public class TransactionQueries : BaseQuery<Transaction>, ITransactionQueries
     public async Task<Transaction> GetTransactionsByIdAsync(Guid transactionID)
     {
         return await dbSet
+            .Include(t => t.Order)
+               .ThenInclude(o => o.OrderDetails)
+               .ThenInclude(od => od.ProductReview)
            .Include(t => t.Order)
                .ThenInclude(o => o.OrderDetails)
                .ThenInclude(od => od.Product)

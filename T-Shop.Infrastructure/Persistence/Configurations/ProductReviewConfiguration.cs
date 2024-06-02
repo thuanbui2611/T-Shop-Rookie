@@ -15,10 +15,10 @@ public class ProductReviewConfiguration : IEntityTypeConfiguration<ProductReview
             .HasForeignKey(p => p.ProductID)
             .OnDelete(DeleteBehavior.Cascade);
 
-        //Product Review - Transaction
-        builder.HasOne(pr => pr.Transaction)
+        //Product Review - OrderDetail
+        builder.HasOne(pr => pr.OrderDetail)
             .WithOne(t => t.ProductReview)
-            .HasForeignKey<ProductReview>(pr => pr.TransactionID)
+            .HasForeignKey<ProductReview>(pr => new { pr.OrderID, pr.ProductID })
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

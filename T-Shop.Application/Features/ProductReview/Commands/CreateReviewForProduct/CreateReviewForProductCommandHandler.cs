@@ -33,15 +33,17 @@ public class CreateReviewForProductCommandHandler : IRequestHandler<CreateReview
 
     public async Task<ProductReviewResponseModel> Handle(CreateReviewForProductCommand request, CancellationToken cancellationToken)
     {
-        var transaction = await HandleValidatingReview(request);
+        await HandleValidatingReview(request);
+
         var productReview = new Domain.Entity.ProductReview()
         {
             UserID = request.UserID,
             ProductID = request.ProductID,
-            TransactionID = transaction.Id,
             Title = request.Title,
             Content = request.Content,
             Rating = request.Rating,
+            OrderID = request.OrderID,
+
         };
         _productReviewRepository.Add(productReview);
         //Add images
@@ -68,8 +70,12 @@ public class CreateReviewForProductCommandHandler : IRequestHandler<CreateReview
         return result;
     }
 
-    private async Task<Domain.Entity.Transaction> HandleValidatingReview(CreateReviewForProductCommand request)
+    private async Task HandleValidatingReview(CreateReviewForProductCommand request)
     {
+        if (request.ProductID == Guid.Empty || request.OrderID == Guid.Empty || request.UserID == Guid.Empty || request.TransactionID == Guid.Empty)
+        {
+            throw new NotFoundException("The ID is empty");
+        }
         if (!TransactionConstants.ALLOW_RATING_INPUT.Contains(request.Rating))
         {
             throw new BadRequestException($"Rating does not allow, only allow: " +
@@ -97,6 +103,5 @@ public class CreateReviewForProductCommandHandler : IRequestHandler<CreateReview
             throw new NotFoundException("Product is not found in transaction");
         }
 
-        return transaction;
     }
 }
