@@ -5,11 +5,11 @@ public class Order : BaseModel
 {
     [Column("FK_user_id")]
     public Guid UserID { get; set; }
-    public string ShippingAddress { get; set; }
+    public string ShippingAddress { get; set; } = string.Empty;
     public string PaymentIntentID { get; set; } = string.Empty;
     public string ClientSecret { get; set; } = string.Empty;
-    public bool IsPayment { get; set; }
+    public bool IsPayment { get; set; } = false;
 
-    public virtual ICollection<OrderDetail> OrderDetails { get; set; }
-    public virtual Transaction Transaction { get; set; }
+    public virtual ICollection<OrderDetail> OrderDetails { get; set; } = [];
+    public virtual Transaction Transaction { get; set; } = new();
 }

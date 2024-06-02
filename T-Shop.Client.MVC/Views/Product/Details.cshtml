@@ -236,7 +236,7 @@
                             <button class="btn border border-secondary rounded-pill px-4 py-2 text-primary add-to-cart-button" data-product-id="@Model.Id">
                                 <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
                             </button>
-                            <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Buy Now</a>
+                            <button id="buy-button" class="btn border border-secondary rounded-pill px-4 py-2 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Buy Now</button>
                         </div>
                     </div>
 
@@ -330,6 +330,34 @@
             $('#productReviewList').load(url);
         }
 
+        //Checkout (buy)
+        $(document).on('click', '#buy-button', function () {
+            var orderData = {
+                UserID: '',
+                ShippingAddress: '',
+                Products: [{
+                    ProductID: '@Model.Id',
+                    Price: '@Model.Price',
+                    Quantity: 1
+                }]
+            };
+            debugger;
+            // Send AJAX request to trigger the OrderController's Index action
+            $.ajax({
+                url: '/Order/CreateOrder',
+                type: 'POST',
+                data: orderData,
+                success: function (response) {
+                    // Handle the success response from the server, if needed
+                    console.log('Order placed successfully:', response);
+                    window.location.href = response.redirectUrl;
+                },
+                error: function (xhr, status, error) {
+                    // Handle any errors that occur during the AJAX request
+                    console.error('Error placing order:', error);
+                }
+            });
+        });
 
         // Handle Images Carousel
         let slideIndex = 1;

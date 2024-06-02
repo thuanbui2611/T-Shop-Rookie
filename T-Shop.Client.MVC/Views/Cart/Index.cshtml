@@ -272,11 +272,12 @@
                 }
                 orderData.Products.push(productOfOrder);
             }
+            debugger;
             // Send AJAX request to trigger the OrderController's Index action
             $.ajax({
                 url: '/Order/CreateOrder',
                 type: 'POST',
-                data: { orderStr: JSON.stringify(orderData) },
+                data: orderData,
                 success: function (response) {
                     // Handle the success response from the server, if needed
                     console.log('Order placed successfully:', response);

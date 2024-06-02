@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using T_Shop.Client.MVC.Repository.Interfaces;
 using T_Shop.Shared.DTOs.Order.RequestModel;
+using T_Shop.Shared.DTOs.User.ResponseModels;
 using T_Shop.Shared.ViewModels.OrderPage;
 
 namespace T_Shop.Client.MVC.Controllers;
@@ -35,9 +35,16 @@ public class OrderController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateOrder(string orderStr)
+    public async Task<IActionResult> CreateOrder(OrderRequestModel order)
     {
-        OrderRequestModel order = JsonConvert.DeserializeObject<OrderRequestModel>(orderStr);
+        var user = HttpContext.Items["CurrentUser"] as UserResponseModel;
+        if (user == null || !User.Identity.IsAuthenticated)
+        {
+            TempData["ErrorMessage"] = "You need to login to view your carts!";
+            return RedirectToAction("Login", "Authentication");
+        }
+        order.UserID = user.Id;
+        order.ShippingAddress = user.Address;
         var newOrder = await _orderRepository.CreateOrUpdateOrderAsync(order);
         var redirectUrl = "";
         if (newOrder == null)
