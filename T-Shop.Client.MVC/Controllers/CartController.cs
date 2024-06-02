@@ -17,10 +17,16 @@ public class CartController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
+        var user = HttpContext.Items["CurrentUser"] as UserResponseModel;
+        if (!User.Identity.IsAuthenticated || user == null)
+        {
+            TempData["ErrorMessage"] = "You need to login to view your carts!";
+            return RedirectToAction("Login", "Authentication");
+
+        }
         var currentCart = _cartRepository.GetCart();
         if (currentCart == null)
         {
-            var user = HttpContext.Items["CurrentUser"] as UserResponseModel;
             currentCart = await _cartRepository.GetCartByUserIdAsync(user.Id);
         }
 
@@ -28,9 +34,15 @@ public class CartController : Controller
     }
 
     [HttpPost]
-    public async Task<bool> AddToCart(Guid productId)
+    public async Task<IActionResult> AddToCart(Guid productId)
     {
         var user = HttpContext.Items["CurrentUser"] as UserResponseModel;
+        if (!User.Identity.IsAuthenticated || user == null)
+        {
+            TempData["ErrorMessage"] = "You need to login to view your carts!";
+            return RedirectToAction("Login", "Authentication");
+
+        }
         CartRequestModel newItem = new CartRequestModel()
         {
             ProductID = productId,
@@ -38,7 +50,7 @@ public class CartController : Controller
             UserID = user.Id
         };
         var newCart = await _cartRepository.AddToCartAsync(newItem);
-        return newCart != null ? true : false;
+        return newCart != null ? Json(new { success = true }) : Json(new { success = false });
     }
 
     [HttpPut]

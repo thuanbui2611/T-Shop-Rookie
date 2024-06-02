@@ -162,7 +162,7 @@ $(document).ready(function () {
             type: 'POST',
             data: { productId: productId },
             success: function (response) {
-                if (response) {
+                if (response.success) {
                     toastr.success("Add to cart successfull!");
                 } else {
                     toastr.error("Add to cart failed!");

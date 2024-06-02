@@ -78,89 +78,95 @@
                                             </div>
                                         </td>
                                         <td class="mt-2" style="color: black">@orderDetail.Quantity</td>
-                                        <td>
-                                            <div class="text-end text-success fw-bold">$@orderDetail.Price.ToString("N0")</div>
-                                            <div id="container-rating-product" class="align-content-end justify-content-end d-flex">
-                                                <!-- Button trigger modal -->
-                                                <button type="button" class="btn btn-success py-1 px-2" style="font-size: 14px" data-bs-toggle="modal" data-bs-target="#ratingProduct">
-                                                    Rating
-                                                </button>
-                                                <!-- Modal Review Form-->
-                                                <div class="modal fade" id="ratingProduct" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ratingProductLabel" aria-hidden="true">
-                                                    <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable  modal-lg">
-                                                        <form id="formReview" class="modal-content" data-product-id="@orderDetail.Product.Id">
-                                                            <div class="modal-header bg-light">
-                                                                <h4 class="modal-title text-center text-danger fw-bold" id="cancelOrderLabel">Review Product</h4>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="container">
-                                                                    <div role="form">
-                                                                        <div class="controls mb-2">
-                                                                            <div class="row">
-                                                                                <div class="col-md-12">
-                                                                                    <div class="form-group">
-                                                                                        <label for="title-input fw-bold" style="color: black">Title</label>
-                                                                                        <input id="title-input" name="title" class="form-control" placeholder="The car is perfect..." required="required" data-error="Please, leave us a message."></input>
+                                       
+                                            <td>
+                                                <div class="text-end text-success fw-bold">$@orderDetail.Price.ToString("N0")</div>
+                                            @if (Model.Status == TransactionConstants.COMPLETED)
+                                            {
+                                                <div id="container-rating-product" class="align-content-end justify-content-end d-flex">
+                                                    <!-- Button trigger modal -->
+                                                    <button type="button" class="btn btn-success py-1 px-2" style="font-size: 14px" data-bs-toggle="modal" data-bs-target="#ratingProduct">
+                                                        Rating
+                                                    </button>
+                                                    <!-- Modal Review Form-->
+                                                    <div class="modal fade" id="ratingProduct" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ratingProductLabel" aria-hidden="true">
+                                                        <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable  modal-lg">
+                                                            <form id="formReview" class="modal-content" data-product-id="@orderDetail.Product.Id">
+                                                                <div class="modal-header bg-light">
+                                                                    <h4 class="modal-title text-center text-danger fw-bold" id="cancelOrderLabel">Review Product</h4>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="container">
+                                                                        <div role="form">
+                                                                            <div class="controls mb-2">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <div class="form-group">
+                                                                                            <label for="title-input fw-bold" style="color: black">Title</label>
+                                                                                            <input id="title-input" name="title" class="form-control" placeholder="The car is perfect..." required="required" data-error="Please, leave us a message."></input>
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="controls">
-                                                                            <div class="row">
-                                                                                <div class="col-md-12">
-                                                                                    <div class="form-group">
-                                                                                        <label for="content-input fw-bold" style="color: black">Content</label>
-                                                                                        <textarea id="content-input" name="content" class="form-control" placeholder="I love this car..." rows="4" required="required" data-error="Please, leave us a message."></textarea>
+                                                                            <div class="controls">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <div class="form-group">
+                                                                                            <label for="content-input fw-bold" style="color: black">Content</label>
+                                                                                            <textarea id="content-input" name="content" class="form-control" placeholder="I love this car..." rows="4" required="required" data-error="Please, leave us a message."></textarea>
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
-                                                                        @* rating *@
-                                                                        <div class="mt-2">
-                                                                            <input id="rating-input" name="rating-input" class="rating rating-loading" data-min="0" data-max="5" data-step="1" value="5">
+                                                                            @* Rating Form *@
 
-                                                                        </div>
-                                                                        @* Upload images  *@
-                                                                        <div class="mb-3">
-                                                                            <label for="file-input" class="form-label">Select Images</label>
-                                                                            <input id="file-input" name="files" type="file" multiple class="form-control" />
-                                                                        </div>
-                                                                            
+                                                                            <div class="mt-2">
+                                                                                <input id="rating-input" name="rating-input" class="rating rating-loading" data-min="0" data-max="5" data-step="1" value="5">
+
+                                                                            </div>
+                                                                            @* Upload images  *@
+                                                                            <div class="mb-3">
+                                                                                <label for="file-input" class="form-label">Select Images</label>
+                                                                                <input id="file-input" name="files" type="file" multiple class="form-control" />
+                                                                            </div>
+
                                                                             <div id="image-preview" class="d-flex gap-3 mb-4 rounded-md bg-light py-2 px-4 overflow-auto w-100 d-none" style="height: 220px">
-                                                                            <!-- Preview images will be displayed here -->
-@*                                                                             <div style="width: 20%">
+                                                                                <!-- Preview images will be displayed here -->
+                                                                                @*                                                                             <div style="width: 20%">
                                                                                 <div class="d-flex justify-content-between ">
-                                                                                    <span class="line-clamp-1" style="font-size: 12px; color:black; max-height: 18px">Xe-Toyota-Camry.jpg</span>
-                                                                                    <div class="text-danger cursor-pointer hover-text-danger">
-                                                                                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 8px">
-                                                                                            <path fill-rule="evenodd"
-                                                                                                  clip-rule="evenodd"
-                                                                                                  d="M0.279337 0.279338C0.651787 -0.0931121 1.25565 -0.0931121 1.6281 0.279338L9.72066 8.3719C10.0931 8.74435 10.0931 9.34821 9.72066 9.72066C9.34821 10.0931 8.74435 10.0931 8.3719 9.72066L0.279337 1.6281C-0.0931125 1.25565 -0.0931125 0.651788 0.279337 0.279338Z"
-                                                                                                  fill="currentColor"></path>
-                                                                                            <path fill-rule="evenodd"
-                                                                                                  clip-rule="evenodd"
-                                                                                                  d="M0.279337 9.72066C-0.0931125 9.34821 -0.0931125 8.74435 0.279337 8.3719L8.3719 0.279338C8.74435 -0.0931127 9.34821 -0.0931123 9.72066 0.279338C10.0931 0.651787 10.0931 1.25565 9.72066 1.6281L1.6281 9.72066C1.25565 10.0931 0.651787 10.0931 0.279337 9.72066Z"
-                                                                                                  fill="currentColor"></path>
-                                                                                        </svg>
-                                                                                    </div>
+                                                                                <span class="line-clamp-1" style="font-size: 12px; color:black; max-height: 18px">Xe-Toyota-Camry.jpg</span>
+                                                                                <div class="text-danger cursor-pointer hover-text-danger">
+                                                                                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 8px">
+                                                                                <path fill-rule="evenodd"
+                                                                                clip-rule="evenodd"
+                                                                                d="M0.279337 0.279338C0.651787 -0.0931121 1.25565 -0.0931121 1.6281 0.279338L9.72066 8.3719C10.0931 8.74435 10.0931 9.34821 9.72066 9.72066C9.34821 10.0931 8.74435 10.0931 8.3719 9.72066L0.279337 1.6281C-0.0931125 1.25565 -0.0931125 0.651788 0.279337 0.279338Z"
+                                                                                fill="currentColor"></path>
+                                                                                <path fill-rule="evenodd"
+                                                                                clip-rule="evenodd"
+                                                                                d="M0.279337 9.72066C-0.0931125 9.34821 -0.0931125 8.74435 0.279337 8.3719L8.3719 0.279338C8.74435 -0.0931127 9.34821 -0.0931123 9.72066 0.279338C10.0931 0.651787 10.0931 1.25565 9.72066 1.6281L1.6281 9.72066C1.25565 10.0931 0.651787 10.0931 0.279337 9.72066Z"
+                                                                                fill="currentColor"></path>
+                                                                                </svg>
+                                                                                </div>
                                                                                 </div>
                                                                                 <img class="h-75 w-100" src="https://live.staticflickr.com/65535/49932658111_30214a4229_b.jpg" alt="Product Image" />
-                                                                            </div> *@
+                                                                                </div> *@
                                                                             </div>
-                                                                     </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                                                <button id="confirmReviewBtn" type="submit" class="btn btn-success">Confirm</button>
-                                                            </div>
-                                                        </form>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                                                    <button id="confirmReviewBtn" type="submit" class="btn btn-success">Confirm</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
                                                     </div>
-                                                </div>
 
-                                            </div>
-                                        </td>
+                                                </div>
+                                            }
+                                             
+                                            </td>
 
                                         
                                     </tr>

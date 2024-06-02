@@ -15,11 +15,10 @@ namespace T_Shop.Client.MVC.Controllers
 
         public IActionResult Index()
         {
-            if (HttpContext.User.Identity.IsAuthenticated)
-            {
-                //var user = HttpContext.Items["CurrentUser"] as UserResponseModel;
-                Console.WriteLine("Logined");
-            }
+            var errorMessage = TempData["ErrorMessage"]?.ToString();
+            var successMessage = TempData["SuccessMessage"]?.ToString();
+            ViewBag.ErrorMessage = errorMessage;
+            ViewBag.SuccessMessage = successMessage;
             return View();
         }
 

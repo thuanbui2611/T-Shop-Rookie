@@ -9,10 +9,12 @@ public class OrderController : Controller
 {
     private readonly IOrderRepository _orderRepository;
     private readonly IConfiguration _configuration;
-    public OrderController(IOrderRepository orderRepository, IConfiguration configuration)
+    private readonly ICartRepository _cartRepository;
+    public OrderController(IOrderRepository orderRepository, IConfiguration configuration, ICartRepository cartRepository)
     {
         _orderRepository = orderRepository;
         _configuration = configuration;
+        _cartRepository = cartRepository;
     }
 
     [HttpGet]
@@ -51,10 +53,9 @@ public class OrderController : Controller
     public IActionResult SuccessPayment()
     {
         var order = _orderRepository.GetOrderOfUser();
-        if (order != null)
-        {
-            _orderRepository.RemoveOrder();
-        }
+
+        _orderRepository.RemoveOrder();
+        _cartRepository.ClearCart();
         return View(order);
     }
 }

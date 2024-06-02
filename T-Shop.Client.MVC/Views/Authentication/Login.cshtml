@@ -1,5 +1,6 @@
 ﻿@{
     Layout = null;
+    var errorMessage = ViewBag.ErrorMessage;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -23,6 +24,7 @@
     <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css"
           rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
 
 </head>
 <body>
@@ -74,14 +76,15 @@
     </section>
 </body>
 
-<!-- MDB -->
 <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <script>
     $(document).ready(function () {
-        var errorMessage = '@TempData["ErrorMessage"]';
-        if (errorMessage) {
-            toastr.error(errorMessage,);
+        var errormessage = "@errorMessage";
+        if (errormessage != "") {
+            toastr.error('@errorMessage');
         }
     });
 </script>

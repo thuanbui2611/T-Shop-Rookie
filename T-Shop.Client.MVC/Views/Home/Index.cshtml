@@ -1,5 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    var errorMessage = ViewBag.ErrorMessage;
+    var successMessage = ViewBag.SuccessMessage;
 }
 <h1>@ViewData["Title"]</h1>
 
@@ -982,9 +984,14 @@
 @section Scripts{
     <script>
         $(document).ready(function () {
-            var errorMessage = '@TempData["ErrorMessage"]';
-            if (errorMessage) {
-                toastr.error(errorMessage,);
+            var errorMessage = '@errorMessage';
+            var successMessage = '@successMessage';
+            if (errorMessage != "") {
+                toastr.error(errorMessage);
+            }
+            if(successMessage != "")
+            {
+                toastr.success(successMessage);
             }
         });
     </script>

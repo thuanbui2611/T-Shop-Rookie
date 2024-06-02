@@ -20,7 +20,7 @@ public class MyOrderController : Controller
     public async Task<IActionResult> Index()
     {
         var user = HttpContext.Items["CurrentUser"] as UserResponseModel;
-        if (user == null)
+        if (!User.Identity.IsAuthenticated || user == null)
         {
             TempData["ErrorMessage"] = "You need to login to view your orders.";
             return RedirectToAction("Login", "Authentication");

@@ -21,9 +21,11 @@ namespace T_Shop.Client.MVC.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            var errorMessage = TempData["ErrorMessage"]?.ToString();
+            ViewBag.ErrorMessage = errorMessage;
             if (User.Identity.IsAuthenticated)
             {
-                TempData["ErrorMessage"] = "You have logined!";
+                ViewBag.ErrorMessage = "You have logined!";
                 return RedirectToAction("Index", "Home");
             }
             return View();
@@ -42,6 +44,7 @@ namespace T_Shop.Client.MVC.Controllers
                     Secure = true,
                     SameSite = SameSiteMode.Strict
                 });
+                TempData["SuccessMessage"] = "Login Success!";
                 return RedirectToAction("Index", "Home");
             }
             ModelState.AddModelError("", "Invalid login attempt.");
