@@ -44,8 +44,7 @@ public class OrderController : Controller
             return RedirectToAction("Login", "Authentication");
         }
         order.UserID = user.Id;
-        order.ShippingAddress = "Test";
-        //order.ShippingAddress = user.Address;
+        order.ShippingAddress = user.Address;
         var newOrder = await _orderRepository.CreateOrUpdateOrderAsync(order);
         var redirectUrl = "";
         if (newOrder == null)

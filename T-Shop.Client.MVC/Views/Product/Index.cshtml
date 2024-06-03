@@ -25,7 +25,7 @@
                 <div class="row g-4">
                     <div class="col-xl-3">
                         <div class="input-group w-100 mx-auto d-flex">
-                            <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
+                            <input id="searchInput" type="search" class="form-control p-3" placeholder="Search by variant, brand..." aria-describedby="search-icon-1">
                             <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
                         </div>
                     </div>
@@ -34,73 +34,66 @@
                         <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
                             <label for="fruits">Default Sorting:</label>
                             <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3" form="fruitform">
-                                <option value="volvo">Nothing</option>
-                                <option value="saab">Popularity</option>
-                                <option value="opel">Organic</option>
-                                <option value="audi">Fantastic</option>
+                                <option value="None">None</option>
+                                <option value="saab">Best Sellers</option>
+                                <option value="opel">Best Rating</option>
+                                <option value="audi">Price</option>
                             </select>
                         </div>
                     </div>
                 </div>
                 <div class="row g-4">
                     <div class="col-lg-3">
-                        <div class="row g-2">
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <h4>Types</h4>
+                        <div class="row g-3">
+                            <div class="col-lg-12 border p-2 rounded bg-light">
+                                <h4 class="text-center">Types</h4>
+                                <div class="row">
                                     @foreach (var type in Model.Types)
                                     {
-                                        <div class="mb-2">
+                                        <div class="mb-2 col-6">
                                             <input type="checkbox" class="me-2" value="@type.Name" id="@type.Id" name="type">
                                             <label for="@type.Id">@type.Name</label>
                                         </div>
                                     }
                                 </div>
                             </div>
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <h4>Brands</h4>
+                            <div class="col-lg-12 border p-2 rounded bg-light">
+                                <h4 class="text-center">Brands</h4>
+                                <div class="row">
                                     @foreach (var brand in Model.Brands)
                                     {
-                                        <div class="mb-2">
+                                        <div class="col-6 mb-2">
                                             <input type="checkbox" class="me-2" value="@brand.Name" id="@brand.ID" name="brand">
                                             <label for="@brand.ID">@brand.Name</label>
                                         </div>
                                     }
                                 </div>
+                               
                             </div>
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <h4>Models</h4>
+                            <div class="col-lg-12 border p-2 rounded bg-light">
+                                <h4 class="text-center">Models</h4>
+                                <div class="row">
                                     @foreach (var m in Model.Models)
                                     {
-                                        <div class="mb-2">
+                                        <div class="mb-2 col-6">
                                             <input type="checkbox" class="me-2" value="@m.Name" id="@m.ID" name="model">
                                             <label for="@m.ID">@m.Name</label>
                                         </div>
                                     }
                                 </div>
                             </div>
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <h4>Colors</h4>
+                            <div class="col-lg-12 border p-2 rounded bg-light">
+                                <h4 class="text-center">Colors</h4>
+                                <div class="row">
                                     @foreach (var color in Model.Colors)
                                     {
-                                        <div class="mb-2">
+                                        <div class="mb-2 col-6">
                                             <input type="checkbox" class="me-2" value="@color.Name" id="@color.ID" name="color">
                                             <label for="@color.ID">@color.Name</label>
                                         </div>
                                     }
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <h4 class="mb-2">Price</h4>
-                                    <input type="range" class="form-range w-100" id="rangeInput" name="rangeInput" min="0" max="500" value="0" oninput="amount.value=rangeInput.value">
-                                    <output id="amount" name="amount" min-velue="0" max-value="500" for="rangeInput">0</output>
-                                </div>
-                            </div>
-     
+                                </div>                            
+                            </div>     
                         </div>
                     </div>
 
@@ -112,7 +105,6 @@
         </div>
     </div>
 </div>
-<!-- Fruits Shop End-->
 @section Scripts{
     <script>
         function paginationProductList(pageNumber) {
@@ -165,7 +157,76 @@
 
         loadProductListWithFilters();
 
-        //Filter trigger
+        function debounce(func, wait) {
+            let timeout;
+            return function (...args) {
+                const context = this;
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(context, args), wait);
+            };
+        }
+
+        // Search function
+        function handleSearch() {
+            var searchTerm = $('#searchInput').val();
+
+            var selectedTypes = [];
+            $('input[name="type"]:checked').each(function () {
+                selectedTypes.push($(this).val());
+            });
+
+            var selectedBrands = [];
+            $('input[name="brand"]:checked').each(function () {
+                selectedBrands.push($(this).val());
+            });
+
+            var selectedModels = [];
+            $('input[name="model"]:checked').each(function () {
+                selectedModels.push($(this).val());
+            });
+
+            var selectedColors = [];
+            $('input[name="color"]:checked').each(function () {
+                selectedColors.push($(this).val());
+            });
+
+            var params = new URLSearchParams();
+            if (searchTerm) {
+                params.set('Search', searchTerm);
+            }
+            if (selectedTypes.length > 0) {
+                params.set('Types', selectedTypes);
+            } else {
+                params.delete('Types');
+            }
+            if (selectedBrands.length > 0) {
+                params.set('Brands', selectedBrands);
+            } else {
+                params.delete('Brands');
+            }
+            if (selectedModels.length > 0) {
+                params.set('Models', selectedModels);
+            } else {
+                params.delete('Models');
+            }
+            if (selectedColors.length > 0) {
+                params.set('Colors', selectedColors);
+            } else {
+                params.delete('Colors');
+            }
+
+            // Update the URL without refreshing the page
+            history.replaceState(null, '', '?' + params.toString());
+
+            var url = '/product/ProductListPartial?PageNumber=1&' + params.toString();
+            console.log(params);
+            // Load the updated product list partial from the server
+            $('#productList').load(url);
+        }
+
+        // Attach the debounce function to the search input
+        $('#searchInput').on('input', debounce(handleSearch, 300));
+
         $(document).ready(function () {
             // Retrieve the current URL parameters
             var params = new URLSearchParams(window.location.search);
@@ -173,6 +234,12 @@
             var brands = params.getAll('Brands');
             var models = params.getAll('Models');
             var colors = params.getAll('Colors');
+            var searchTerm = params.get('Search');
+
+            // Set value for search input
+            if (searchTerm) {
+                $('#searchInput').val(searchTerm);
+            }
 
             // Check the checkboxes based on the existing URL parameters
             types.forEach(function (type) {
@@ -191,62 +258,9 @@
                 $('input[name="color"][value="' + color + '"]').prop('checked', true);
             });
 
-            // Update the URL parameters when a type checkbox is clicked
-            $('input[name="type"], input[name="brand"], input[name="model"], input[name="color"]').on('change', function () {
-                var selectedTypes = [];
-                $('input[name="type"]:checked').each(function () {
-                    selectedTypes.push($(this).val());
-                });
-
-                var selectedBrands = [];
-                $('input[name="brand"]:checked').each(function () {
-                    selectedBrands.push($(this).val());
-                });
-
-                var selectedModels = [];
-                $('input[name="model"]:checked').each(function () {
-                    selectedModels.push($(this).val());
-                });
-
-                var selectedColors = [];
-                $('input[name="color"]:checked').each(function () {
-                    selectedColors.push($(this).val());
-                });
-
-                // Update the URL parameters with the selected types
-                if (selectedTypes.length > 0) {
-                    params.set('Types', selectedTypes);
-                } else {
-                    params.delete('Types');
-                }
-
-                if (selectedBrands.length > 0) {
-                    params.set('Brands', selectedBrands);
-                } else {
-                    params.delete('Brands');
-                }
-
-                if (selectedModels.length > 0) {
-                    params.set('Models', selectedModels);
-                } else {
-                    params.delete('Models');
-                }
-
-                if (selectedColors.length > 0) {
-                    params.set('Colors', selectedColors);
-                } else {
-                    params.delete('Colors');
-                }
-
-                // Update the URL without refreshing the page
-                history.replaceState(null, '', '?' + params.toString());
-
-                var url = '/product/ProductListPartial?PageNumber=1&' + params.toString();
-                // Load the updated product list partial from the server
-                $('#productList').load(url);
-            });
-    });
-
+            // Update the URL parameters and load the updated product list when a checkbox is changed
+            $('input[name="type"], input[name="brand"], input[name="model"], input[name="color"]').on('change', handleSearch);
+        });
        
     </script>
 }

@@ -32,10 +32,12 @@ namespace T_Shop.Client.MVC.Extensions
                     var user = new UserResponseModel
                     {
                         Id = !userId.IsNullOrEmpty() ? new Guid(userId) : Guid.Empty,
-                        Full_name = claims.GetValueOrDefault("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"),
+                        FullName = claims.GetValueOrDefault("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"),
                         Email = claims.GetValueOrDefault("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"),
                         Avatar = claims.GetValueOrDefault("Avatar"),
-                        Role = claims.GetValueOrDefault("http://schemas.microsoft.com/ws/2008/06/identity/claims/role")
+                        Role = claims.GetValueOrDefault("http://schemas.microsoft.com/ws/2008/06/identity/claims/role"),
+                        Address = claims.GetValueOrDefault("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/streetaddress"),
+                        PhoneNumber = claims.GetValueOrDefault("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/mobilephone")
                     };
 
                     var claimObjects = claims.Select(c => new Claim(c.Key, c.Value));

@@ -9,7 +9,7 @@ namespace T_Shop.Client.MVC.Repository.Interfaces;
 public interface ITransactionRepository
 {
     Task<TransactionVM> GetTransactionsOfUserAsync(TransactionRequestParam transactionRequestParam, Guid userId);
-    Task<TransactionResponseModel> GetTransactionByIdAsync(Guid transactionId);
+    Task<TransactionWithCustomerResponseModel> GetTransactionByIdAsync(Guid transactionId);
     Task<TransactionResponseModel> UpdateTransactionStatusAsync(TransactionUpdateRequestModel transaction);
     Task<ProductReviewResponseModel> CreateReviewForProduct(ProductReviewCreationRequestModel review);
 

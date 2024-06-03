@@ -19,7 +19,7 @@ public class TransactionRepository : BaseRepository, ITransactionRepository
     }
 
 
-    public async Task<TransactionResponseModel> GetTransactionByIdAsync(Guid transactionId)
+    public async Task<TransactionWithCustomerResponseModel> GetTransactionByIdAsync(Guid transactionId)
     {
         var requestUrl = $"api/transaction/{transactionId}";
         HttpResponseMessage response = _httpClient.GetAsync(requestUrl).Result;
@@ -27,7 +27,7 @@ public class TransactionRepository : BaseRepository, ITransactionRepository
         if (response.IsSuccessStatusCode)
         {
             string data = response.Content.ReadAsStringAsync().Result;
-            return JsonConvert.DeserializeObject<TransactionResponseModel>(data);
+            return JsonConvert.DeserializeObject<TransactionWithCustomerResponseModel>(data);
         }
         return null;
     }

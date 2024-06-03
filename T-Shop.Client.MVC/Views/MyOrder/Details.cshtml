@@ -1,7 +1,7 @@
 ﻿@using T_Shop.Client.MVC.Helpers.Constants
 @using T_Shop.Shared.DTOs.Transaction.ResponseModel
 
-@model TransactionResponseModel
+@model TransactionWithCustomerResponseModel
 <style>
     body {
         background: #eee;
@@ -237,23 +237,34 @@
                 <div class="card mb-4">
                     <div class="card-body" style="color:black">
                         <h4>Contact Information</h4>
-                        <p>
-                            Full Name: abc
+                        <p class=" fw-bold">
+                            Full Name: <span style="font-weight: 500"> @Model.User.FullName</span>
                         </p>
-                        <p>
-                            Email: abc
+                        <p class="fw-bold">
+                            Email: <span style="color:#1980ff; font-weight: 500"> @Model.User.Email</span>
                         </p>
-                        <p>
-                            Phone: 0987
+                        <p class="fw-bold">
+                            Phone: <span style="font-weight: 500"> @Model.User.PhoneNumber </span>
                         </p>
                         <hr />
                         <h4>Shipping Address</h4>
                         <p>
-                            <strong>Name of customer</strong><br>
                             @Model.Order.ShippingAddress
                         </p>
                     </div>
                 </div>
+                @if(Model.Status == TransactionConstants.CANCELED)
+                {
+                    <div class="card mb-4">
+                        <div class="card-body" style="color:black">
+                            <h4 class="text-danger">Reason Cancel</h4>
+                            <p>
+                                @Model.Reason
+                            </p>
+                        </div>
+                    </div>
+                }
+                
             </div>
         </div>
         @if (Model.Status == TransactionConstants.PENDING)
