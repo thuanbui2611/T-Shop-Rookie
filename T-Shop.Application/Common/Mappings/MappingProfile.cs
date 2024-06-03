@@ -110,12 +110,11 @@ namespace T_Shop.Application.Common.Mappings
                 .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => string.Concat(ImageConstants.PathUrl, src.ImagePublicID)));
             CreateMap<ProductReview, ProductReviewResponseModel>()
                 .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.ProductReviewImages));
-
+            CreateMap<ApplicationUser, UserOfReview>()
+                 .ForMember(dest => dest.Avatar, opt => opt.MapFrom(src => string.Concat(ImageConstants.PathUrl, src.Avatar))); ;
             //User
             CreateMap<ApplicationUser, UserResponseModel>()
-                .ForMember(dest => dest.Full_name, opt => opt.MapFrom(src => src.FullName))
-                .ForMember(dest => dest.Date_of_birth, opt => opt.MapFrom(src => src.DateOfBirth))
-                .ForMember(dest => dest.Is_locked, opt => opt.MapFrom(src => src.IsLocked));
+                .ForMember(dest => dest.Avatar, opt => opt.MapFrom(src => string.Concat(ImageConstants.PathUrl, src.Avatar)));
         }
 
     }

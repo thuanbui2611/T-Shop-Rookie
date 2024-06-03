@@ -62,11 +62,11 @@ public class AccountManager : IAccountManager
             IsLocked = false,
         };
         // Add image
-        if (registerUser.Avatar.Length > 0)
-        {
-            var uploadResponse = await _cloudinaryService.AddImageAsync(registerUser.Avatar);
-            newUser.Avatar = uploadResponse.PublicID;
-        }
+        //if (registerUser.Avatar.Length > 0)
+        //{
+        //    var uploadResponse = await _cloudinaryService.AddImageAsync(registerUser.Avatar);
+        //    newUser.Avatar = uploadResponse.PublicID;
+        //}
 
         // Add user
         var result = await _userManager.CreateAsync(newUser, registerUser.Password);
