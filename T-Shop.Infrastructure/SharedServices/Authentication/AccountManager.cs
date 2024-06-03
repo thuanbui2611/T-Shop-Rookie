@@ -114,7 +114,10 @@ public class AccountManager : IAccountManager
             {
             new Claim(ClaimTypes.NameIdentifier, _user.UserName),
             new Claim(ClaimTypes.Email, _user.Email),
-            new Claim(ClaimTypes.Name, _user.FullName)
+            new Claim(ClaimTypes.Name, _user.FullName),
+            new Claim(ClaimTypes.MobilePhone, _user.PhoneNumber),
+            new Claim(ClaimTypes.StreetAddress, _user.Address),
+
             };
         if (_user.Avatar is not null)
         {
