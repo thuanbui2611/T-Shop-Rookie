@@ -88,7 +88,7 @@ public class CreateReviewForProductCommandHandler : IRequestHandler<CreateReview
             throw new NotFoundException("User not found");
         }
 
-        var transaction = await _transactionQueries.GetTransactionsByIdAsync(request.TransactionID, false);
+        var transaction = await _transactionQueries.GetTransactionByIdAsync(request.TransactionID, false);
         if (transaction == null)
         {
             throw new NotFoundException("Transaction not found");

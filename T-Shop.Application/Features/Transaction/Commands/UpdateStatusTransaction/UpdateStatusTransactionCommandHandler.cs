@@ -41,7 +41,7 @@ public class UpdateStatusTransactionCommandHandler : IRequestHandler<UpdateStatu
             $"{String.Join(", ", TransactionConstants.AVAILABLE_UPDATE_TRANSACTION_STATUS)}");
 
         //Validate request
-        var transaction = await _transactionQueries.GetTransactionsByIdAsync(request.ID, true);
+        var transaction = await _transactionQueries.GetTransactionByIdAsync(request.ID, true);
 
         if (transaction == null) throw new BadRequestException("Transaction not found");
 

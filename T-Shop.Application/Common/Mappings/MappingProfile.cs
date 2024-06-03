@@ -7,6 +7,7 @@ using T_Shop.Application.Features.Products.Commands.UpdateProduct;
 using T_Shop.Application.Features.Type.Commands.CreateType;
 using T_Shop.Application.Features.Type.Commands.UpdateType;
 using T_Shop.Domain.Entity;
+using T_Shop.Infrastructure.Persistence.IdentityModels;
 using T_Shop.Shared.DTOs.Brand.ResponseModel;
 using T_Shop.Shared.DTOs.Cart.ResponseModel;
 using T_Shop.Shared.DTOs.Color.RequestModel;
@@ -18,6 +19,7 @@ using T_Shop.Shared.DTOs.Product.ResponseModel;
 using T_Shop.Shared.DTOs.ProductReview.ResponseModel;
 using T_Shop.Shared.DTOs.Transaction.ResponseModel;
 using T_Shop.Shared.DTOs.Type.ResponseModel;
+using T_Shop.Shared.DTOs.User.ResponseModels;
 using static T_Shop.Shared.DTOs.ModelProduct.ResponseModel.ModelProductResponseModel;
 
 namespace T_Shop.Application.Common.Mappings
@@ -100,12 +102,20 @@ namespace T_Shop.Application.Common.Mappings
             //Transaction
             CreateMap<Transaction, TransactionResponseModel>()
                 .ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order));
+            CreateMap<Transaction, TransactionWithCustomerResponseModel>()
+                .ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order));
 
             //ProductReview
             CreateMap<ProductReviewImage, ProductReviewImagesResponseModel>()
                 .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => string.Concat(ImageConstants.PathUrl, src.ImagePublicID)));
             CreateMap<ProductReview, ProductReviewResponseModel>()
                 .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.ProductReviewImages));
+
+            //User
+            CreateMap<ApplicationUser, UserResponseModel>()
+                .ForMember(dest => dest.Full_name, opt => opt.MapFrom(src => src.FullName))
+                .ForMember(dest => dest.Date_of_birth, opt => opt.MapFrom(src => src.DateOfBirth))
+                .ForMember(dest => dest.Is_locked, opt => opt.MapFrom(src => src.IsLocked));
         }
 
     }
