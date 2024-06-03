@@ -28,7 +28,7 @@ public class CreateOrUpdateOrderCommandHandler : IRequestHandler<CreateOrUpdateO
     }
     public async Task<OrderResponseModel> Handle(CreateOrUpdateOrderCommand request, CancellationToken cancellationToken)
     {
-        var order = await _orderQueries.GetOrderNotPaymentByUserIdAsync(request.UserID);
+        var order = await _orderQueries.GetOrderNotPaymentByUserIdAsync(request.UserID, true);
         if (order == null)
         {
             //Create new order
@@ -48,9 +48,9 @@ public class CreateOrUpdateOrderCommandHandler : IRequestHandler<CreateOrUpdateO
         }
 
         await _unitOfWork.CompleteAsync();
-
-        var orderReturn = await _orderQueries.GetOrderNotPaymentByUserIdAsync(order.UserID);
-        var result = _mapper.Map<OrderResponseModel>(orderReturn);
+        _unitOfWork.Detach(order);
+        var orderToReturn = await _orderQueries.GetOrderNotPaymentByUserIdAsync(request.UserID, false);
+        var result = _mapper.Map<OrderResponseModel>(orderToReturn);
         return result;
     }
 
@@ -91,7 +91,7 @@ public class CreateOrUpdateOrderCommandHandler : IRequestHandler<CreateOrUpdateO
                 OrderID = order.Id,
                 ProductID = productInOrder.ProductID,
                 Quantity = productInOrder.Quantity,
-                Price = productInOrder.Price,
+                Price = productInOrder.Price
             });
         }
         _orderRepository.Update(order);

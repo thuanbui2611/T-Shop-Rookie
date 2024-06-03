@@ -11,9 +11,18 @@ public class OrderQueries : BaseQuery<Order>, IOrderQueries
 
     }
 
-    public async Task<Order> GetOrderNotPaymentByUserIdAsync(Guid userID)
+    public async Task<Order> GetOrderNotPaymentByUserIdAsync(Guid userID, bool trackChanges)
     {
-        return await dbSet
+
+        return trackChanges ? await dbSet
+            .AsTracking()
+            .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Color)
+            .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.ProductImages)
+            .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Type)
+            .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Model).ThenInclude(m => m.Brand)
+            .FirstOrDefaultAsync(o => o.UserID.Equals(userID) && !o.IsPayment)
+            :
+             await dbSet
             .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Color)
             .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.ProductImages)
             .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Type)
@@ -21,14 +30,24 @@ public class OrderQueries : BaseQuery<Order>, IOrderQueries
             .FirstOrDefaultAsync(o => o.UserID.Equals(userID) && !o.IsPayment);
     }
 
-    public async Task<Order> GetOrderByPaymentIntentIdAsync(string paymentIntentId)
+    public async Task<Order> GetOrderByPaymentIntentIdAsync(string paymentIntentId, bool trackChanges)
     {
-        return await dbSet
-          .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Color)
-          .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.ProductImages)
-          .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Type)
-          .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Model).ThenInclude(m => m.Brand)
-          .FirstOrDefaultAsync(o => o.PaymentIntentID.Equals(paymentIntentId));
+        return trackChanges ?
+           await dbSet
+              .AsTracking()
+              .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Color)
+              .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.ProductImages)
+              .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Type)
+              .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Model).ThenInclude(m => m.Brand)
+              .FirstOrDefaultAsync(o => o.PaymentIntentID.Equals(paymentIntentId))
+          :
+          await dbSet
+              .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Color)
+              .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.ProductImages)
+              .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Type)
+              .Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Model).ThenInclude(m => m.Brand)
+              .FirstOrDefaultAsync(o => o.PaymentIntentID.Equals(paymentIntentId))
+          ;
     }
 
     public async Task<Guid> GetOrderIdByUserId(Guid userId)

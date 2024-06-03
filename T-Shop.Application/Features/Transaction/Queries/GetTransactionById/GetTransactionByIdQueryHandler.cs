@@ -18,7 +18,7 @@ public class GetTransactionByIdQueryHandler : IRequestHandler<GetTransactionById
 
     public async Task<TransactionResponseModel> Handle(GetTransactionByIdQuery request, CancellationToken cancellationToken)
     {
-        var transaction = await _transactionQueries.GetTransactionsByIdAsync(request.TransactionId);
+        var transaction = await _transactionQueries.GetTransactionsByIdAsync(request.TransactionId, false);
         if (transaction == null)
         {
             throw new BadRequestException(message: "Transaction not found");

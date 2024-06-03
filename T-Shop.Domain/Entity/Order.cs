@@ -11,5 +11,5 @@ public class Order : BaseModel
     public bool IsPayment { get; set; } = false;
 
     public virtual ICollection<OrderDetail> OrderDetails { get; set; } = [];
-    public virtual Transaction Transaction { get; set; } = new();
+    public virtual Transaction Transaction { get; set; }
 }

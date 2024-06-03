@@ -49,7 +49,10 @@ public class CreateTransactionFromStripeEventCommandHandler : IRequestHandler<Cr
             var transaction = await _transactionQueries.GetTransactionByPaymentIntentId(charge.PaymentIntentId);
             var customer = await _userManager.FindByIdAsync(transaction.CustomerID.ToString());
 
-            await SendEmailToCustomersAsync(transaction, customer);
+            _ = Task.Run(() =>
+            {
+                SendEmailToCustomersAsync(transaction, customer);
+            });
 
             var result = _mapper.Map<TransactionResponseModel>(transaction);
             return result;
@@ -59,7 +62,7 @@ public class CreateTransactionFromStripeEventCommandHandler : IRequestHandler<Cr
 
     private async Task CreateNewTransaction(Charge charge)
     {
-        var order = await _orderQueries.GetOrderByPaymentIntentIdAsync(charge.PaymentIntentId);
+        var order = await _orderQueries.GetOrderByPaymentIntentIdAsync(charge.PaymentIntentId, true);
         //Update order status
         order.IsPayment = true;
         //Update quantity of product
@@ -67,14 +70,16 @@ public class CreateTransactionFromStripeEventCommandHandler : IRequestHandler<Cr
         {
             item.Product.Quantity = item.Product.Quantity - item.Quantity;
         }
-
         _orderRepository.Update(order);
+        await _unitOfWork.CompleteAsync();
+        _unitOfWork.Detach(order);
+
         //Add new transaction
         var transaction = new Domain.Entity.Transaction
         {
             CustomerID = order.UserID,
             OrderID = order.Id,
-            Status = TransactionConstants.PENDING,
+            Status = TransactionConstants.PENDING
         };
         _transactionRepository.Add(transaction);
 
@@ -105,21 +110,21 @@ public class CreateTransactionFromStripeEventCommandHandler : IRequestHandler<Cr
 
     private async Task SendEmailToCustomersAsync(Domain.Entity.Transaction transaction, ApplicationUser customer)
     {
-        string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Resources", "newOrderFromCustomer.html");
+        string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Resources", "OrderSuccess.html");
         using (StreamReader reader = new StreamReader(filePath))
         {
             string content = await reader.ReadToEndAsync();
             content = Regex.Replace(content, "###ORDER_ID###", transaction.Id.ToString());
-            content = Regex.Replace(content, "###NUM_ITEM_PURCHASED###", transaction.Order.OrderDetails.Count().ToString());
-            content = Regex.Replace(content, "###TOTAL_PAYMENT###", transaction.Order.OrderDetails.Sum(o => o.Price * o.Quantity).ToString());
+            content = Regex.Replace(content, "###NUM_ITEM_PURCHASED###", transaction.Order.OrderDetails.Count().ToString("N0"));
+            content = Regex.Replace(content, "###TOTAL_PAYMENT###", transaction.Order.OrderDetails.Sum(o => o.Price * o.Quantity).ToString("N0"));
             content = Regex.Replace(content, "###SHIPPING_ADDRESS###", transaction.Order.ShippingAddress);
             content = Regex.Replace(content, "###ESTIMATED_DELIVERY_DATE###", DateTime.Now.AddDays(3).ToShortDateString());
             var emailOptions = new SendEmailOptions
             {
                 Subject = "Payment Bill",
                 Body = content,
-                ToEmail = customer.Email,
-                ToName = customer.FullName,
+                ToEmail = customer.Email!,
+                ToName = customer.FullName!,
             };
 
             await _emailService.SendEmailAsync(emailOptions);

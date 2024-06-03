@@ -93,10 +93,35 @@ public class TransactionQueries : BaseQuery<Transaction>, ITransactionQueries
         return (transactionsOfUser, paginationMetaData);
     }
 
-    public async Task<Transaction> GetTransactionsByIdAsync(Guid transactionID)
+    public async Task<Transaction> GetTransactionsByIdAsync(Guid transactionID, bool trackChanges)
     {
-        return await dbSet
+        return trackChanges ?
+            await dbSet
+            .AsTracking()
             .Include(t => t.Order)
+               .ThenInclude(o => o.OrderDetails)
+               .ThenInclude(od => od.ProductReview)
+           .Include(t => t.Order)
+               .ThenInclude(o => o.OrderDetails)
+               .ThenInclude(od => od.Product)
+               .ThenInclude(p => p.Color)
+           .Include(t => t.Order)
+               .ThenInclude(o => o.OrderDetails)
+               .ThenInclude(od => od.Product)
+               .ThenInclude(p => p.Type)
+           .Include(t => t.Order)
+               .ThenInclude(o => o.OrderDetails)
+               .ThenInclude(od => od.Product)
+               .ThenInclude(p => p.Model)
+               .ThenInclude(m => m.Brand)
+            .Include(t => t.Order)
+               .ThenInclude(o => o.OrderDetails)
+               .ThenInclude(od => od.Product)
+               .ThenInclude(p => p.ProductImages)
+            .FirstOrDefaultAsync(t => t.Id.Equals(transactionID))
+            :
+            await dbSet
+           .Include(t => t.Order)
                .ThenInclude(o => o.OrderDetails)
                .ThenInclude(od => od.ProductReview)
            .Include(t => t.Order)
