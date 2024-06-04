@@ -24,8 +24,8 @@ public static class ConfigureServices
     {
         services.ConfigureDatabase(configuration);
         //Identity
-        //services.ConfigureJWT(configuration);
         services.ConfigureIdentity();
+        services.ConfigureJWT(configuration);
         //DI
         services.RegisterQueriesDependencies();
         services.RegistryDatabaseDependencies();

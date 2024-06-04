@@ -11,8 +11,6 @@ using T_Shop.Shared.DTOs.Brand.ResponseModel;
 using T_Shop.Shared.DTOs.Pagination;
 
 namespace T_Shop.WebAPI.Controllers;
-
-
 public class BrandController : ApiControllerBase
 {
     /// <summary>

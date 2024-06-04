@@ -14,16 +14,12 @@ public class AccountManager : IAccountManager
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IConfiguration _configuration;
-    private readonly ICloudinaryService _cloudinaryService;
-    private readonly IUnitOfWork _unitOfWork;
     private ApplicationUser? _user;
 
     public AccountManager(UserManager<ApplicationUser> userManager, IConfiguration configuration, ICloudinaryService cloudinaryService, IUnitOfWork unitOfWork)
     {
         _userManager = userManager;
         _configuration = configuration;
-        _cloudinaryService = cloudinaryService;
-        _unitOfWork = unitOfWork;
     }
 
 
@@ -50,23 +46,16 @@ public class AccountManager : IAccountManager
 
         ApplicationUser newUser = new ApplicationUser()
         {
-            FullName = registerUser.Full_name,
+            FullName = registerUser.FullName,
             UserName = registerUser.Username,
             Email = registerUser.Email,
             DateOfBirth = registerUser.Date_of_birth,
             Gender = registerUser.Gender,
             PhoneNumber = registerUser.PhoneNumber,
             Address = registerUser.Address,
-            Avatar = null,
             CreatedAt = DateTime.UtcNow,
             IsLocked = false,
         };
-        // Add image
-        //if (registerUser.Avatar.Length > 0)
-        //{
-        //    var uploadResponse = await _cloudinaryService.AddImageAsync(registerUser.Avatar);
-        //    newUser.Avatar = uploadResponse.PublicID;
-        //}
 
         // Add user
         var result = await _userManager.CreateAsync(newUser, registerUser.Password);
