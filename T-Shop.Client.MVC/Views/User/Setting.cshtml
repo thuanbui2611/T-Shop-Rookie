@@ -1,0 +1,158 @@
+﻿@using T_Shop.Shared.DTOs.User.ResponseModels
+@model UserResponseModel
+
+<style>
+    .hidden-input {
+        display: none !important;
+    }
+</style>
+<div class="container light-style flex-grow-1 container-p-y">
+
+    <div class="container-fluid page-header py-5">
+        <h1 class="text-center text-white display-6">User Settings</h1>
+    </div>
+
+    <div class="card overflow-hidden mt-5">
+        <div class="row no-gutters row-bordered row-border-light">
+            <div class="col-md-3 p-0 border-end">
+                <div class="list-group list-group-flush account-settings-links nav-pills">
+                    <button id="general" class="list-group-item list-group-item-action nav-link active border-bottom border-2" data-bs-toggle="pill" data-bs-target="#account-general" type="button" role="tab" aria-controls="account-general" aria-selected="true">General</button>
+                    <button id="changePassword" class="list-group-item list-group-item-action nav-link  border-bottom border-2" data-bs-toggle="pill" data-bs-target="#account-change-password" type="button" role="tab" aria-controls="account-change-password" aria-selected="false">Change password</button>
+                </div>
+            </div>
+            <div class="col-md-9" style="color:black">
+                <div class="tab-content">
+                    <form enctype="multipart/form-data" class="tab-pane fade active show" id="account-general" role="tabpanel" aria-labelledby="general" action="/user/UpdateUser" method="post">
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                            <img id="avatar-preview" src="@Model?.Avatar" alt="" class="d-block rounded-circle shadow-sm border" style="width: 150px; height: 150px">
+                            <div class="media-body ml-4">
+                                <div class="text-center align-content-center align-items-center d-flex flex-column mt-2">
+                                    <label id="AvatarUploadLabel" class="btn btn-outline-primary flex-column d-flex justify-content-center align-content-center" style="width: fit-content">
+                                        Upload new photo
+                                        <input id="AvatarUpload" name="AvatarUpload" type="file" class="account-settings-fileinput" onchange="previewImage(this)">
+                                    </label>
+                               </div>
+                                <div class="text-center mt-1">
+                                    <button id="resetImageUpload" type="button" class="btn bg-light border" style="color:black; display: none">Reset</button>
+                                </div>
+
+                                <div class="small mt-1">Allowed JPG, GIF or PNG. Max size of 800K</div>
+                            </div>
+                        </div>
+
+                        <hr class="border-light m-0" >
+
+                        <div class="card-body">
+                            <div class="form-group col-12">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label class="form-label">Username</label>
+                                        <input id="username" name="username" type="text" class="form-control mb-1" value="@Model?.Username" style="color: black">
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label">E-mail</label>
+                                        <input id="email" name="email" type="text" class="form-control mb-1" value="@Model?.Email" style="color: black">
+                                 @*     <div class="alert alert-warning mt-3">
+                                            Your email is not confirmed. Please check your inbox.<br>
+                                            <a href="javascript:void(0)">Resend confirmation</a>
+                                        </div>  *@
+                                    </div>
+                                </div>
+                              
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label class="form-label">Full Name</label>
+                                        <input id="fullname" name="fullname" type="text" class="form-control" value="@Model?.FullName" style="color: black">
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label">Phone Number</label>
+                                        <input id="phoneNumber" name="phoneNumber" type="text" class="form-control" value="@Model?.PhoneNumber" style="color: black">
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Address</label>
+                                <input id="address" name="address" type="text" class="form-control" value="@Model?.Address" style="color: black">
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label class="form-label">Birthday</label>
+                                        <input id="DateOfBirth" name="DateOfBirth" type="date" class="form-control" value="@(Model?.DateOfBirth?.ToString("yyyy-MM-dd") ?? "")" style="color: black">
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label">Gender</label>
+                                        <select class="form-select" id="genderSelect" name="genderSelect" style="color: black">
+                                             @if(Model.Gender.ToLower() == "male")
+                                            {
+                                                <option value="Male" selected>Male</option>
+                                                <option value="Female">Female</option>
+                                            } else
+                                            {
+                                                <option value="Female" selected>Female</option>
+                                                <option value="Male">Male</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+                            <div class="text-end mt-3">
+                                <button type="submit" class="btn btn-primary text-white">Save changes</button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                    <form class="tab-pane fade" id="account-change-password" role="tabpanel" aria-labelledby="changePassword">
+                        <div class="card-body pb-2">
+
+                            <div class="form-group">
+                                <label class="form-label">Current password</label>
+                                <input type="password" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">New password</label>
+                                <input type="password" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Repeat new password</label>
+                                <input type="password" class="form-control">
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#avatar-preview').attr('src', e.target.result);
+                    $("#resetImageUpload").show(); // Show reset button after preview is set
+                    // Hide the input file element
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#resetImageUpload").click(function () {
+            $('#avatar-preview').attr('src', '@Model?.Avatar'); // Reset to original image or default
+            $("#AvatarUpload").val(''); // Reset the input file value
+            $(this).hide(); // Hide reset button after clicking
+        });
+    </script>
+}

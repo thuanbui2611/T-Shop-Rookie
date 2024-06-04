@@ -5,7 +5,7 @@ namespace T_Shop.Client.MVC.Repository.Interfaces
 {
     public interface ICartRepository
     {
-        CartResponseModel GetCart();
+        Task<CartResponseModel> GetCurrentCart(Guid userId);
         Task<CartResponseModel> GetCartByUserIdAsync(Guid userId);
         Task<CartResponseModel> AddToCartAsync(CartRequestModel cartRequestModel);
         Task<CartResponseModel> UpdateCartItemAsync(CartRequestModel cartRequestModel);

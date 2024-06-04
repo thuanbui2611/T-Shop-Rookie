@@ -1,9 +1,7 @@
 ﻿@{
-    @using T_Shop.Shared.DTOs.Cart.ResponseModel
-    @using T_Shop.Shared.DTOs.User.ResponseModels
-    @model CartResponseModel
 
-    var currentUser = ViewContext.HttpContext.Items["CurrentUser"] as UserResponseModel;
+@using T_Shop.Shared.ViewModels.CartPage
+    @model CartVM
 }
 
 <!-- Single Page Header start -->
@@ -31,12 +29,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                   @if(Model == null)
+                   @if(Model.Cart.CartItems.Count() == 0)
                     {
                         <div>Cart Empty!</div>
                     } else
                     {
-                        @foreach (var item in Model.CartItems)
+                        @foreach (var item in Model.Cart.CartItems)
                         {
                             <tr>
                                 <th scope="row">
@@ -94,7 +92,7 @@
                         <h5 class="mb-0 ps-4 me-4">Total</h5>
                         <p class="mb-0 pe-4">@{
                                 decimal total = 0;    
-                                foreach(var item in Model.CartItems)
+                                foreach(var item in Model.Cart.CartItems)
                                 {
                                     total += item.Quantity * item.Product.Price;
                                 }
@@ -114,7 +112,7 @@
  @* <cache expires-after="" *@
 
     <script>
-        var cartData = @Html.Raw(Json.Serialize(Model));
+        var cartData = @Html.Raw(Json.Serialize(Model.Cart));
         // Function to handle quantity change
         $(document).on('input', '.quantity-input', handleQuantityChange);
         // Event handlers for plus buttons

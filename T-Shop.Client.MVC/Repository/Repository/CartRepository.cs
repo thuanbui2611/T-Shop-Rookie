@@ -14,8 +14,12 @@ namespace T_Shop.Client.MVC.Repository.Repository
 
         }
 
-        public CartResponseModel GetCart()
+        public async Task<CartResponseModel?> GetCurrentCart(Guid userId)
         {
+            if (_cart == null)
+            {
+                _cart = await GetCartByUserIdAsync(userId);
+            }
             return _cart;
         }
 

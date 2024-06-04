@@ -1,0 +1,27 @@
+﻿@using T_Shop.Shared.DTOs.User.ResponseModels
+@model UserResponseModel
+
+
+@if (Model == null)
+{
+    <a class="btn btn-primary" asp-action="Login" asp-controller="Authentication">Login</a>
+}
+else
+{
+    <div class="dropdown my-auto">
+        <div class="" data-bs-toggle="dropdown" aria-expanded="false">
+
+            <img id="avatar" src="@(@Model?.Avatar ?? "~/Theme/img/avatar.jpg")" alt="avatar" class="d-block rounded-circle shadow-sm border hover-onClick" style="width: 40px">
+        </div>
+        @* <i class="fas fa-user fa-2x hover-onClick" style="color:#2e58e6" ></i> *@
+        <ul class="dropdown-menu">
+            <li style="display: block; padding: .25rem 1rem; text-align: inherit; color:black; font-weight:600">@Model?.FullName</li>
+            <hr class="m-0" />
+            <li><a class="dropdown-item" asp-action="Setting" asp-controller="User">Settings</a></li>
+            <li><a class="dropdown-item" asp-action="Index" asp-controller="MyOrder">My Orders</a></li>
+            <li><a class="dropdown-item" asp-action="Logout" asp-controller="Authentication">Log out</a></li>
+        </ul>
+    </div>
+
+}
+

@@ -5,7 +5,7 @@ namespace T_Shop.Client.MVC.Repository.Interfaces
 {
     public interface IAuthenticationRepository
     {
-        Task<UserAuthenResponseModel> Login(UserAuthenRequestModel user);
+        Task<(UserAuthenResponseModel, UserResponseModel)> Login(UserAuthenRequestModel user);
         Task<UserResponseModel> Register(UserCreationResquestModel user);
     }
 }

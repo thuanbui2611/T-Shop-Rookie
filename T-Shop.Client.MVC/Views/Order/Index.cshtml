@@ -2,7 +2,6 @@
     @using T_Shop.Shared.DTOs.User.ResponseModels
     @using T_Shop.Shared.ViewModels.OrderPage
     @model OrderVM
-    var currentUser = ViewContext.HttpContext.Items["CurrentUser"] as UserResponseModel;
 }
 
 <!-- Single Page Header start -->
@@ -24,19 +23,19 @@
                 <div class="col-md-12 col-lg-6 col-xl-5">
                     <div class="form-item">
                         <label class="form-label my-3">Full Name<sup>*</sup></label>
-                        <input type="text" class="form-control" value=@currentUser.FullName disabled>
+                        <input type="text" class="form-control" value=@Model.CurrentUser.FullName disabled>
                     </div>
                     <div class="form-item">
                         <label class="form-label my-3">Address <sup>*</sup></label>
-                        <input type="text" class="form-control" value=@currentUser.Address disabled>
+                        <input type="text" class="form-control" value=@Model.CurrentUser.Address disabled>
                     </div>
                     <div class="form-item">
                         <label class="form-label my-3">Phone Number<sup>*</sup></label>
-                        <input type="tel" class="form-control" value=@currentUser.PhoneNumber disabled>
+                        <input type="tel" class="form-control" value=@Model.CurrentUser.PhoneNumber disabled>
                     </div>
                     <div class="form-item">
                         <label class="form-label my-3">Email Address<sup>*</sup></label>
-                        <input type="email" class="form-control" value=@currentUser.Email disabled>
+                        <input type="email" class="form-control" value=@Model.CurrentUser.Email disabled>
                     </div>
                 </div>
                 <div class="col-md-12 col-lg-6 col-xl-7">
