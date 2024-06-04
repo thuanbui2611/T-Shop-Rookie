@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System.Text.Json.Serialization;
 
 namespace T_Shop.Shared.DTOs.User.RequestModels;
 public class UserUpdateRequestModel
 {
-    [JsonIgnore]
     public Guid ID { get; set; }
     public string FullName { get; set; }
     public string Username { get; set; }

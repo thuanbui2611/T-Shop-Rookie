@@ -4,23 +4,21 @@ using T_Shop.Shared.DTOs.ProductReview.RequestModel;
 using T_Shop.Shared.DTOs.ProductReview.ResponseModel;
 using T_Shop.Shared.DTOs.Transaction.RequestModel;
 using T_Shop.Shared.DTOs.Transaction.ResponseModel;
-using T_Shop.Shared.DTOs.User.ResponseModels;
 using T_Shop.Shared.ViewModels.TransactionPage;
 
 namespace T_Shop.Client.MVC.Controllers;
-public class MyOrderController : Controller
+public class MyOrderController : BaseController
 {
     private readonly ITransactionRepository _transactionRepository;
 
-    public MyOrderController(ITransactionRepository transactionRepository)
+    public MyOrderController(ITransactionRepository transactionRepository, IUserRepository userRepository) : base(userRepository)
     {
         _transactionRepository = transactionRepository;
     }
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        var user = HttpContext.Items["CurrentUser"] as UserResponseModel;
-        if (!User.Identity.IsAuthenticated || user == null)
+        if (!User.Identity.IsAuthenticated || CurrentUser == null)
         {
             TempData["ErrorMessage"] = "You need to login to view your orders.";
             return RedirectToAction("Login", "Authentication");
@@ -30,8 +28,7 @@ public class MyOrderController : Controller
 
     public async Task<IActionResult> TransactionListPartial(TransactionRequestParam transactionRequestParam)
     {
-        var user = HttpContext.Items["CurrentUser"] as UserResponseModel;
-        var transactions = await _transactionRepository.GetTransactionsOfUserAsync(transactionRequestParam, user.Id);
+        var transactions = await _transactionRepository.GetTransactionsOfUserAsync(transactionRequestParam, CurrentUser.Id);
         return PartialView("_TransactionListPartial", transactions);
     }
 
@@ -51,18 +48,14 @@ public class MyOrderController : Controller
     [HttpPut]
     public async Task<TransactionResponseModel> UpdateTransactionStatus(TransactionUpdateRequestModel request)
     {
-        var user = HttpContext.Items["CurrentUser"] as UserResponseModel;
         return await _transactionRepository.UpdateTransactionStatusAsync(request);
-
     }
 
 
     [HttpPost]
     public async Task<ProductReviewResponseModel> ReviewProductInTransaction(ProductReviewCreationRequestModel review)
     {
-        var user = HttpContext.Items["CurrentUser"] as UserResponseModel;
-        review.UserID = user.Id;
+        review.UserID = CurrentUser.Id;
         return await _transactionRepository.CreateReviewForProduct(review);
-
     }
 }

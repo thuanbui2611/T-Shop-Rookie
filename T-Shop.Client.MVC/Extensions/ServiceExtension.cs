@@ -12,6 +12,8 @@ namespace T_Shop.Client.MVC.Extensions
     {
         public static void RegisterServices(this IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
+
             services.AddHttpClient<IAuthenticationRepository, AuthenticationRepository>();
             services.AddHttpClient<IProductRepository, ProductRepository>();
             services.AddHttpClient<IBrandRepository, BrandRepository>();
@@ -21,6 +23,7 @@ namespace T_Shop.Client.MVC.Extensions
             services.AddHttpClient<ICartRepository, CartRepository>();
             services.AddHttpClient<IOrderRepository, OrderRepository>();
             services.AddHttpClient<ITransactionRepository, TransactionRepository>();
+            services.AddHttpClient<IUserRepository, UserRepository>();
         }
 
         public static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)

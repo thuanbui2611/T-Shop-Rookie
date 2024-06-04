@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using T_Shop.Client.MVC.Repository.Interfaces;
 using T_Shop.Shared.DTOs.Order.RequestModel;
-using T_Shop.Shared.DTOs.User.ResponseModels;
 using T_Shop.Shared.ViewModels.OrderPage;
 
 namespace T_Shop.Client.MVC.Controllers;
-public class OrderController : Controller
+public class OrderController : BaseController
 {
     private readonly IOrderRepository _orderRepository;
     private readonly IConfiguration _configuration;
     private readonly ICartRepository _cartRepository;
-    public OrderController(IOrderRepository orderRepository, IConfiguration configuration, ICartRepository cartRepository)
+    public OrderController(IOrderRepository orderRepository, IConfiguration configuration, ICartRepository cartRepository, IUserRepository userRepository) : base(userRepository)
     {
         _orderRepository = orderRepository;
         _configuration = configuration;
@@ -37,14 +36,13 @@ public class OrderController : Controller
     [HttpPost]
     public async Task<IActionResult> CreateOrder(OrderRequestModel order)
     {
-        var user = HttpContext.Items["CurrentUser"] as UserResponseModel;
-        if (user == null || !User.Identity.IsAuthenticated)
+        if (CurrentUser == null || !User.Identity.IsAuthenticated)
         {
             TempData["ErrorMessage"] = "You need to login to view your carts!";
             return RedirectToAction("Login", "Authentication");
         }
-        order.UserID = user.Id;
-        order.ShippingAddress = user.Address;
+        order.UserID = CurrentUser.Id;
+        order.ShippingAddress = CurrentUser.Address;
         var newOrder = await _orderRepository.CreateOrUpdateOrderAsync(order);
         var redirectUrl = "";
         if (newOrder == null)

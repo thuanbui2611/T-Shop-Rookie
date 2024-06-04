@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using T_Shop.Client.MVC.Repository.Interfaces;
 using T_Shop.Shared.DTOs.User.RequestModels;
 
@@ -34,15 +35,21 @@ namespace T_Shop.Client.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(UserAuthenRequestModel user)
         {
-            var userLogin = await _authenticationRepository.Login(user);
+            var (token, userLogin) = await _authenticationRepository.Login(user);
 
-            if (userLogin != null)
+            if (token != null && userLogin != null)
             {
-                Response.Cookies.Append("AuthToken", userLogin.Token, new CookieOptions
+                Response.Cookies.Append("AuthToken", token.Token, new CookieOptions
                 {
                     HttpOnly = true,
                     Secure = true,
                     SameSite = SameSiteMode.Strict
+                });
+
+                Response.Cookies.Append("CurrentUser", JsonConvert.SerializeObject(userLogin), new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
                 });
                 TempData["SuccessMessage"] = "Login Success!";
                 return RedirectToAction("Index", "Home");
@@ -52,11 +59,11 @@ namespace T_Shop.Client.MVC.Controllers
         }
 
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult Logout()
         {
             Response.Cookies.Delete("AuthToken");
+            Response.Cookies.Delete("CurrentUser");
+            TempData["SuccessMessage"] = "Logout Success!";
             return RedirectToAction("Index", "Home");
         }
 
