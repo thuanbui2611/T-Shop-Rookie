@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using T_Shop.Application.Features.User.Commands.DisableUser;
 using T_Shop.Application.Features.User.Commands.UpdateUser;
+using T_Shop.Application.Features.User.Queries.GetUserById;
 using T_Shop.Application.Features.User.Queries.GetUsers;
 using T_Shop.Controllers;
 using T_Shop.Extensions;
 using T_Shop.Shared.DTOs.Pagination;
+using T_Shop.Shared.DTOs.Type.ResponseModel;
 using T_Shop.Shared.DTOs.User.QueryModels;
 using T_Shop.Shared.DTOs.User.ResponseModels;
 
@@ -32,6 +34,22 @@ public class UserController : ApiControllerBase
         Response.AddPaginationHeader(paginationMetaData);
         return Ok(users);
     }
+    /// <summary>
+    /// Acquire user information by identification
+    /// </summary>
+    /// <returns>Status code of the action.</returns>
+    /// <response code="200">Successfully get items information.</response>
+    /// <response code="500">There is something wrong while execute.</response>
+    [HttpGet("{id}")]
+    public async Task<ActionResult<TypeResponseModel>> GetUserByIdAsync([FromRoute] Guid id)
+    {
+
+        var user = await Mediator.Send(new GetUserByIdQuery()
+        {
+            ID = id
+        });
+        return Ok(user);
+    }
 
     /// <summary>
     /// Update a user
@@ -40,7 +58,7 @@ public class UserController : ApiControllerBase
     /// <response code="200">Successfully updated item.</response>
     /// <response code="500">There is something wrong while execute.</response>
     [HttpPut("{id}")]
-    public async Task<ActionResult<UserResponseModel>> UpdateUserAsync([FromRoute] Guid id, [FromBody] UpdateUserCommand command)
+    public async Task<ActionResult<UserResponseModel>> UpdateUserAsync([FromRoute] Guid id, [FromForm] UpdateUserCommand command)
     {
         command.ID = id;
         var user = await Mediator.Send(command);

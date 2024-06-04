@@ -106,11 +106,14 @@ public class AccountManager : IAccountManager
             new Claim(ClaimTypes.Name, _user.FullName),
             new Claim(ClaimTypes.MobilePhone, _user.PhoneNumber),
             new Claim(ClaimTypes.StreetAddress, _user.Address),
-
+            new Claim(ClaimTypes.Gender, _user.Gender),
+            new Claim(ClaimTypes.DateOfBirth, _user.DateOfBirth?.ToString("dd-MM-yyyy")!)
             };
+
+        var avatarOfUser = string.Concat("https://res.cloudinary.com/do06xdvhs/image/upload/", _user.Avatar);
         if (_user.Avatar is not null)
         {
-            claims.Add(new Claim("Avatar", _user.Avatar));
+            claims.Add(new Claim("Avatar", avatarOfUser));
         }
         else
         {
