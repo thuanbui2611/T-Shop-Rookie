@@ -26,44 +26,42 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserR
 
         if (user == null) throw new NotFoundException("User is not found!");
 
-        if (user.Email!.Equals(request.Email, StringComparison.OrdinalIgnoreCase))
+        if (user.Email.ToLower().Trim() != request.Email.ToLower().Trim())
         {
             //Validate email existed
-            var isEmailExisted = await _userManager.Users.AnyAsync(u => u.Email!.Equals(request.Email, StringComparison.OrdinalIgnoreCase));
+            var isEmailExisted = await _userManager.Users.AnyAsync(u => u.Email.ToLower().Trim() == request.Email.ToLower().Trim());
             if (isEmailExisted) throw new ConflictException("Email has existed!");
         }
-        if (user.UserName!.Equals(request.Username, StringComparison.OrdinalIgnoreCase))
+        if (user.UserName.ToLower().Trim() != request.Username.ToLower().Trim())
         {
             //Validate username existed
-            var isEmailExisted = await _userManager.Users.AnyAsync(u => u.UserName!.Equals(request.Username, StringComparison.OrdinalIgnoreCase));
+            var isEmailExisted = await _userManager.Users.AnyAsync(u => u.UserName.ToLower().Trim() == request.Username.ToLower().Trim());
             if (isEmailExisted) throw new ConflictException("Username has existed!");
         }
 
-        var userToUpdate = new ApplicationUser()
-        {
-            FullName = request.FullName,
-            Address = request.Address,
-            DateOfBirth = request.DateOfBirth,
-            Email = request.Email,
-            Gender = request.Gender,
-            UserName = request.Username,
-            PhoneNumber = request.PhoneNumber,
-        };
+        user.FullName = request.FullName;
+        user.UserName = request.Username;
+        user.Email = request.Email;
+        user.DateOfBirth = request.DateOfBirth;
+        user.Gender = request.Gender;
+        user.PhoneNumber = request.PhoneNumber;
+        user.Address = request.Address;
 
         //UploadImage
         if (request.AvatarUpload != null)
         {
             var image = await _cloudinaryService.AddImageAsync(request.AvatarUpload);
-            userToUpdate.Avatar = image.PublicID;
+            user.Avatar = image.PublicID;
         }
 
-        var updateUser = await _userManager.UpdateAsync(userToUpdate);
-        if (!updateUser.Succeeded)
+
+        var resultUpdate = await _userManager.UpdateAsync(user);
+        if (!resultUpdate.Succeeded)
         {
             throw new Exception("Update User Failed");
         }
 
-        var result = _mapper.Map<UserResponseModel>(userToUpdate);
+        var result = _mapper.Map<UserResponseModel>(user);
         return result;
     }
 }
