@@ -35,28 +35,13 @@ namespace T_Shop.Application.Features.Products.Commands.UpdateProduct
 
         public async Task<ProductResponseModel> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            var product = await _productQueries.GetByIdAsync(request.Id);
+            var product = await _productQueries.GetProductByIdAsync(request.Id);
             if (product == null)
             {
                 throw new NotFoundException("Product is not found");
             }
-            //var color = await _colorRepository.GetById(request.ColorID);
-            //if (color == null)
-            //{
-            //    throw new NotFoundException("Color is not found");
-            //}
-            //var model = await _modelRepository.GetById(request.ModelID);
-            //if (model == null)
-            //{
-            //    throw new NotFoundException("Model is not found");
-            //}
-            //var type = await _typeRepository.GetById(request.TypeID);
-            //if (type == null)
-            //{
-            //    throw new NotFoundException("Type is not found");
-            //}
 
-            var productUpdate = _mapper.Map<Product>(request);
+            var productToUpdate = _mapper.Map<UpdateProductCommand, Product>(request, product);
 
             var imagesFromRequest = request.ImagesList;
             var imagesInProduct = product.ProductImages.ToList();
@@ -68,72 +53,58 @@ namespace T_Shop.Application.Features.Products.Commands.UpdateProduct
                     .ToList();
 
             //Handle upload images
-            if (request.ImagesUpload.Count > 0)
+            //Upload new images
+            if (request.ImagesUpload != null)
             {
-                //int indexToUpload = 0;
-                //Upload replace existed images
-                //if (imagesToDelete.Count > 0)
-                //{
-                //    for (int i = 0; i < imagesToDelete.Count; i++)
-                //    {
-                //        if (numOfImagesToUpload == 0) break;
-
-                //        await _cloudinaryService.UpdateImageAsync(request.ImagesUpload[i], imagesToDelete[i].ImagePublicID);
-
-                //        imagesToDelete.RemoveAt(i);
-                //        indexToUpload++;
-                //        numOfImagesToUpload--;
-                //    }
-                //}
-                //Upload new images
-                if (request.ImagesUpload.Count > 0)
+                List<ProductImage> productImagesUploaded = new List<ProductImage>();
+                for (int i = 0; i < request.ImagesUpload.Count; i++)
                 {
-                    List<ProductImage> productImagesUploaded = new List<ProductImage>();
-                    for (int i = 0; i < request.ImagesUpload.Count; i++)
+                    var imageAdded = await _cloudinaryService.AddImageAsync(request.ImagesUpload[i]);
+                    ProductImage productImageAdded = new ProductImage()
                     {
-                        var imageAdded = await _cloudinaryService.AddImageAsync(request.ImagesUpload[i]);
-                        ProductImage productImageAdded = new ProductImage()
-                        {
-                            ProductID = productUpdate.Id,
-                            ImagePublicID = imageAdded.PublicID
-                        };
-                        productImagesUploaded.Add(productImageAdded);
-                    }
-                    //Add to db
-                    _productImageRepository.AddRange(productImagesUploaded);
+                        ProductID = productToUpdate.Id,
+                        ImagePublicID = imageAdded.PublicID
+                    };
+
+                    productImagesUploaded.Add(productImageAdded);
                 }
+                //Set first image to main image
+                productImagesUploaded[0].IsMain = true;
+                //Add to db
+                _productImageRepository.AddRange(productImagesUploaded);
             }
             //Check if imageDeleted is deleted all
             if (imagesToDelete.Count > 0)
             {
-                for (int i = 0; i < imagesToDelete.Count; i++)
+                //Delete image from cloudinary
+                _ = Task.Run(async () =>
                 {
-                    await _cloudinaryService.DeleteImageAsync(imagesToDelete[i].ImagePublicID);
-                }
+                    for (int i = 0; i < imagesToDelete.Count; i++)
+                    {
+                        await _cloudinaryService.DeleteImageAsync(imagesToDelete[i].ImagePublicID);
+                    }
+                });
                 _productImageRepository.DeleteRange(imagesToDelete);
             }
 
-            productUpdate.CreatedAt = product.CreatedAt;
-            productUpdate.LastUpdated = DateTime.UtcNow;
-            _productRepository.Update(productUpdate);
+            productToUpdate.LastUpdated = DateTime.UtcNow;
+            _productRepository.Update(productToUpdate);
             await _unitOfWork.CompleteAsync();
-            //productUpdate.Color = color;
-            //productUpdate.Model = model;
-            //productUpdate.Type = type;
 
-            UpdateExistedCache(productUpdate);
+            UpdateExistedCache(productToUpdate);
 
-            var result = _mapper.Map<ProductResponseModel>(productUpdate);
+            var result = _mapper.Map<ProductResponseModel>(productToUpdate);
             return result;
         }
 
-        private async void UpdateExistedCache(Product deletedProduct)
+        private async void UpdateExistedCache(Product productUpdated)
         {
             var key = _cacheKeyConstants.ProductCacheKey;
             var cacheValues = await _cache.GetAsync<List<Product>>(key);
             if (cacheValues != null)
             {
-                cacheValues.RemoveAll(t => t.Id.Equals(deletedProduct.Id));
+                cacheValues.RemoveAll(t => t.Id.Equals(productUpdated.Id));
+                cacheValues.Add(productUpdated);
                 _cache.Add(key, cacheValues);
             }
         }

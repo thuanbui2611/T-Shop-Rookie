@@ -30,7 +30,7 @@ namespace T_Shop.Application.Features.Products.Commands.DeleteProduct
 
         public async Task<bool> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
-            var product = await _productQueries.GetByIdAsync(request.Id);
+            var product = await _productQueries.GetProductByIdAsync(request.Id);
             if (product == null)
             {
                 throw new NotFoundException("Product not found");

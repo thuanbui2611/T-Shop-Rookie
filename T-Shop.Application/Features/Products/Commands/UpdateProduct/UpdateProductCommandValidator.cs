@@ -5,9 +5,17 @@ public class UpdateProductCommandValidator : AbstractValidator<UpdateProductComm
 {
     public UpdateProductCommandValidator()
     {
-        RuleFor(up => up.ImagesUpload.Count + up.ImagesList.Count)
-            .LessThanOrEqualTo(5)
+        RuleFor(up => up)
+            .Must(HaveValidImageCount)
             .WithMessage("Maximum of 5 images allowed.");
 
+    }
+
+    private bool HaveValidImageCount(UpdateProductCommand productToUpload)
+    {
+        int imagesUploadCount = productToUpload.ImagesUpload?.Count ?? 0;
+        int imagesListCount = productToUpload.ImagesList?.Count ?? 0;
+
+        return (imagesUploadCount + imagesListCount) <= 5;
     }
 }

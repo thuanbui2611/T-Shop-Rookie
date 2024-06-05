@@ -23,7 +23,7 @@ namespace T_Shop.Infrastructure.Data.Queries
                     .ToListAsync();
         }
 
-        public async Task<Product> GetByIdAsync(Guid id)
+        public async Task<Product?> GetProductByIdAsync(Guid id)
         {
             return await dbSet
                     .Where(p => p.Id.Equals(id))

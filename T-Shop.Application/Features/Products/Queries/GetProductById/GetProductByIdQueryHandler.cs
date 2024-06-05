@@ -19,7 +19,7 @@ namespace T_Shop.Application.Features.Products.Queries.GetProductsById
 
         public async Task<ProductResponseModel> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
         {
-            var product = await _productRepository.GetByIdAsync(request.productId);
+            var product = await _productRepository.GetProductByIdAsync(request.productId);
             if (product == null)
             {
                 throw new BadRequestException(message: "Product not found");

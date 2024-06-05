@@ -55,7 +55,10 @@ public class CreateModelProductCommandHandler : IRequestHandler<CreateModelProdu
             Name = brand.Name,
         };
 
-        UpdateExistedCache(newModel);
+        _ = Task.Run(() =>
+        {
+            UpdateExistedCache(newModel);
+        });
 
         var result = _mapper.Map<ModelProductResponseModel>(newModel);
         return result;
@@ -64,11 +67,15 @@ public class CreateModelProductCommandHandler : IRequestHandler<CreateModelProdu
     private async void UpdateExistedCache(Model newModel)
     {
         var key = _cacheKeyConstants.ModelCacheKey;
-        var cacheValues = await _cache.GetAsync<List<Model>>(key);
-        if (cacheValues != null)
+        var brandKey = _cacheKeyConstants.BrandCacheKey;
+        var cacheModelValues = await _cache.GetAsync<List<Model>>(key);
+        if (cacheModelValues != null)
         {
-            cacheValues.Add(newModel);
-            _cache.Add(key, cacheValues);
+            //Add model to cache model
+            cacheModelValues.Add(newModel);
+            _cache.Add(key, cacheModelValues);
+            //Add model to cache brand
+            _cache.Remove(brandKey);
         }
     }
 }
