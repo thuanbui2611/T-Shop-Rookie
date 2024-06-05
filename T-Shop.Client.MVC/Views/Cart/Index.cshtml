@@ -1,39 +1,34 @@
 ﻿@{
 
-@using T_Shop.Shared.ViewModels.CartPage
+    @using T_Shop.Shared.ViewModels.CartPage
     @model CartVM
 }
 
 <!-- Single Page Header start -->
 <div class="container-fluid page-header py-5">
     <h1 class="text-center text-white display-6">Cart</h1>
-    <ol class="breadcrumb justify-content-center mb-0">
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
-        <li class="breadcrumb-item"><a href="#">Pages</a></li>
-        <li class="breadcrumb-item active text-white">Cart</li>
-    </ol>
 </div>
 <!-- Single Page Header End -->
 <!-- Cart Page Start -->
 <div class="container-fluid py-5">
     <div class="container py-5">
-        <div class="table-responsive">
-            <table class="table" id="cart-table">
-                <thead>
-                    <tr>
-                        <th scope="col">Products</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                   @if(Model.Cart.CartItems.Count() == 0)
-                    {
-                        <div>Cart Empty!</div>
-                    } else
-                    {
+        @if (Model.Cart.CartItems.Count() == 0)
+        {
+            <h1 class="text-center" style="min-height: 300px">Cart Empty! Please add more products</h1>
+        } else
+        {
+            <div class="table-responsive">
+                <table class="table" id="cart-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Products</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         @foreach (var item in Model.Cart.CartItems)
                         {
                             <tr>
@@ -54,8 +49,8 @@
                                                 <i class="fa fa-minus"></i>
                                             </button>
                                         </div>
-                                        <input type="text" class="form-control form-control-sm text-center border-0 quantity-input" 
-                                        value="@item.Quantity" data-item-id="@item.Product.Id" data-original-quantity="@item.Quantity">
+                                        <input type="text" class="form-control form-control-sm text-center border-0 quantity-input"
+                                               value="@item.Quantity" data-item-id="@item.Product.Id" data-original-quantity="@item.Quantity">
                                         <div class="input-group-btn">
                                             <button class="btn btn-sm btn-plus rounded-circle bg-light border">
                                                 <i class="fa fa-plus"></i>
@@ -76,34 +71,35 @@
                                         <i class="fa fa-times text-danger"></i>
                                     </button>
                                 </td>
-
                             </tr>
                         }
-                    }
-                   
-                </tbody>
-            </table>
-        </div>
-        <div class="row g-4 justify-content-end">
-            <div class="col-8"></div>
-            <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
-                <div class="bg-light rounded">
-                    <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
-                        <h5 class="mb-0 ps-4 me-4">Total</h5>
-                        <p class="mb-0 pe-4">@{
-                                decimal total = 0;    
-                                foreach(var item in Model.Cart.CartItems)
-                                {
-                                    total += item.Quantity * item.Product.Price;
+                    </tbody>
+                </table>
+
+
+            </div>
+            <div class="row g-4 justify-content-end">
+                <div class="col-8"></div>
+                <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
+                    <div class="bg-light rounded">
+                        <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
+                            <h5 class="mb-0 ps-4 me-4">Total</h5>
+                            <p class="mb-0 pe-4">
+                                @{
+                                    decimal total = 0;
+                                    foreach (var item in Model.Cart.CartItems)
+                                    {
+                                        total += item.Quantity * item.Product.Price;
+                                    }
                                 }
-                            }
-                            <span class="cart-total-price">@total.ToString("N0")</span>
-                        </p>
+                                <span class="cart-total-price">@total.ToString("N0")</span>
+                            </p>
+                        </div>
+                        <button id="checkout-button" class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button">Checkout</button>
                     </div>
-                    <button id="checkout-button" class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button">Checkout</button>
                 </div>
             </div>
-        </div>
+        }
     </div>
 </div>
 <!-- Cart Page End -->
@@ -165,7 +161,7 @@
                     // Fetch the updated content of the CartController index page
 
                     cartData = response;
-                    alert("Update cart success");
+                    toastr.success("Update cart success");
                     $.ajax({
                         url: '/Cart',
                         type: 'GET',
@@ -209,20 +205,32 @@
                         if(response === true)
                         {
                             //update model cart
-                            cartData = cartData.cartItems.filter(c => c.productId !== productId);
                             debugger;
-                            alert("Item deleted successfully")
+                            if (cartData.cartItems.length > 1) {
+                                cartData.cartItems = cartData.cartItems.filter(c => c.product.id !== productId);
+                            } else {
+                                cartData.cartItems = null
+                            }
+                            debugger;
+                            toastr.success("Item deleted successfully")
                             $.ajax({
                                 url: '/Cart',
                                 type: 'GET',
                                 success: function (data) {
+                                    debugger;
                                     // Extract the cart item rows from the fetched HTML content
                                     var cartItems = $(data).find('#cart-table tbody').html();
                                     // Replace the existing cart item rows with the updated content
-                                    $('#cart-table tbody').html(cartItems);
-                                    var totalCartPrice = calculateTotalCartPrice(cartData);
+                                    if (!cartItems) {
+                                        $('#cart-table tbody').remove();
+                                    } else {
+                                        $('#cart-table tbody').html(cartItems);
+                                    }
+                                    
+                                    var totalCartPrice = calculateTotalCartPrice(cartData.cartItems)
                                     $('.cart-total-price').text(totalCartPrice.toLocaleString());
                                     $('.cart-total-price').data('total', totalCartPrice.toLocaleString());
+                                    updateCartViewComponent()
                                 },
                                 error: function (xhr, status, error) {
                                     // Handle the error response, if needed
@@ -245,7 +253,7 @@
         });
 
         function calculateTotalCartPrice(cartData) {
-            debugger;
+            if (!cartData) return 0;
             var total = 0;
             for (var i = 0; i < cartData.length; i++) {
                 total += cartData[i].product.price * cartData[i].quantity;

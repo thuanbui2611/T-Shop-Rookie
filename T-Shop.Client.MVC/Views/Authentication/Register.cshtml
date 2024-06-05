@@ -1,0 +1,162 @@
+﻿@{
+    Layout = null;
+    var errorMessage = ViewBag.ErrorMessage;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - T_Shop.Client.MVC</title>
+
+    <meta charset="utf-8">
+    <title>T-Shop</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+          rel="stylesheet" />
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css"
+          rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+
+</head>
+<style>
+    .page-header {
+        position: relative;
+        background:  url("https://wlt-p-001.sitecorecontenthub.cloud/api/public/content/0fdac51ab4f14c059952cb8333c7ee51?v=67d6e3db");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+</style>
+<body>
+    <section class="vh-100" style="background-color: #f5f5f5">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col col-xl-10">
+                    <div class="card" style="border-radius: 1rem;">
+                        <div class="col g-0">
+                            <div class="d-none d-md-block page-header" style="height: 300px">
+                                
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="card-body p-4 p-lg-5 text-black">
+                                    <form method="post" asp-action="Register">
+                                        <div class="d-flex align-items-center mb-3 pb-1">
+                                            <span class="h1 fw-bold mb-0">Register</span>
+                                        </div>
+                                        <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Register a new account</h5>
+
+                                        <div class="row">
+                                            <div class="col">
+                                                <p class="mb-1" style="font-size: 18px; font-weight: 500">Full Name:</p>
+                                                <div class="form-outline mb-4 rounded border bg-light">
+                                                    <input type="text" id="fullName" name="fullName" class="form-control form-control-lg" placeholder="Your Full Name" required />
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col">
+                                                <p class="mb-1" style="font-size: 18px; font-weight: 500">Username:</p>
+                                                <div class="form-outline mb-4 rounded border bg-light">
+                                                    <input type="text" id="username" name="username" class="form-control form-control-lg" placeholder="Your Username" required />
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <p class="mb-1" style="font-size: 18px; font-weight: 500">PhoneNumber:</p>
+                                                <div class="form-outline mb-4 rounded border bg-light">
+                                                    <input type="text" id="phoneNumber" name="phoneNumber" class="form-control form-control-lg" placeholder="Your Phone Number" required />
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <p class="mb-1" style="font-size: 18px; font-weight: 500">Email:</p>
+                                                <div class="form-outline mb-4 rounded border bg-light">
+                                                    <input type="email" id="email" name="Email" class="form-control form-control-lg" placeholder="Your Email" required />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col">
+                                                <p class="mb-1" style="font-size: 18px; font-weight: 500">Password:</p>
+                                                <div class="form-outline mb-4 rounded border bg-light">
+                                                    <input type="password" id="password" name="password" class="form-control form-control-lg" placeholder="Your Email" required />
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <p class="mb-1" style="font-size: 18px; font-weight: 500">Confirm Password:</p>
+                                                <div class="form-outline mb-4 rounded border bg-light">
+                                                    <input type="password" id="confirmPassword" name="confirmPassword" class="form-control form-control-lg" placeholder="Your Email" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                       
+                                        <div class="row">
+                                            <div class="col">
+                                                <p class="mb-1" style="font-size: 18px; font-weight: 500">Birthday:</p>
+                                                <div class="form-outline mb-4 rounded border bg-light">
+                                                    <input type="date" id="dateOfBirth" name="dateOfBirth" class="form-control form-control-lg" placeholder="Your Password" required />
+                                                </div>
+
+                                            </div>
+                                            <div class="col">
+                                                <p class="mb-1" style="font-size: 18px; font-weight: 500">Gender:</p>
+                                                <select class="form-select" id="genderSelect" name="genderSelect" style="color: black">
+                                                        <option value="Male" selected>Male</option>
+                                                        <option value="Female">Female</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                      
+                                        <p class="mb-1" style="font-size: 18px; font-weight: 500">Address:</p>
+                                        <div class="form-outline mb-4 rounded border bg-light">
+                                            <input type="text" id="address" name="address" class="form-control form-control-lg" placeholder="Your Address" required />
+                                        </div>
+
+                                        <div class="pt-1 mb-4">
+                                            <button class="btn btn-dark btn-lg btn-block" type="submit" style="width: 100%">Register</button>
+                                        </div>
+
+                                        <div class="text-end">
+                                            <a class="small text-muted" href="#!">Forgot password?</a>
+                                            <p class="mb-5 pb-lg-2 text-center" style="color: #393f81;">
+                                                Already have an account? <a asp-action="Login" asp-controller="Authentication"
+                                                                            style="">Login here</a>
+                                            </p>
+                                        </div>
+                                       
+                                       
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var errormessage = "@errorMessage";
+        if (errormessage != "") {
+            toastr.error('@errorMessage');
+        }
+    });
+</script>       

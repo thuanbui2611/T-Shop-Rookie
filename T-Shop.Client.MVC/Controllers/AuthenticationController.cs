@@ -32,6 +32,11 @@ namespace T_Shop.Client.MVC.Controllers
             return View();
         }
 
+        public IActionResult Register()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Login(UserAuthenRequestModel user)
         {
@@ -58,7 +63,22 @@ namespace T_Shop.Client.MVC.Controllers
             return View(user);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Register(UserCreationResquestModel request)
+        {
+            string gender = Request.Form["genderSelect"];
+            request.Gender = gender;
 
+            var result = await _authenticationRepository.Register(request);
+            if (result)
+            {
+                TempData["SuccessMessage"] = "Login Success!";
+                return RedirectToAction("Login", "Authentication");
+            }
+
+            TempData["FailedMessage"] = "Register failed!";
+            return View();
+        }
         public IActionResult Logout()
         {
             Response.Cookies.Delete("AuthToken");

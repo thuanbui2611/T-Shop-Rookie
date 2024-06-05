@@ -109,7 +109,7 @@ public class TransactionRepository : BaseRepository, ITransactionRepository
         if (response.IsSuccessStatusCode)
         {
             string data = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ProductReviewResponseModel>(data); ;
+            return JsonConvert.DeserializeObject<ProductReviewResponseModel>(data);
         }
         return null;
     }

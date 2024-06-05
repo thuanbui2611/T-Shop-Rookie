@@ -16,7 +16,7 @@ public class AuthenticationController : ApiControllerBase
     /// <response code="201">Successfully create a user.</response>
     /// <response code="500">There is something wrong while execute.</response>
     [HttpPost("Register")]
-    public async Task<IActionResult> Register([FromForm] CreateUserCommand command)
+    public async Task<IActionResult> Register([FromBody] CreateUserCommand command)
     {
         await Mediator.Send(command);
         return Created();

@@ -28,7 +28,8 @@ public class OrderController : BaseController
         {
             Order = newOrder,
             StripePublishableKey = _configuration.GetSection("StripeSettings")["PublishableKey"],
-            StripeSecretKey = _configuration.GetSection("StripeSettings")["SecretKey"]
+            StripeSecretKey = _configuration.GetSection("StripeSettings")["SecretKey"],
+            CurrentUser = CurrentUser
         };
         return View(OrderViewModel);
     }

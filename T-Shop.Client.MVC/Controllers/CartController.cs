@@ -32,6 +32,12 @@ public class CartController : BaseController
         return View(cartVM);
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetCartViewComponent()
+    {
+        return ViewComponent("Cart");
+    }
+
     [HttpPost]
     public async Task<IActionResult> AddToCart(Guid productId)
     {

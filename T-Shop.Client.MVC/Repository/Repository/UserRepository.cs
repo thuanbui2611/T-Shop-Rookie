@@ -69,9 +69,6 @@ public class UserRepository : BaseRepository, IUserRepository
             string data = await response.Content.ReadAsStringAsync();
             var userUpdated = JsonConvert.DeserializeObject<UserResponseModel>(data);
 
-            // Update the CurrentUser in the HttpContext
-            //_httpContextAccessor.HttpContext.Items["CurrentUser"] = userUpdated;
-
             return userUpdated;
         }
         return null;

@@ -16,6 +16,10 @@ public class CartViewComponent : ViewComponent
     public async Task<IViewComponentResult> InvokeAsync()
     {
         var currentUser = _userRepository.GetCurrentUser(HttpContext);
+        if (currentUser == null)
+        {
+            return View(0);
+        }
         var cart = await _cartRepository.GetCurrentCart(currentUser.Id);
 
         var cartCount = cart.CartItems == null ? 0 : cart.CartItems.Count();

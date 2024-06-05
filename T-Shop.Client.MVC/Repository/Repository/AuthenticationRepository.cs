@@ -30,9 +30,16 @@ namespace T_Shop.Client.MVC.Repository.Repository
             return (null, null);
         }
 
-        public Task<UserResponseModel> Register(UserCreationResquestModel user)
+        public async Task<bool> Register(UserCreationResquestModel request)
         {
-            throw new NotImplementedException();
+            var requestUrl = "api/authentication/register";
+            HttpResponseMessage response = _httpClient.PostAsJsonAsync(requestUrl, request).Result;
+            string test = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
         }
 
         private UserResponseModel GetUserInformationFromToken(string token)

@@ -7,11 +7,6 @@
 <!-- Single Page Header start -->
 <div class="container-fluid page-header py-5">
     <h1 class="text-center text-white display-6">Checkout</h1>
-    <ol class="breadcrumb justify-content-center mb-0">
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
-        <li class="breadcrumb-item"><a href="#">Pages</a></li>
-        <li class="breadcrumb-item active text-white">Checkout</li>
-    </ol>
 </div>
 <!-- Single Page Header End -->
 <!-- Checkout Page Start -->
@@ -23,19 +18,19 @@
                 <div class="col-md-12 col-lg-6 col-xl-5">
                     <div class="form-item">
                         <label class="form-label my-3">Full Name<sup>*</sup></label>
-                        <input type="text" class="form-control" value=@Model.CurrentUser.FullName disabled>
+                        <input type="text" class="form-control" value="@Model.CurrentUser.FullName" disabled>
                     </div>
                     <div class="form-item">
                         <label class="form-label my-3">Address <sup>*</sup></label>
-                        <input type="text" class="form-control" value=@Model.CurrentUser.Address disabled>
+                        <input type="text" class="form-control" value="@Model.CurrentUser.Address" disabled>
                     </div>
                     <div class="form-item">
                         <label class="form-label my-3">Phone Number<sup>*</sup></label>
-                        <input type="tel" class="form-control" value=@Model.CurrentUser.PhoneNumber disabled>
+                        <input type="tel" class="form-control" value="@Model.CurrentUser.PhoneNumber" disabled>
                     </div>
                     <div class="form-item">
                         <label class="form-label my-3">Email Address<sup>*</sup></label>
-                        <input type="email" class="form-control" value=@Model.CurrentUser.Email disabled>
+                        <input type="email" class="form-control" value="@Model.CurrentUser.Email" disabled>
                     </div>
                 </div>
                 <div class="col-md-12 col-lg-6 col-xl-7">

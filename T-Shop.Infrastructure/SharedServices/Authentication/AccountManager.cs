@@ -49,7 +49,7 @@ public class AccountManager : IAccountManager
             FullName = registerUser.FullName,
             UserName = registerUser.Username,
             Email = registerUser.Email,
-            DateOfBirth = registerUser.Date_of_birth,
+            DateOfBirth = registerUser.DateOfBirth,
             Gender = registerUser.Gender,
             PhoneNumber = registerUser.PhoneNumber,
             Address = registerUser.Address,

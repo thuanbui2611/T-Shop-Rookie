@@ -164,6 +164,8 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.success) {
                     toastr.success("Add to cart successfull!");
+                    updateCartViewComponent();
+                    //$('#cartIconContainer').load('/cart/viewcomponent');
                 } else {
                     toastr.error("Add to cart failed!");
                 }
@@ -174,6 +176,20 @@ $(document).ready(function () {
         });
     });
 });
+
+//Update cart view component
+function updateCartViewComponent() {
+    $.ajax({
+        url: '/Cart/GetCartViewComponent',
+        type: 'GET',
+        success: function (data) {
+            $('#cartViewComponentContainer').html(data);
+        },
+        error: function (error) {
+            console.error("There was an error updating the cart view component:", error);
+        }
+    });
+}
 
 //Rating select
 ! function (e) {

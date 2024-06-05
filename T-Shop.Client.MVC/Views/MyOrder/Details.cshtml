@@ -65,14 +65,14 @@
                             <tbody>
                                 @foreach(var orderDetail in Model.Order.OrderDetails)
                                 {
-                                    <tr class="hover-onClick border-bottom bg-white" onclick="location.href='@Url.Action("details", "product", new { id = orderDetail.Product.Id })'">
+                                    <tr class=" border-bottom bg-white">
                                         <td class="mt-2">
                                             <div class="d-flex mb-2 gap-2">
                                                 <div class="flex-shrink-0">
                                                     <img src=@orderDetail.Product.Images?.Find(i => i.isMain)?.imageUrl alt="Image Product" width="80" class="img-fluid">
                                                 </div>
                                                 <div class=" flex-grow-1">
-                                                    <h5 class="mb-0 line-clamp-1" style="color:black">@orderDetail.Product.Name</h5>
+                                                    <h5 class="mb-0 line-clamp-1 hover-onClick" style="color:black" onclick="location.href='@Url.Action("details", "product", new { id = orderDetail.Product.Id })'">@orderDetail.Product.Name</h5>
                                                     <span style="color:black">Color: @orderDetail.Product.Color.Name</span>
                                                 </div>
                                             </div>
@@ -92,7 +92,7 @@
                                                             </button>
                                                             <!-- Modal Review Form-->
                                                             <div class="modal fade" id="ratingProduct" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ratingProductLabel" aria-hidden="true">
-                                                                <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable  modal-lg">
+                                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
                                                                     <form id="formReview" class="modal-content" data-product-id="@orderDetail.Product.Id">
                                                                         <div class="modal-header bg-light">
                                                                             <h4 class="modal-title text-center text-danger fw-bold" id="cancelOrderLabel">Review Product</h4>
@@ -209,29 +209,6 @@
                         </table>
                     </div>
                 </div>
-                <!-- Payment -->
-             @*    <div class="card mb-4">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <h3 class="h6">Payment Method</h3>
-                                <p>
-                                    Visa -1234 <br>
-                                    Total: $169,98 <span class="badge bg-success rounded-pill">PAID</span>
-                                </p>
-                            </div>
-                            <div class="col-lg-6">
-                                <h3 class="h6">Billing address</h3>
-                                <address>
-                                    <strong>John Doe</strong><br>
-                                    1355 Market St, Suite 900<br>
-                                    San Francisco, CA 94103<br>
-                                    <abbr title="Phone">P:</abbr> (123) 456-7890
-                                </address>
-                            </div>
-                        </div>
-                    </div>
-                </div> *@
             </div>
             <div class="col-lg-4">
                 <div class="card mb-4">
@@ -274,7 +251,7 @@
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelOrder">
                     Cancel Order
                 </button>
-                <!-- Modal -->
+                <!-- Modal Cancel Order-->
                 <div class="modal fade" id="cancelOrder" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="cancelOrderLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                         <form id="formCancel" class="modal-content">
@@ -336,6 +313,7 @@
                             statusSpan.removeClass().addClass('d-inline-block px-2 py-1 fw-bold lead rounded-pill text-sm bg-deny text-danger');
                             $('#container-update-status').remove();
                             $('#cancelOrder').modal('hide');
+                            $('.modal-backdrop').remove();
                             toastr.success("Cancel order successful!");
                         } else {
                             toastr.error("Error, can not cancel order!");
@@ -487,6 +465,7 @@
                         if (response !== null && response !== undefined) {
                             $('#container-rating-product').remove();
                             $('#formReview').modal('hide');
+                            $('.modal-backdrop').remove();
                             toastr.success("Review success, thanks for your rating!");
                         } else {
                             toastr.error("Review failed!");

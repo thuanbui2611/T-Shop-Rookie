@@ -8,7 +8,7 @@ public class UserController : BaseController
 {
     private readonly IUserRepository _userRepository;
 
-    public UserController(IUserRepository userRepository, IUserRepository _userRepository) : base(userRepository)
+    public UserController(IUserRepository userRepository) : base(userRepository)
     {
         _userRepository = userRepository;
     }

@@ -1,7 +1,4 @@
 ﻿@using T_Shop.Shared.DTOs.User.ResponseModels
-@{
-    var currentUser = ViewContext.HttpContext.Items["CurrentUser"] as UserResponseModel;
-}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -67,7 +64,7 @@
             </div>
         <div class="container px-0 bg-transparent">
             <nav class="navbar navbar-light navbar-expand-xl">
-                <a href="" class="navbar-brand"><h1 class="display-6 text-logo-color">T-Shop</h1></a>
+                <a href="/" class="navbar-brand"><h1 class="display-6 text-logo-color">T-Shop</h1></a>
                     <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                         <span class="fa fa-bars text-primary"></span>
                     </button>

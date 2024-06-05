@@ -1,6 +1,7 @@
 ﻿@{
     Layout = null;
     var errorMessage = ViewBag.ErrorMessage;
+    var successMessage = ViewBag.SuccessMessage;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -61,7 +62,7 @@
 
                                         <a class="small text-muted" href="#!">Forgot password?</a>
                                         <p class="mb-5 pb-lg-2" style="color: #393f81;">
-                                            Don't have an account? <a href="#!"
+                                            Don't have an account? <a asp-action="Register" asp-controller="Authentication"
                                                                       style="">Register here</a>
                                         </p>
 
@@ -85,6 +86,11 @@
         var errormessage = "@errorMessage";
         if (errormessage != "") {
             toastr.error('@errorMessage');
+        }
+
+        var successMessage = "@successMessage";
+        if (successMessage != "") {
+            toastr.success('@successMessage');
         }
     });
 </script>

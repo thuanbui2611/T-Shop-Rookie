@@ -44,7 +44,7 @@ public class TransactionController : ApiControllerBase
     public async Task<ActionResult<ProductReviewResponseModel>> CreateReviewForProductAsync([FromForm] CreateReviewForProductCommand command)
     {
         var createdReview = await Mediator.Send(command);
-        return Created($"transaction/{createdReview.ProductID}/{createdReview.User.ID}", createdReview);
+        return Created($"transaction/{createdReview.ProductID}/{createdReview.ID}", createdReview);
     }
 
     /// <summary>
