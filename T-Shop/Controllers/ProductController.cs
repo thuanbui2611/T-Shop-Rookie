@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using T_Shop.Application.Features.ProductReview.Queries.GetReviewsOfProduct;
 using T_Shop.Application.Features.Products.Commands.CreateProduct;
 using T_Shop.Application.Features.Products.Commands.DeleteProduct;
@@ -86,6 +87,7 @@ namespace T_Shop.Controllers
         /// <returns>Status code of the action.</returns>
         /// <response code="201">Successfully created item.</response>
         /// <response code="500">There is something wrong while execute.</response>
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<ProductResponseModel>> CreateProductAsync([FromForm] CreateProductCommand command)
         {
@@ -99,6 +101,7 @@ namespace T_Shop.Controllers
         /// <returns>Status code of the action.</returns>
         /// <response code="200">Successfully updated item.</response>
         /// <response code="500">There is something wrong while execute.</response>
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<ActionResult<ProductResponseModel>> UpdateProductAsync([FromRoute] Guid id, [FromForm] UpdateProductCommand command)
         {
@@ -113,6 +116,7 @@ namespace T_Shop.Controllers
         /// <returns>Status code of the action.</returns>
         /// <response code="204">Successfully deleted item.</response>
         /// <response code="500">There is something wrong while execute.</response>
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProductAsync([FromRoute] Guid id)
         {

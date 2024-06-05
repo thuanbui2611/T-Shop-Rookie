@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using T_Shop.Application.Features.Color.Commands.CreateColor;
 using T_Shop.Application.Features.Color.Commands.DeleteColor;
 using T_Shop.Application.Features.Color.Commands.UpdateColor;
@@ -48,6 +49,7 @@ public class ColorController : ApiControllerBase
     /// <returns>Status code of the action.</returns>
     /// <response code="201">Successfully created item.</response>
     /// <response code="500">There is something wrong while execute.</response>
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult<ColorResponseModel>> CreateColorAsync([FromBody] CreateColorCommand command)
     {
@@ -61,6 +63,7 @@ public class ColorController : ApiControllerBase
     /// <returns>Status code of the action.</returns>
     /// <response code="200">Successfully updated item.</response>
     /// <response code="500">There is something wrong while execute.</response>
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<ActionResult<ColorResponseModel>> UpdateColorAsync([FromRoute] Guid id, [FromBody] UpdateColorCommand command)
     {
@@ -75,6 +78,7 @@ public class ColorController : ApiControllerBase
     /// <returns>Status code of the action.</returns>
     /// <response code="204">Successfully deleted item.</response>
     /// <response code="500">There is something wrong while execute.</response>
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteColorAsync([FromRoute] Guid id)
     {

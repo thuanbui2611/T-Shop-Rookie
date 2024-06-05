@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using T_Shop.Application.Features.ModelProduct.Commands.CreateModelProductCommand;
 using T_Shop.Application.Features.ModelProduct.Commands.DeleteModelProduct;
 using T_Shop.Application.Features.ModelProduct.Commands.UpdateModelProduct;
@@ -70,6 +71,7 @@ public class ModelController : ApiControllerBase
     /// <returns>Status code of the action.</returns>
     /// <response code="201">Successfully created item.</response>
     /// <response code="500">There is something wrong while execute.</response>
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult<ModelProductResponseModel>> CreateModelAsync([FromBody] CreateModelProductCommand command)
     {
@@ -82,6 +84,7 @@ public class ModelController : ApiControllerBase
     /// <returns>Status code of the action.</returns>
     /// <response code="200">Successfully updated item.</response>
     /// <response code="500">There is something wrong while execute.</response>
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<ActionResult<ModelProductResponseModel>> UpdateModelAsync([FromRoute] Guid id, [FromBody] UpdateModelProductCommand command)
     {

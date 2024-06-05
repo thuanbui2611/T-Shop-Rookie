@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using T_Shop.Application.Features.Type.Commands.CreateType;
 using T_Shop.Application.Features.Type.Commands.DeleteType;
 using T_Shop.Application.Features.Type.Commands.UpdateType;
@@ -72,6 +73,7 @@ public class TypeController : ApiControllerBase
     /// <returns>Status code of the action.</returns>
     /// <response code="201">Successfully created item.</response>
     /// <response code="500">There is something wrong while execute.</response>
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult<TypeResponseModel>> CreateTypeAsync([FromBody] CreateTypeCommand command)
     {
@@ -85,6 +87,7 @@ public class TypeController : ApiControllerBase
     /// <returns>Status code of the action.</returns>
     /// <response code="200">Successfully updated item.</response>
     /// <response code="500">There is something wrong while execute.</response>
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<ActionResult<TypeResponseModel>> UpdateTypeAsync([FromRoute] Guid id, [FromBody] UpdateTypeCommand command)
     {
@@ -99,6 +102,7 @@ public class TypeController : ApiControllerBase
     /// <returns>Status code of the action.</returns>
     /// <response code="204">Successfully deleted item.</response>
     /// <response code="500">There is something wrong while execute.</response>
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteTypeAsync([FromRoute] Guid id)
     {

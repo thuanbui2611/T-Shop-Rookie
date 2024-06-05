@@ -7,6 +7,8 @@ using T_Shop.Controllers;
 using T_Shop.Shared.DTOs.Order.ResponseModel;
 
 namespace T_Shop.WebAPI.Controllers;
+
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class OrderController : ApiControllerBase

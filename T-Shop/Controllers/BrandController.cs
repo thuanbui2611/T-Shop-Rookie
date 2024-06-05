@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using T_Shop.Application.Features.Brand.Command.CreateBrand;
 using T_Shop.Application.Features.Brand.Command.DeleteBrand;
 using T_Shop.Application.Features.Brand.Command.UpdateBrand;
@@ -69,6 +70,7 @@ public class BrandController : ApiControllerBase
     /// <returns>Status code of the action.</returns>
     /// <response code="201">Successfully created item.</response>
     /// <response code="500">There is something wrong while execute.</response>
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult<BrandResponseModel>> CreateBrandAsync([FromBody] CreateBrandCommand command)
     {
@@ -81,6 +83,7 @@ public class BrandController : ApiControllerBase
     /// <returns>Status code of the action.</returns>
     /// <response code="200">Successfully updated item.</response>
     /// <response code="500">There is something wrong while execute.</response>
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<ActionResult<BrandResponseModel>> UpdateBrandAsync([FromRoute] Guid id, [FromBody] UpdateBrandCommand command)
     {
@@ -95,6 +98,7 @@ public class BrandController : ApiControllerBase
     /// <returns>Status code of the action.</returns>
     /// <response code="204">Successfully deleted item.</response>
     /// <response code="500">There is something wrong while execute.</response>
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteBrandAsync([FromRoute] Guid id)
     {

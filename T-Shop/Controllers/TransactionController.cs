@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using T_Shop.Application.Features.ProductReview.Commands.CreateReviewForProduct;
 using T_Shop.Application.Features.Transaction.Commands.UpdateStatusTransaction;
 using T_Shop.Application.Features.Transaction.Queries.GetTransactionById;
@@ -11,6 +12,8 @@ using T_Shop.Shared.DTOs.ProductReview.ResponseModel;
 using T_Shop.Shared.DTOs.Transaction.ResponseModel;
 
 namespace T_Shop.WebAPI.Controllers;
+
+[Authorize]
 [Route("api/transaction")]
 [ApiController]
 public class TransactionController : ApiControllerBase

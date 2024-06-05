@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using T_Shop.Application.Features.User.Commands.DisableUser;
 using T_Shop.Application.Features.User.Commands.UpdateUser;
 using T_Shop.Application.Features.User.Queries.GetUserById;
@@ -11,6 +12,8 @@ using T_Shop.Shared.DTOs.User.QueryModels;
 using T_Shop.Shared.DTOs.User.ResponseModels;
 
 namespace T_Shop.WebAPI.Controllers;
+
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class UserController : ApiControllerBase
@@ -71,6 +74,7 @@ public class UserController : ApiControllerBase
     /// <returns>Status code of the action.</returns>
     /// <response code="200">Successfully updated item.</response>
     /// <response code="500">There is something wrong while execute.</response>
+    [Authorize(Roles = "Admin")]
     [HttpPatch("{id}")]
     public async Task<ActionResult<UserResponseModel>> LockOrUnlockUser([FromBody] LockUserCommand command)
     {

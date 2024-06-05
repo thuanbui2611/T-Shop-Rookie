@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using T_Shop.Application.Features.Cart.Commands.AddItemToCartQuery;
 using T_Shop.Application.Features.Cart.Commands.DeleteIItemCart;
 using T_Shop.Application.Features.Cart.Commands.UpdateCart;
@@ -7,6 +8,7 @@ using T_Shop.Controllers;
 using T_Shop.Shared.DTOs.Cart.ResponseModel;
 
 namespace T_Shop.WebAPI.Controllers;
+[Authorize]
 [Route("api/cart")]
 [ApiController]
 public class CartController : ApiControllerBase
