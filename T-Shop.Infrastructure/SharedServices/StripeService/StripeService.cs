@@ -24,7 +24,7 @@ public class StripeService : IStripeService
             var options = new PaymentIntentCreateOptions
             {
                 Amount = decimal.ToInt64(subTotal),
-                Currency = "vnd",
+                Currency = "usd",
                 PaymentMethodTypes = new List<string> { "card" }
             };
 
@@ -35,7 +35,7 @@ public class StripeService : IStripeService
             var options = new PaymentIntentUpdateOptions
             {
                 Amount = decimal.ToInt64(subTotal),
-                Currency = "vnd"
+                Currency = "usd"
             };
             await service.UpdateAsync(order.PaymentIntentID, options);
         }
