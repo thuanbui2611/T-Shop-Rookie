@@ -4,6 +4,7 @@ using T_Shop.Application.Features.ProductReview.Queries.GetReviewsOfProduct;
 using T_Shop.Application.Features.Products.Commands.CreateProduct;
 using T_Shop.Application.Features.Products.Commands.DeleteProduct;
 using T_Shop.Application.Features.Products.Commands.UpdateProduct;
+using T_Shop.Application.Features.Products.Commands.UpdateProductStatus;
 using T_Shop.Application.Features.Products.Queries.GetProducts;
 using T_Shop.Application.Features.Products.Queries.GetProductsById;
 using T_Shop.Extensions;
@@ -109,6 +110,21 @@ namespace T_Shop.Controllers
             var updatedProduct = await Mediator.Send(command);
             return Ok(updatedProduct);
         }
+
+        /// <summary>
+        /// Lock or unlock a product
+        /// </summary>
+        /// <returns>Status code of the action.</returns>
+        /// <response code="201">Successfully created item.</response>
+        /// <response code="500">There is something wrong while execute.</response>
+        [Authorize(Roles = "Admin")]
+        [HttpPost("lockOrUnlock")]
+        public async Task<IActionResult> LockOrUnlockProductAsync([FromBody] LockOrUnlockProductCommand command)
+        {
+            await Mediator.Send(command);
+            return Ok();
+        }
+
 
         /// <summary>
         /// Delete a product

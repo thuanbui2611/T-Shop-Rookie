@@ -55,6 +55,20 @@ public class UserController : ApiControllerBase
     }
 
     /// <summary>
+    /// Lock or unlock a user
+    /// </summary>
+    /// <returns>Status code of the action.</returns>
+    /// <response code="201">Successfully created item.</response>
+    /// <response code="500">There is something wrong while execute.</response>
+    [Authorize(Roles = "Admin")]
+    [HttpPost("lockOrUnlock")]
+    public async Task<IActionResult> LockOrUnlockProductAsync([FromBody] LockOrUnlockUserCommand command)
+    {
+        await Mediator.Send(command);
+        return Ok();
+    }
+
+    /// <summary>
     /// Update a user
     /// </summary>
     /// <returns>Status code of the action.</returns>
@@ -76,7 +90,7 @@ public class UserController : ApiControllerBase
     /// <response code="500">There is something wrong while execute.</response>
     [Authorize(Roles = "Admin")]
     [HttpPatch("{id}")]
-    public async Task<ActionResult<UserResponseModel>> LockOrUnlockUser([FromBody] LockUserCommand command)
+    public async Task<ActionResult<UserResponseModel>> LockOrUnlockUser([FromBody] LockOrUnlockUserCommand command)
     {
         var user = await Mediator.Send(command);
         return Ok(user);

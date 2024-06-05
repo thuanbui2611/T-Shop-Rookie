@@ -19,8 +19,4 @@
     <ProjectReference Include="..\T-Shop.Shared\T-Shop.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Shared\NewFolder\" />
-  </ItemGroup>
-
 </Project>
