@@ -32,6 +32,7 @@ namespace T_Shop.Client.MVC.Services.Services
             {
                 ["pageNumber"] = productRequestParams.PageNumber.ToString(),
                 ["pageSize"] = productRequestParams.PageSize.ToString(),
+                ["isOnStock"] = "true",
             };
 
             if (!string.IsNullOrEmpty(productRequestParams.Search))

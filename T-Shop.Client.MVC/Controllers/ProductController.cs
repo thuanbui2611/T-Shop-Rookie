@@ -66,6 +66,7 @@ namespace T_Shop.Client.MVC.Controllers
 
             var product = await _productRepository.GetProductByIdAsync(id);
             if (product == null) return NotFound();
+            if (!product.IsOnStock) return View(null);
             //Get rating svg
             var ratingDetails = RatingHelper.GetRatingDetails(product.Rating);
             ViewBag.RatingDetails = ratingDetails;

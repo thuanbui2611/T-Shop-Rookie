@@ -6,4 +6,5 @@ public class ProductQuery
     public List<string>? Models { get; set; }
     public List<string>? Colors { get; set; }
     public string? Search { get; set; }
+    public bool? IsOnStock { get; set; } = null;
 }
