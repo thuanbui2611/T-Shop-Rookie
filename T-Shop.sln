@@ -15,6 +15,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "T-Shop.Shared", "T-Shop.Sha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "T-Shop.WebClient.MVC", "T-Shop.Client.MVC\T-Shop.WebClient.MVC.csproj", "{79EB5A47-288C-4427-886D-727AD34483DB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "XUnitTest", "XUnitTest", "{8A0D3E2C-540F-49C9-8E44-5EDD7EFF69AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T-Shop.Application.XUnitTest", "T-Shop.Application.XUnitTest\T-Shop.Application.XUnitTest.csproj", "{846B3010-C273-4118-A12E-1A4A81626D44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T-Shop.Domain.XUnitTest", "T-Shop.Domain.XUnitTest\T-Shop.Domain.XUnitTest.csproj", "{495F1939-82A0-481E-99EA-CBC3FE14AA95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T-Shop.Infrastructure.XUnitTest", "T-Shop.Infrastructure.XUnitTest\T-Shop.Infrastructure.XUnitTest.csproj", "{75BBA175-F562-4D94-8D20-177DF3E4D989}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T-Shop.WebAPI.XUnitTest", "T-Shop.WebAPI.XUnitTest\T-Shop.WebAPI.XUnitTest.csproj", "{1E096B9E-6BF5-4CC8-BA7A-03B3D1B76218}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,9 +55,31 @@ Global
 		{79EB5A47-288C-4427-886D-727AD34483DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79EB5A47-288C-4427-886D-727AD34483DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79EB5A47-288C-4427-886D-727AD34483DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{846B3010-C273-4118-A12E-1A4A81626D44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{846B3010-C273-4118-A12E-1A4A81626D44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{846B3010-C273-4118-A12E-1A4A81626D44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{846B3010-C273-4118-A12E-1A4A81626D44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{495F1939-82A0-481E-99EA-CBC3FE14AA95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{495F1939-82A0-481E-99EA-CBC3FE14AA95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{495F1939-82A0-481E-99EA-CBC3FE14AA95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{495F1939-82A0-481E-99EA-CBC3FE14AA95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75BBA175-F562-4D94-8D20-177DF3E4D989}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75BBA175-F562-4D94-8D20-177DF3E4D989}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75BBA175-F562-4D94-8D20-177DF3E4D989}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75BBA175-F562-4D94-8D20-177DF3E4D989}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E096B9E-6BF5-4CC8-BA7A-03B3D1B76218}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E096B9E-6BF5-4CC8-BA7A-03B3D1B76218}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E096B9E-6BF5-4CC8-BA7A-03B3D1B76218}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E096B9E-6BF5-4CC8-BA7A-03B3D1B76218}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{846B3010-C273-4118-A12E-1A4A81626D44} = {8A0D3E2C-540F-49C9-8E44-5EDD7EFF69AC}
+		{495F1939-82A0-481E-99EA-CBC3FE14AA95} = {8A0D3E2C-540F-49C9-8E44-5EDD7EFF69AC}
+		{75BBA175-F562-4D94-8D20-177DF3E4D989} = {8A0D3E2C-540F-49C9-8E44-5EDD7EFF69AC}
+		{1E096B9E-6BF5-4CC8-BA7A-03B3D1B76218} = {8A0D3E2C-540F-49C9-8E44-5EDD7EFF69AC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {639D26D1-65D2-4E56-8EDA-54D60C29E49C}
