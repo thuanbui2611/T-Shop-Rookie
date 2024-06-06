@@ -7,5 +7,5 @@ public interface IOrderRepository
 {
     Task<OrderResponseModel> CreateOrUpdateOrderAsync(OrderRequestModel order);
     OrderResponseModel GetOrderOfUser();
-    bool RemoveOrder();
+    void CleanOrder();
 }

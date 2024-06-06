@@ -41,8 +41,8 @@
                                     }
                                     $@totalAmount.ToString("N0")
                                 </td>
-                                <td style="color: black">@transaction.CreatedAt</td>
-                                <td class="@("d-inline-block px-2 py-1 my-2 fw-bold rounded-pill") @(transaction.Status == TransactionConstants.PENDING ? "bg-pending text-info" :
+                                <td style="color: black">@transaction.CreatedAt.ToLocalTime()</td>
+                                <td class="@("d-inline-block px-2 py-1 my-2 fw-bold rounded-pill") @(transaction.Status == TransactionConstants.PENDING ? "bg-pending text-primary" :
                                   transaction.Status == TransactionConstants.COMPLETED ? "bg-success text-success" :
                                   transaction.Status == TransactionConstants.CANCELED ? "bg-deny text-danger" :
                                   "bg-ongoing text-warning"

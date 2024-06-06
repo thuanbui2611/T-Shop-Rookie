@@ -34,12 +34,8 @@ public class OrderRepository : IOrderRepository
         return _orderOfUser;
     }
 
-    public bool RemoveOrder()
+    public void CleanOrder()
     {
         _orderOfUser = null;
-        return true;
     }
-
-
-
 }

@@ -60,7 +60,7 @@ public class OrderController : BaseController
     {
         var order = _orderRepository.GetOrderOfUser();
 
-        _orderRepository.RemoveOrder();
+        _orderRepository.CleanOrder();
         _cartRepository.ClearCart();
         return View(order);
     }

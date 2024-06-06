@@ -42,7 +42,7 @@
         <div class="d-flex justify-content-between align-items-center py-3">
             <h2 class="mb-0"> Order <span style=" color: #146cd9"> #@Model.ID</span></h2>
             <span id="statusSpan" class="d-inline-block px-2 py-1 fw-bold lead rounded-pill text-sm border shadow-sm
-                @(Model.Status == TransactionConstants.PENDING ? "bg-pending text-info" :
+                @(Model.Status == TransactionConstants.PENDING ? "bg-pending text-primary" :
                   Model.Status == TransactionConstants.COMPLETED ? "bg-success text-success" : 
                   Model.Status == TransactionConstants.CANCELED ? "bg-deny text-danger" :
                   "bg-ongoing text-warning"
@@ -58,7 +58,7 @@
                     <div class="card-body">
                         <div class="mb-3 d-flex justify-content-between">
                             <div>
-                                <span class="me-3 fw-bold" style="color: black">@Model.CreatedAt</span>
+                                <span class="me-3 fw-bold" style="color: black">@Model.CreatedAt.ToLocalTime()</span>
                             </div>
                         </div>
                         <table class="table table-borderless">
