@@ -4,11 +4,13 @@ using T_Shop.Shared.DTOs.Brand.ResponseModel;
 
 namespace T_Shop.Client.MVC.Services.Services
 {
-    public class BrandRepository : BaseRepository, IBrandRepository
+    public class BrandRepository : IBrandRepository
     {
-        public BrandRepository(HttpClient httpClient, IConfiguration configuration) : base(httpClient, configuration)
-        {
+        private readonly HttpClient _httpClient;
 
+        public BrandRepository(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
         }
 
         public async Task<List<BrandResponseModel>> GetBrandsAsync()

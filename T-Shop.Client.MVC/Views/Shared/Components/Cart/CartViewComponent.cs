@@ -22,7 +22,11 @@ public class CartViewComponent : ViewComponent
         }
         var cart = await _cartRepository.GetCurrentCart(currentUser.Id);
 
-        var cartCount = cart.CartItems == null ? 0 : cart.CartItems.Count();
+        int cartCount = 0;
+        if (cart != null)
+        {
+            cartCount = cart.CartItems == null ? 0 : cart.CartItems.Count();
+        }
         return View(cartCount);
     }
 }

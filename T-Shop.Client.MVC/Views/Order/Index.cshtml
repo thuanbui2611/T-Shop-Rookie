@@ -39,7 +39,7 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Product</th>
-                                    <th scope="col">Price (VND)</th>
+                                    <th scope="col">Price</th>
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Total</th>
                                 </tr>
@@ -104,7 +104,7 @@
                                 totalPayment += item.Price * item.Quantity;
                             }
                         }
-                        @totalPayment.ToString("N0") VND
+                        $@totalPayment.ToString("N0")
                     </span>
                 </div>
             </div>

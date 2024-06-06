@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 // Add service extensions
-builder.Services.RegisterServices();
+builder.Services.RegisterServices(builder.Configuration);
 builder.Services.ConfigureAuthentication(builder.Configuration);
 builder.Services.ConfigureCors();
 

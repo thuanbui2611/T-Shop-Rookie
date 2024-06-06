@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Net.Http.Headers;
 using T_Shop.Client.MVC.Repository.Interfaces;
 using T_Shop.Client.MVC.Repository.Repository;
 using T_Shop.Client.MVC.Services.Interfaces;
@@ -10,44 +9,67 @@ namespace T_Shop.Client.MVC.Extensions
 {
     public static class ServiceExtension
     {
-        public static void RegisterServices(this IServiceCollection services)
+        public static void RegisterServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddHttpContextAccessor();
 
-            services.AddHttpClient<IAuthenticationRepository, AuthenticationRepository>();
-            services.AddHttpClient<IProductRepository, ProductRepository>();
-            services.AddHttpClient<IBrandRepository, BrandRepository>();
-            services.AddHttpClient<ITypeRepository, TypeRepository>();
-            services.AddHttpClient<IColorRepository, ColorRepository>();
-            services.AddHttpClient<IModelRepository, ModelRepository>();
-            services.AddHttpClient<ICartRepository, CartRepository>();
-            services.AddHttpClient<IOrderRepository, OrderRepository>();
-            services.AddHttpClient<ITransactionRepository, TransactionRepository>();
-            services.AddHttpClient<IUserRepository, UserRepository>();
+
+            var configureClient = new Action<IServiceProvider, HttpClient>((provider, client) =>
+            {
+                var httpContextAccessor = provider.GetRequiredService<IHttpContextAccessor>();
+
+                string? accessToken = null;
+                httpContextAccessor.HttpContext?.Request.Cookies.TryGetValue("AuthToken", out accessToken);
+                client.BaseAddress = new Uri(configuration["ApiConnectionString"] ?? "");
+
+                if (accessToken != null)
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                }
+
+            });
+
+            services.AddHttpClient<IAuthenticationRepository, AuthenticationRepository>(configureClient);
+            services.AddHttpClient<IProductRepository, ProductRepository>(configureClient);
+            services.AddHttpClient<IBrandRepository, BrandRepository>(configureClient);
+            services.AddHttpClient<ITypeRepository, TypeRepository>(configureClient);
+            services.AddHttpClient<IColorRepository, ColorRepository>(configureClient);
+            services.AddHttpClient<IModelRepository, ModelRepository>(configureClient);
+            services.AddHttpClient<ICartRepository, CartRepository>(configureClient);
+            services.AddHttpClient<IOrderRepository, OrderRepository>(configureClient);
+            services.AddHttpClient<ITransactionRepository, TransactionRepository>(configureClient);
+            services.AddHttpClient<IUserRepository, UserRepository>(configureClient);
         }
+
 
         public static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
+            //services.AddAuthentication(opt =>
+            //{
+            //    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //})
+            //.AddJwtBearer(options =>
+            //{
+            //    options.TokenValidationParameters = new TokenValidationParameters
+            //    {
+            //        ValidateIssuer = true,
+            //        ValidateAudience = true,
+            //        ValidateLifetime = true,
+            //        ValidateIssuerSigningKey = true,
+            //        ValidIssuer = configuration["JwtSettings:validIssuer"],
+            //        ValidAudience = configuration["JwtSettings:validAudience"],
+            //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:secret"]))
+            //    };
+            //});
+
             services.AddAuthentication(opt =>
             {
-                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = configuration["JwtSettings:validIssuer"],
-                    ValidAudience = configuration["JwtSettings:validAudience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:secret"]))
-                };
+                opt.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             });
 
-            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+
             //    .AddCookie(options =>
             //{
             //    options.LoginPath = "/authentication/Login";

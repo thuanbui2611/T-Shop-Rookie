@@ -213,7 +213,7 @@
                         <div class="flex-column d-flex gap-2">
                             <h3 class="fw-bold mb-2" style="color: black">@Model.Name</h3>
                             <div class="d-flex mb-2 rating-list" style="justify-content: left; align-content: center">
-                                <p style="font-size: 28px; margin: 0 0 0 0; margin-right: 4px; color: #ffc73a">@Model.Rating</p>
+                                <p style="font-size: 28px; margin: 0 0 0 0; margin-right: 4px; color: #ffc73a">@Model.Rating.ToString("0.0")</p>
                                 @if (ratingDetails != null)
                                 {
                                     foreach (var detail in ratingDetails)
@@ -265,9 +265,9 @@
                         </nav>
                         <div class="tab-content mb-5">
                             <div class="tab-pane active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
-                                <p style="color:black">
-                                    @Model.Description
-                                </p>
+                                <div style="color:black">
+                                    @Html.Raw(@Model.Description)
+                                </div>
                                 <div class="px-2">
                                     <div class="row g-4">
                                         <div class="col-6 shadow-sm rounded">

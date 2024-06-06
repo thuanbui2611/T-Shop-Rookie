@@ -1,18 +1,18 @@
 ﻿using Newtonsoft.Json;
 using T_Shop.Client.MVC.Repository.Interfaces;
-using T_Shop.Client.MVC.Services.Services;
 using T_Shop.Shared.DTOs.Order.RequestModel;
 using T_Shop.Shared.DTOs.Order.ResponseModel;
 
 namespace T_Shop.Client.MVC.Repository.Repository;
 
-public class OrderRepository : BaseRepository, IOrderRepository
+public class OrderRepository : IOrderRepository
 {
     private static OrderResponseModel? _orderOfUser = null;
+    private readonly HttpClient _httpClient;
 
-    public OrderRepository(HttpClient httpClient, IConfiguration configuration) : base(httpClient, configuration)
+    public OrderRepository(HttpClient httpClient)
     {
-
+        _httpClient = httpClient;
     }
 
     public OrderResponseModel GetOrderOfUser()

@@ -40,7 +40,7 @@
                                     </div>
                                 </th>
                                 <td>
-                                    <p class="mb-0 mt-4 text-success">@item.Product.Price.ToString("N0")</p>
+                                    <p class="mb-0 mt-4 text-success">$@item.Product.Price.ToString("N0")</p>
                                 </td>
                                 <td>
                                     <div class="input-group mt-4" style="width: 100px;">
@@ -63,7 +63,7 @@
                                         @{
                                             var totalPrice = item.Quantity * item.Product.Price;
                                         }
-                                        <span class="total-price-item">@totalPrice.ToString("N0")</span>
+                                        <span class="total-price-item">$@totalPrice.ToString("N0")</span>
                                     </p>
                                 </td>
                                 <td id="actionFields_@item.Product.Id">
@@ -92,7 +92,7 @@
                                         total += item.Quantity * item.Product.Price;
                                     }
                                 }
-                                <span class="cart-total-price">@total.ToString("N0")</span>
+                                <span class="cart-total-price">$@total.ToString("N0")</span>
                             </p>
                         </div>
                         <button id="checkout-button" class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button">Checkout</button>

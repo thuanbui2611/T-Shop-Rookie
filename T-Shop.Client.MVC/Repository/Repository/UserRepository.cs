@@ -1,18 +1,18 @@
 ﻿using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using T_Shop.Client.MVC.Repository.Interfaces;
-using T_Shop.Client.MVC.Services.Services;
 using T_Shop.Shared.DTOs.User.RequestModels;
 using T_Shop.Shared.DTOs.User.ResponseModels;
 
 namespace T_Shop.Client.MVC.Repository.Repository;
 
-public class UserRepository : BaseRepository, IUserRepository
+public class UserRepository : IUserRepository
 {
-    public UserRepository(HttpClient httpClient,
-                          IConfiguration configuration
-                         ) : base(httpClient, configuration)
+    private readonly HttpClient _httpClient;
+
+    public UserRepository(HttpClient httpClient)
     {
+        _httpClient = httpClient;
     }
 
     public UserResponseModel GetCurrentUser(HttpContext httpContext)

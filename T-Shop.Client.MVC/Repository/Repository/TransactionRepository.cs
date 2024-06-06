@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using T_Shop.Client.MVC.Repository.Interfaces;
-using T_Shop.Client.MVC.Services.Services;
 using T_Shop.Shared.DTOs.ProductReview.RequestModel;
 using T_Shop.Shared.DTOs.ProductReview.ResponseModel;
 using T_Shop.Shared.DTOs.Transaction.RequestModel;
@@ -11,13 +10,14 @@ using T_Shop.Shared.ViewModels.TransactionPage;
 
 namespace T_Shop.Client.MVC.Repository.Repository;
 
-public class TransactionRepository : BaseRepository, ITransactionRepository
+public class TransactionRepository : ITransactionRepository
 {
-    public TransactionRepository(HttpClient httpClient, IConfiguration configuration) : base(httpClient, configuration)
+    private readonly HttpClient _httpClient;
+
+    public TransactionRepository(HttpClient httpClient)
     {
-
+        _httpClient = httpClient;
     }
-
 
     public async Task<TransactionWithCustomerResponseModel> GetTransactionByIdAsync(Guid transactionId)
     {

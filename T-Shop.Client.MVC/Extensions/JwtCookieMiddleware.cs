@@ -26,6 +26,7 @@ namespace T_Shop.Client.MVC.Extensions
                     var claimObjects = claims.Select(c => new Claim(c.Key, c.Value));
                     var claimsIdentity = new ClaimsIdentity(claimObjects, JwtBearerDefaults.AuthenticationScheme);
                     var principal = new ClaimsPrincipal(claimsIdentity);
+
                     context.User = principal;
                 }
             }

@@ -6,10 +6,13 @@ using T_Shop.Shared.ViewModels.ProductsPage;
 
 namespace T_Shop.Client.MVC.Services.Services
 {
-    public class ProductRepository : BaseRepository, IProductRepository
+    public class ProductRepository : IProductRepository
     {
-        public ProductRepository(HttpClient httpClient, IConfiguration configuration) : base(httpClient, configuration)
+        private readonly HttpClient _httpClient;
+
+        public ProductRepository(HttpClient httpClient)
         {
+            _httpClient = httpClient;
         }
 
         public async Task<ProductResponseModel> GetProductByIdAsync(Guid productId)

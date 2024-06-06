@@ -4,12 +4,15 @@ using T_Shop.Shared.DTOs.Type.ResponseModel;
 
 namespace T_Shop.Client.MVC.Services.Services
 {
-    public class TypeRepository : BaseRepository, ITypeRepository
+    public class TypeRepository : ITypeRepository
     {
-        public TypeRepository(HttpClient httpClient, IConfiguration configuration) : base(httpClient, configuration)
-        {
+        private readonly HttpClient _httpClient;
 
+        public TypeRepository(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
         }
+
         public async Task<List<TypeResponseModel>> GetTypesAsync()
         {
             var requestUrl = "api/type";

@@ -4,11 +4,13 @@ using T_Shop.Shared.DTOs.Color.ResponseModel;
 
 namespace T_Shop.Client.MVC.Services.Services
 {
-    public class ColorRepository : BaseRepository, IColorRepository
+    public class ColorRepository : IColorRepository
     {
-        public ColorRepository(HttpClient httpClient, IConfiguration configuration) : base(httpClient, configuration)
-        {
+        private readonly HttpClient _httpClient;
 
+        public ColorRepository(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
         }
 
         public async Task<List<ColorResponseModel>> GetColorsAsync()

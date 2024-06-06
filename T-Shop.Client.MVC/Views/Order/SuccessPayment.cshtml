@@ -30,7 +30,7 @@
                                             <p class="text-muted mb-0 small">Qty: @item.Quantity</p>
                                         </div>
                                         <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                            <p class="text-muted mb-0 small">@item.Price.ToString("N0") VND</p>
+                                            <p class="text-muted mb-0 small">$@item.Price.ToString("N0")</p>
                                         </div>
                                     </div>
                                 </div>
@@ -47,7 +47,7 @@
                                         totalPayment += item.Price * item.Quantity;
                                     }
                                 }
-                                @totalPayment.ToString("N0") VND
+                                $@totalPayment.ToString("N0")
                                 </p>
 
                             </div>
@@ -61,7 +61,7 @@
                              style="border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
                             <h5 class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">
                                 Total
-                            paid: <span class="h2 mb-0 ms-2">@totalPayment.ToString("N0") VND</span>
+                            paid: <span class="h2 mb-0 ms-2">$@totalPayment.ToString("N0")</span>
                             </h5>
                         </div>
                     </div>

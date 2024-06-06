@@ -2,16 +2,18 @@
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using T_Shop.Client.MVC.Repository.Interfaces;
-using T_Shop.Client.MVC.Services.Services;
 using T_Shop.Shared.DTOs.User.RequestModels;
 using T_Shop.Shared.DTOs.User.ResponseModels;
 
 namespace T_Shop.Client.MVC.Repository.Repository
 {
-    public class AuthenticationRepository : BaseRepository, IAuthenticationRepository
+    public class AuthenticationRepository : IAuthenticationRepository
     {
-        public AuthenticationRepository(HttpClient httpClient, IConfiguration configuration) : base(httpClient, configuration)
+        private readonly HttpClient _httpClient;
+
+        public AuthenticationRepository(HttpClient httpClient)
         {
+            _httpClient = httpClient;
         }
 
         public async Task<(UserAuthenResponseModel, UserResponseModel)> Login(UserAuthenRequestModel user)

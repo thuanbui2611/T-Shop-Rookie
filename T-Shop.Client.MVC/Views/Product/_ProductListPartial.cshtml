@@ -35,7 +35,7 @@
                             @if (ratingDetails != null)
                             {
                                 <div class="d-flex">
-                                    <p style="font-size: 23px; margin: 0 0 0 0; margin-right: 4px; color: #ffc73a">@product.Rating</p>
+                                    <p style="font-size: 23px; margin: 0 0 0 0; margin-right: 4px; color: #ffc73a">@product.Rating.ToString("0.0")</p>
                                     @foreach (var detail in ratingDetails)
                                     {
                                         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 30px; height: 30px">
@@ -61,7 +61,7 @@
                             }
 
                             <div class="d-flex justify-content-between flex-column">
-                                <p class="fs-5 fw-bold mb-0 text-success mt-1 mb-2">@product.Price.ToString("N0") VND</p>
+                                <p class="fs-5 fw-bold mb-0 text-success mt-1 mb-2">$@product.Price.ToString("N0")</p>
                                 <button data-product-id="@product.Id" class="btn border border-secondary rounded-pill px-3 text-primary add-to-cart-button">
                                     <i class="fa fa-shopping-bag me-2 text-primary"></i> 
                                     Add to cart</button>

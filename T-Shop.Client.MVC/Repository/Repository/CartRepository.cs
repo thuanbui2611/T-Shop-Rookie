@@ -1,20 +1,20 @@
 ﻿using Newtonsoft.Json;
 using T_Shop.Client.MVC.Repository.Interfaces;
-using T_Shop.Client.MVC.Services.Services;
 using T_Shop.Shared.DTOs.Cart.RequestModel;
 using T_Shop.Shared.DTOs.Cart.ResponseModel;
 
 namespace T_Shop.Client.MVC.Repository.Repository
 {
-    public class CartRepository : BaseRepository, ICartRepository
+    public class CartRepository : ICartRepository
     {
         private static CartResponseModel? _cart = null;
-        public CartRepository(HttpClient httpClient, IConfiguration configuration) : base(httpClient, configuration)
+        private readonly HttpClient _httpClient;
+        public CartRepository(HttpClient httpClient)
         {
-
+            _httpClient = httpClient;
         }
 
-        public async Task<CartResponseModel?> GetCurrentCart(Guid userId)
+        public async Task<CartResponseModel> GetCurrentCart(Guid userId)
         {
             if (_cart == null)
             {
@@ -23,7 +23,7 @@ namespace T_Shop.Client.MVC.Repository.Repository
             return _cart;
         }
 
-        public async Task<CartResponseModel?> GetCartByUserIdAsync(Guid userId)
+        public async Task<CartResponseModel> GetCartByUserIdAsync(Guid userId)
         {
             var requestUrl = "api/cart/" + userId;
             HttpResponseMessage response = _httpClient.GetAsync(requestUrl).Result;
@@ -38,7 +38,7 @@ namespace T_Shop.Client.MVC.Repository.Repository
             return _cart;
         }
 
-        public async Task<CartResponseModel?> AddToCartAsync(CartRequestModel newItem)
+        public async Task<CartResponseModel> AddToCartAsync(CartRequestModel newItem)
         {
             var requestUrl = "api/cart";
             HttpResponseMessage response = _httpClient.PostAsJsonAsync(requestUrl, newItem).Result;
@@ -79,11 +79,9 @@ namespace T_Shop.Client.MVC.Repository.Repository
             return false;
         }
 
-        public async void ClearCart()
+        public void ClearCart()
         {
             _cart = null;
         }
-
-
     }
 }

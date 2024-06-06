@@ -4,11 +4,13 @@ using T_Shop.Shared.DTOs.ModelProduct.ResponseModel;
 
 namespace T_Shop.Client.MVC.Services.Services
 {
-    public class ModelRepository : BaseRepository, IModelRepository
+    public class ModelRepository : IModelRepository
     {
-        public ModelRepository(HttpClient httpClient, IConfiguration configuration) : base(httpClient, configuration)
-        {
+        private readonly HttpClient _httpClient;
 
+        public ModelRepository(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
         }
 
         public async Task<List<ModelProductResponseModel>> GetModelsAsync()
