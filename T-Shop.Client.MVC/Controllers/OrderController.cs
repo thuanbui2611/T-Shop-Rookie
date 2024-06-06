@@ -39,20 +39,18 @@ public class OrderController : BaseController
     {
         if (CurrentUser == null || !User.Identity.IsAuthenticated)
         {
-            TempData["ErrorMessage"] = "You need to login to view your carts!";
-            return RedirectToAction("Login", "Authentication");
+            TempData["ErrorMessage"] = "You need to login to purchase!";
+            return Json(new { redirect = Url.Action("Login", "Authentication") });
         }
         order.UserID = CurrentUser.Id;
         order.ShippingAddress = CurrentUser.Address;
         var newOrder = await _orderRepository.CreateOrUpdateOrderAsync(order);
-        var redirectUrl = "";
         if (newOrder == null)
         {
-            redirectUrl = Url.Action("Index", "Cart");
-            return Json(new { redirectUrl });
+            TempData["ErrorMessage"] = "Something wrong, please checkout again with products!";
+            return Json(new { redirect = Url.Action("Index", "Cart") });
         }
-        redirectUrl = Url.Action("Index", "Order");
-        return Json(new { redirectUrl });
+        return Json(new { redirect = Url.Action("Index", "Order") });
     }
 
     [HttpGet]

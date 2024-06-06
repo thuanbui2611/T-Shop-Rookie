@@ -29,7 +29,10 @@
                     </div>
                     <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">@product.Model.Brand.Name</div>
                     <div class="d-flex flex-column justify-content-between p-4 border border-secondary border-top-0 rounded-bottom" style="min-height: 230px">
-                        <h4>@product.Name</h4>
+                        <div>
+                            <h4 style="color:black">@product.Name</h4>
+                            <h6 style="color: @product.Color.HexColor; text-shadow: 0 0 1px #000000;">@product.Color.Name</h6>
+                        </div>
                         <div>
 
                             @if (ratingDetails != null)

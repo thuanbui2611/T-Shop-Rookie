@@ -140,7 +140,7 @@
             if (currentQuantity != originalQuantity) {
                 if (saveChangeButton.length == 0) {
                     var productId = input.data('item-id');
-                    var saveChangeButtonHtml = '<button class="btn btn-md rounded-circle bg-light border mt-4 save-change-button" name="saveChange" data-product-id="' + productId + '"><i class="fa fa-times text-success"></i></button>';
+                    var saveChangeButtonHtml = '<button class="btn btn-md rounded-circle bg-light border mt-4 save-change-button" name="saveChange" data-product-id="' + productId + '"><i class="fa fa-check text-success"></i></button>';
                     actionFields.append(saveChangeButtonHtml);
                 }
 
@@ -265,8 +265,8 @@
         //Checkout
         $(document).on('click', '#checkout-button', function () {
             var orderData = {
-                UserID: cartData.userId,
-                ShippingAddress: '123 Main St, City',
+                UserID: "@Model.CurrentUser.Id",
+                ShippingAddress: '@Model.CurrentUser.Address',
                 Products: []
             };
             for (var i = 0; i < cartData.cartItems.length; i++) {
@@ -285,9 +285,7 @@
                 type: 'POST',
                 data: orderData,
                 success: function (response) {
-                    // Handle the success response from the server, if needed
-                    console.log('Order placed successfully:', response);
-                    window.location.href = response.redirectUrl;
+                    window.location.href = response.redirect;
                 },
                 error: function (xhr, status, error) {
                     // Handle any errors that occur during the AJAX request

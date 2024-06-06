@@ -357,12 +357,10 @@
                 type: 'POST',
                 data: orderData,
                 success: function (response) {
-                    // Handle the success response from the server, if needed
-                    console.log('Order placed successfully:', response);
-                    window.location.href = response.redirectUrl;
+                    debugger;
+                    window.location.href = response.redirect;
                 },
                 error: function (xhr, status, error) {
-                    // Handle any errors that occur during the AJAX request
                     console.error('Error placing order:', error);
                 }
             });

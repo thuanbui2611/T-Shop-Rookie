@@ -162,10 +162,11 @@ $(document).ready(function () {
             type: 'POST',
             data: { productId: productId },
             success: function (response) {
-                if (response.success) {
-                    toastr.success("Add to cart successfull!");
+                if (response.redirect) {
+                    window.location.href = response.redirect;
+                } else if (response.success) {
+                    toastr.success("Add to cart successful!");
                     updateCartViewComponent();
-                    //$('#cartIconContainer').load('/cart/viewcomponent');
                 } else {
                     toastr.error("Add to cart failed!");
                 }

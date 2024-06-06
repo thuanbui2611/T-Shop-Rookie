@@ -43,9 +43,9 @@ public class CartController : BaseController
     {
         if (!User.Identity.IsAuthenticated || CurrentUser == null)
         {
-            TempData["ErrorMessage"] = "You need to login to view your carts!";
-            return RedirectToAction("Login", "Authentication");
-
+            TempData["ErrorMessage"] = "You need to login to add to cart!";
+            //return RedirectToAction("Login", "Authentication");
+            return Json(new { redirect = Url.Action("Login", "Authentication") });
         }
         CartRequestModel newItem = new CartRequestModel()
         {
