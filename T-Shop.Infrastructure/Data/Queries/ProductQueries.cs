@@ -13,13 +13,13 @@ namespace T_Shop.Infrastructure.Data.Queries
         public async Task<List<Product>> GetAllProductsAsync()
         {
             return await dbSet
-                    .OrderBy(p => p.Model.Name)
+                    .Include(p => p.ProductReviews)
+                    .OrderByDescending(p => p.ProductReviews.Count())
                     .Include(p => p.Color)
                     .Include(p => p.ProductImages)
                     .Include(p => p.Type)
                     .Include(p => p.Model)
                         .ThenInclude(m => m.Brand)
-                    .Include(p => p.ProductReviews)
                     .ToListAsync();
         }
 

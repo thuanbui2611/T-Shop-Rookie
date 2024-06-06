@@ -96,9 +96,9 @@ public class TransactionQueries : BaseQuery<Transaction>, ITransactionQueries
 
     public async Task<Transaction?> GetTransactionByIdAsync(Guid transactionID, bool trackChanges)
     {
-        return trackChanges ?
-            await dbSet
-            .AsTracking()
+        var query = trackChanges ? dbSet.AsTracking() : dbSet;
+
+        query = query
             .Include(t => t.Order)
                .ThenInclude(o => o.OrderDetails)
                .ThenInclude(od => od.ProductReview)
@@ -118,31 +118,9 @@ public class TransactionQueries : BaseQuery<Transaction>, ITransactionQueries
             .Include(t => t.Order)
                .ThenInclude(o => o.OrderDetails)
                .ThenInclude(od => od.Product)
-               .ThenInclude(p => p.ProductImages)
-            .FirstOrDefaultAsync(t => t.Id.Equals(transactionID))
-            :
-            await dbSet
-           .Include(t => t.Order)
-               .ThenInclude(o => o.OrderDetails)
-               .ThenInclude(od => od.ProductReview)
-           .Include(t => t.Order)
-               .ThenInclude(o => o.OrderDetails)
-               .ThenInclude(od => od.Product)
-               .ThenInclude(p => p.Color)
-           .Include(t => t.Order)
-               .ThenInclude(o => o.OrderDetails)
-               .ThenInclude(od => od.Product)
-               .ThenInclude(p => p.Type)
-           .Include(t => t.Order)
-               .ThenInclude(o => o.OrderDetails)
-               .ThenInclude(od => od.Product)
-               .ThenInclude(p => p.Model)
-               .ThenInclude(m => m.Brand)
-            .Include(t => t.Order)
-               .ThenInclude(o => o.OrderDetails)
-               .ThenInclude(od => od.Product)
-               .ThenInclude(p => p.ProductImages)
-            .FirstOrDefaultAsync(t => t.Id.Equals(transactionID));
+               .ThenInclude(p => p.ProductImages);
+
+        return await query.FirstOrDefaultAsync(t => t.Id.Equals(transactionID));
     }
 
     //public async Task<TransactionWithCustomerResponseModel?> GetTransactionWithCustomerByIdAsync(Guid transactionID)

@@ -24,7 +24,12 @@ namespace T_Shop.Application.Features.Products.Commands.CreateProduct
         private readonly IAppCache _cache;
         private CacheKeyConstants _cacheKeyConstants;
 
-        public CreateProductCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, IModelQueries modelQueries, ICloudinaryService cloudinaryService, IAppCache cache, CacheKeyConstants cacheKeyConstants)
+        public CreateProductCommandHandler(IMapper mapper,
+                                           IUnitOfWork unitOfWork,
+                                           IModelQueries modelQueries,
+                                           ICloudinaryService cloudinaryService,
+                                           IAppCache cache,
+                                           CacheKeyConstants cacheKeyConstants)
         {
             _mapper = mapper;
             _productRepository = unitOfWork.GetBaseRepo<Product>();

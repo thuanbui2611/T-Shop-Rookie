@@ -38,9 +38,7 @@ namespace T_Shop.Application.Features.Products.Queries.GetProducts
                 );
             _cacheKeyConstants.AddKeyToList(key);
             products = HandleProductQuery(request.ProductQuery, products);
-
             var (productsPaginated, pagination) = PaginationHelpers.GetPaginationModel(products, request.Pagination);
-
             var result = _mapper.Map<List<ProductResponseModel>>(productsPaginated);
             return (result, pagination);
         }
