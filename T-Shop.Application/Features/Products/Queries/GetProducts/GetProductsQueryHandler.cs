@@ -47,6 +47,13 @@ namespace T_Shop.Application.Features.Products.Queries.GetProducts
 
         private List<Product> HandleProductQuery(ProductQuery productQuery, List<Product> products)
         {
+            //IsOnStock
+            if (productQuery.IsOnStock != null)
+            {
+                products = products
+                    .Where(p => p.IsOnStock == productQuery.IsOnStock)
+                    .ToList();
+            }
             //Type
             if (productQuery.Types != null && productQuery.Types.Count > 0)
             {
