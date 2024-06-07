@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\T-Shop.Domain.XUnitTest\T-Shop.Domain.XUnitTest.csproj" />
-    <ProjectReference Include="..\T-Shop.Infrastructure\T-Shop.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
