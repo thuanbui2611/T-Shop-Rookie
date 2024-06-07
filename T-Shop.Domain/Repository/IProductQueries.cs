@@ -5,6 +5,6 @@ namespace T_Shop.Domain.Repository
     public interface IProductQueries
     {
         Task<List<Product>> GetAllProductsAsync();
-        Task<Product> GetProductByIdAsync(Guid id);
+        Task<Product?> GetProductByIdAsync(Guid id);
     }
 }

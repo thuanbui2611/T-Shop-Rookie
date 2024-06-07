@@ -66,5 +66,4 @@ public class GetProductsQueryHandlerTest : TestSetup
         _cacheKeyConstants.CacheKeyList.Should().Contain(cacheKey);
     }
 
-
 }
