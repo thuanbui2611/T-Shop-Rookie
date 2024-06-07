@@ -22,7 +22,7 @@ namespace T_Shop.Application.Features.Products.Queries.GetProductsById
             var product = await _productRepository.GetProductByIdAsync(request.productId);
             if (product == null)
             {
-                throw new BadRequestException(message: "Product not found");
+                throw new NotFoundException(message: "Product not found");
             }
             var result = _mapper.Map<ProductResponseModel>(product);
             return result;

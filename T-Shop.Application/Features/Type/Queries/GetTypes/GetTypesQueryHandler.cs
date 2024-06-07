@@ -30,7 +30,7 @@ public class GetTypesQueryHandler : IRequestHandler<GetTypesQuery, List<TypeResp
             async () => await _typeQueries.GetTypesAsync(),
             TimeSpan.FromHours(_cacheKeyConstants.ExpirationHours)
             );
-
+        _cacheKeyConstants.AddKeyToList(key);
         var result = _mapper.Map<List<TypeResponseModel>>(types);
         return result;
     }

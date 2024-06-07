@@ -37,7 +37,7 @@ public class GetTypesPaginationQueryHandler : IRequestHandler<GetTypesPagination
             async () => await _typeQueries.GetTypesAsync(),
             TimeSpan.FromHours(_cacheKeyConstants.ExpirationHours)
             );
-
+        _cacheKeyConstants.AddKeyToList(key);
         types = HandleTypeQuery(request.TypeQuery, types);
 
         var (typesPaginated, pagination) = PaginationHelpers.GetPaginationModel(types, request.Pagination);
