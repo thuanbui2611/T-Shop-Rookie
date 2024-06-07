@@ -1,5 +1,4 @@
 ﻿using AutoFixture;
-using AutoMapper;
 using FluentAssertions;
 using LazyCache;
 using Microsoft.Extensions.Caching.Memory;
@@ -16,7 +15,6 @@ public class GetProductsQueryHandlerTest : TestSetup
 {
     private readonly GetProductsQueryHandler _handler;
     private readonly Mock<IProductQueries> _productQueriesMock;
-    private readonly Mock<IMapper> _mapperMock;
     private readonly Mock<IAppCache> _cacheMock;
     private readonly CacheKeyConstants _cacheKeyConstants;
 
@@ -24,14 +22,8 @@ public class GetProductsQueryHandlerTest : TestSetup
     {
         _productQueriesMock = new Mock<IProductQueries>();
         _cacheKeyConstants = new CacheKeyConstants();
-        //_mapper = new MapperConfiguration(cfg =>
-        //{
-        //    cfg.AddProfile<MappingProfile>();
-        //}).CreateMapper();
-        //_cache = new ;
         _cacheMock = new Mock<IAppCache>();
-        _mapperMock = new Mock<IMapper>();
-        _handler = new GetProductsQueryHandler(_productQueriesMock.Object, _mapperMock.Object, _cacheMock.Object, _cacheKeyConstants);
+        _handler = new GetProductsQueryHandler(_productQueriesMock.Object, _mapperConfig, _cacheMock.Object, _cacheKeyConstants);
     }
 
     [Fact]
@@ -43,29 +35,32 @@ public class GetProductsQueryHandlerTest : TestSetup
         var cacheKey = _cacheKeyConstants.ProductCacheKey;
 
         var (expectedProductsPaginated, expectedPagination) = PaginationHelpers.GetPaginationModel(products, query.Pagination);
+        var expectedResult = _mapperConfig.Map<List<ProductResponseModel>>(expectedProductsPaginated);
 
         _cacheMock.Setup(c => c.GetOrAddAsync(
-                It.IsAny<string>(),
-                It.IsAny<Func<ICacheEntry, Task<List<Product>>>>(),
-                It.IsAny<MemoryCacheEntryOptions>()))
-            .ReturnsAsync(products);
-        //_cacheMock.Setup(c => c.DefaultCachePolicy).Returns(new CacheDefaults());
+            It.IsAny<string>(),
+            It.IsAny<Func<ICacheEntry, Task<List<Product>>>>(),
+            It.IsAny<MemoryCacheEntryOptions>()))
+            .Returns(async (string key, Func<ICacheEntry, Task<List<Product>>> valueFactory, MemoryCacheEntryOptions options) =>
+            {
+                var products = await valueFactory(new Mock<ICacheEntry>().Object); // Call the actual factory (GetAllProductsAsync)
+                return products;
+            });
 
         _productQueriesMock.Setup(repo => repo.GetAllProductsAsync()).ReturnsAsync(products);
-
-        _mapperMock.Setup(m => m.Map<List<ProductResponseModel>>(It.IsAny<IEnumerable<Product>>()))
-                   .Returns(expectedProductsPaginated.Select(p => new ProductResponseModel { Id = p.Id }).ToList());
 
         // Act
         var (productsResult, paginationResult) = await _handler.Handle(query, CancellationToken.None);
 
         // Assert
+        productsResult.Should().NotBeNull();
+        productsResult.Should().BeEquivalentTo(expectedResult);
+
         paginationResult.Should().NotBeNull();
         paginationResult.PageSize.Should().Be(query.Pagination.pageSize);
         paginationResult.CurrentPage.Should().Be(query.Pagination.pageNumber);
 
-        _productQueriesMock.Verify(repo => repo.GetAllProductsAsync(), Times.AtMostOnce());
-        _mapperMock.Verify(m => m.Map<List<ProductResponseModel>>(It.IsAny<IEnumerable<Product>>()), Times.Once());
+        _productQueriesMock.Verify(repo => repo.GetAllProductsAsync(), Times.Once());
 
         // Verify that the cache key was added to the list
         _cacheKeyConstants.CacheKeyList.Should().Contain(cacheKey);
