@@ -48,7 +48,7 @@ public class GetProductByIdHandlerTest : TestSetup
 
         // Act & Assert
         await FluentActions.Invoking(() => new GetProductByIdQueryHandler(_mapperConfig, _mockProductQueries.Object).Handle(request, CancellationToken.None))
-            .Should().ThrowAsync<BadRequestException>()
+            .Should().ThrowAsync<NotFoundException>()
             .WithMessage("Product not found");
 
         _mockProductQueries.Verify(x => x.GetProductByIdAsync(nonExistingProductId), Times.Once);

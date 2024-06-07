@@ -30,8 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Handler\Brands\" />
-    <Folder Include="Handler\Products\Create\" />
+    <Folder Include="Handler\Product\Create\" />
   </ItemGroup>
 
 </Project>
