@@ -17,13 +17,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "T-Shop.WebClient.MVC", "T-S
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "XUnitTest", "XUnitTest", "{8A0D3E2C-540F-49C9-8E44-5EDD7EFF69AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T-Shop.Application.XUnitTest", "T-Shop.Application.XUnitTest\T-Shop.Application.XUnitTest.csproj", "{846B3010-C273-4118-A12E-1A4A81626D44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "T-Shop.Application.XUnitTest", "T-Shop.Application.XUnitTest\T-Shop.Application.XUnitTest.csproj", "{846B3010-C273-4118-A12E-1A4A81626D44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T-Shop.Domain.XUnitTest", "T-Shop.Domain.XUnitTest\T-Shop.Domain.XUnitTest.csproj", "{495F1939-82A0-481E-99EA-CBC3FE14AA95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "T-Shop.Domain.XUnitTest", "T-Shop.Domain.XUnitTest\T-Shop.Domain.XUnitTest.csproj", "{495F1939-82A0-481E-99EA-CBC3FE14AA95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T-Shop.Infrastructure.XUnitTest", "T-Shop.Infrastructure.XUnitTest\T-Shop.Infrastructure.XUnitTest.csproj", "{75BBA175-F562-4D94-8D20-177DF3E4D989}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "T-Shop.Infrastructure.XUnitTest", "T-Shop.Infrastructure.XUnitTest\T-Shop.Infrastructure.XUnitTest.csproj", "{75BBA175-F562-4D94-8D20-177DF3E4D989}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T-Shop.WebAPI.XUnitTest", "T-Shop.WebAPI.XUnitTest\T-Shop.WebAPI.XUnitTest.csproj", "{1E096B9E-6BF5-4CC8-BA7A-03B3D1B76218}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "T-Shop.WebAPI.XUnitTest", "T-Shop.WebAPI.XUnitTest\T-Shop.WebAPI.XUnitTest.csproj", "{1E096B9E-6BF5-4CC8-BA7A-03B3D1B76218}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
