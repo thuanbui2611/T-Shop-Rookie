@@ -6,7 +6,7 @@ using T_Shop.Application.Features.Type.Queries.GetTypes;
 using T_Shop.Domain.Repository;
 using T_Shop.Shared.DTOs.Type.ResponseModel;
 
-namespace T_Shop.Application.XUnitTest.Handler.Type.GetTypes;
+namespace T_Shop.Application.XUnitTest.Handler.Type.Queries.GetTypes;
 public class GetTypesQueryHandlerTest : TestSetup
 {
     private readonly Mock<ITypeQueries> _mockTypeQueries;

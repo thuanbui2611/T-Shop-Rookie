@@ -6,7 +6,7 @@ using T_Shop.Domain.Exceptions;
 using T_Shop.Domain.Repository;
 using T_Shop.Shared.DTOs.Color.ResponseModel;
 
-namespace T_Shop.Application.XUnitTest.Handler.Color.GetColorById;
+namespace T_Shop.Application.XUnitTest.Handler.Color.Queries.GetColorById;
 public class GetColorByIdQueryHandlerTest : TestSetup
 {
     private readonly Mock<IColorQueries> _mockColorQueries;

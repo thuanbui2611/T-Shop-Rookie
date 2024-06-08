@@ -8,7 +8,7 @@ using T_Shop.Application.Features.ModelProduct.Queries.GetModelProducts;
 using T_Shop.Domain.Repository;
 using T_Shop.Shared.DTOs.ModelProduct.ResponseModel;
 
-namespace T_Shop.Application.XUnitTest.Handler.Model.GetModelsPagination;
+namespace T_Shop.Application.XUnitTest.Handler.Model.Queries.GetModelsPagination;
 public class GetModelsPaginationQueryHandlerTest : TestSetup
 {
     private readonly Mock<IModelQueries> _modelQueriesMock;

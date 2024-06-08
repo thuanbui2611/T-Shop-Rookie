@@ -6,7 +6,7 @@ using T_Shop.Application.Features.ModelProduct.Queries.GetModelProducts;
 using T_Shop.Domain.Repository;
 using T_Shop.Shared.DTOs.ModelProduct.ResponseModel;
 
-namespace T_Shop.Application.XUnitTest.Handler.Model.GetModels;
+namespace T_Shop.Application.XUnitTest.Handler.Model.Queries.GetModels;
 public class GetModelsQueryHandlerTest : TestSetup
 {
     private readonly Mock<IModelQueries> _mockModelQueries;

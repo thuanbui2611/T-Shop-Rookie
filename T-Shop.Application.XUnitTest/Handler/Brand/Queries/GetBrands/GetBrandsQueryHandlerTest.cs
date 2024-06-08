@@ -6,7 +6,7 @@ using T_Shop.Application.Features.Brand.Queries.GetBrands;
 using T_Shop.Domain.Repository;
 using T_Shop.Shared.DTOs.Brand.ResponseModel;
 
-namespace T_Shop.Application.XUnitTest.Handler.Brands.GetBrands;
+namespace T_Shop.Application.XUnitTest.Handler.Brand.Queries.GetBrands;
 public class GetBrandsQueryHandlerTest : TestSetup
 {
     private readonly Mock<IBrandQueries> _mockBrandQueries;

@@ -6,7 +6,7 @@ using T_Shop.Domain.Exceptions;
 using T_Shop.Domain.Repository;
 using T_Shop.Shared.DTOs.ModelProduct.ResponseModel;
 
-namespace T_Shop.Application.XUnitTest.Handler.Model.GetModelsById;
+namespace T_Shop.Application.XUnitTest.Handler.Model.Queries.GetModelById;
 public class GetModelByIdQueryHandlerTest : TestSetup
 {
     private readonly Mock<IModelQueries> _mockModelQueries;

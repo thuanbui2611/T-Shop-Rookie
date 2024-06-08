@@ -7,7 +7,7 @@ using T_Shop.Application.Features.Brand.Queries.GetBrands;
 using T_Shop.Domain.Repository;
 using T_Shop.Shared.DTOs.Brand.ResponseModel;
 
-namespace T_Shop.Application.XUnitTest.Handler.Brands.GetBrandsPagination;
+namespace T_Shop.Application.XUnitTest.Handler.Brand.Queries.GetBrandsPagination;
 public class GetBrandsPaginationQueryHandlerTest : TestSetup
 {
     private readonly Mock<IBrandQueries> _brandQueriesMock;

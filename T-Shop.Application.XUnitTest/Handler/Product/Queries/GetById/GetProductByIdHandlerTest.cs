@@ -2,12 +2,11 @@
 using FluentAssertions;
 using Moq;
 using T_Shop.Application.Features.Products.Queries.GetProductsById;
-using T_Shop.Domain.Entity;
 using T_Shop.Domain.Exceptions;
 using T_Shop.Domain.Repository;
 using T_Shop.Shared.DTOs.Product.ResponseModel;
 
-namespace T_Shop.Application.XUnitTest.Handler.Products.GetById;
+namespace T_Shop.Application.XUnitTest.Handler.Product.Queries.GetById;
 public class GetProductByIdHandlerTest : TestSetup
 {
     private readonly Mock<IProductQueries> _mockProductQueries;
@@ -23,7 +22,7 @@ public class GetProductByIdHandlerTest : TestSetup
     public async Task Should_Return_ProductResponseModel_OnExistingProductId()
     {
         // Arrange
-        var expectedProduct = _fixture.Create<Product>();
+        var expectedProduct = _fixture.Create<Domain.Entity.Product>();
         var expectedResult = _mapperConfig.Map<ProductResponseModel>(expectedProduct);
         _mockProductQueries.Setup(x => x.GetProductByIdAsync(expectedProduct.Id)).ReturnsAsync(expectedProduct);
 
@@ -42,7 +41,7 @@ public class GetProductByIdHandlerTest : TestSetup
     {
         // Arrange
         var nonExistingProductId = Guid.NewGuid();
-        _mockProductQueries.Setup(x => x.GetProductByIdAsync(nonExistingProductId)).ReturnsAsync((Product)null);
+        _mockProductQueries.Setup(x => x.GetProductByIdAsync(nonExistingProductId)).ReturnsAsync((Domain.Entity.Product)null);
 
         var request = new GetProductByIdQuery { productId = nonExistingProductId };
 

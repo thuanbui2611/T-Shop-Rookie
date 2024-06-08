@@ -4,11 +4,10 @@ using Microsoft.Extensions.Caching.Memory;
 using Moq;
 using T_Shop.Application.Common.Helpers;
 using T_Shop.Application.Features.Products.Queries.GetProducts;
-using T_Shop.Domain.Entity;
 using T_Shop.Domain.Repository;
 using T_Shop.Shared.DTOs.Product.ResponseModel;
 
-namespace T_Shop.Application.XUnitTest.Handler.Products.GetProducts;
+namespace T_Shop.Application.XUnitTest.Handler.Product.Queries.GetProducts;
 public class GetProductsQueryHandlerTest : TestSetup
 {
     private readonly GetProductsQueryHandler _handler;
@@ -25,7 +24,7 @@ public class GetProductsQueryHandlerTest : TestSetup
     {
         // Arrange
         var query = _fixture.Build<GetProductsQuery>().Create();
-        var products = _fixture.CreateMany<Product>().ToList();
+        var products = _fixture.CreateMany<Domain.Entity.Product>().ToList();
         var cacheKey = _cacheKeyConstants.ProductCacheKey;
 
         var (expectedProductsPaginated, expectedPagination) = PaginationHelpers.GetPaginationModel(products, query.Pagination);
@@ -33,9 +32,9 @@ public class GetProductsQueryHandlerTest : TestSetup
 
         _cacheMock.Setup(c => c.GetOrAddAsync(
             It.IsAny<string>(),
-            It.IsAny<Func<ICacheEntry, Task<List<Product>>>>(),
+            It.IsAny<Func<ICacheEntry, Task<List<Domain.Entity.Product>>>>(),
             It.IsAny<MemoryCacheEntryOptions>()))
-            .Returns(async (string key, Func<ICacheEntry, Task<List<Product>>> valueFactory, MemoryCacheEntryOptions options) =>
+            .Returns(async (string key, Func<ICacheEntry, Task<List<Domain.Entity.Product>>> valueFactory, MemoryCacheEntryOptions options) =>
             {
                 var products = await valueFactory(new Mock<ICacheEntry>().Object); // Call the actual factory (GetAllProductsAsync)
                 return products;
@@ -58,7 +57,7 @@ public class GetProductsQueryHandlerTest : TestSetup
 
         _cacheMock.Verify(c => c.GetOrAddAsync(
           cacheKey,
-          It.IsAny<Func<ICacheEntry, Task<List<Product>>>>(),
+          It.IsAny<Func<ICacheEntry, Task<List<Domain.Entity.Product>>>>(),
           It.IsAny<MemoryCacheEntryOptions>()));
 
         // Verify that the cache key was added to the list
@@ -70,7 +69,7 @@ public class GetProductsQueryHandlerTest : TestSetup
     {
         // Arrange
         var query = _fixture.Build<GetProductsQuery>().Create();
-        var products = _fixture.CreateMany<Product>().ToList();
+        var products = _fixture.CreateMany<Domain.Entity.Product>().ToList();
         var cacheKey = _cacheKeyConstants.ProductCacheKey;
 
         var (expectedProductsPaginated, expectedPagination) = PaginationHelpers.GetPaginationModel(products, query.Pagination);
@@ -78,7 +77,7 @@ public class GetProductsQueryHandlerTest : TestSetup
 
         _cacheMock.Setup(c => c.GetOrAddAsync(
             cacheKey,
-            It.IsAny<Func<ICacheEntry, Task<List<Product>>>>(),
+            It.IsAny<Func<ICacheEntry, Task<List<Domain.Entity.Product>>>>(),
             It.IsAny<MemoryCacheEntryOptions>()))
             .ReturnsAsync(products);
 
@@ -99,7 +98,7 @@ public class GetProductsQueryHandlerTest : TestSetup
 
         _cacheMock.Verify(c => c.GetOrAddAsync(
           cacheKey,
-          It.IsAny<Func<ICacheEntry, Task<List<Product>>>>(),
+          It.IsAny<Func<ICacheEntry, Task<List<Domain.Entity.Product>>>>(),
           It.IsAny<MemoryCacheEntryOptions>()));
 
         // Verify that the cache key was added to the list

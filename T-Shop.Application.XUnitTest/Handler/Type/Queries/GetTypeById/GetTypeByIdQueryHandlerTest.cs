@@ -6,7 +6,7 @@ using T_Shop.Domain.Exceptions;
 using T_Shop.Domain.Repository;
 using T_Shop.Shared.DTOs.Type.ResponseModel;
 
-namespace T_Shop.Application.XUnitTest.Handler.Type.GetTypeById;
+namespace T_Shop.Application.XUnitTest.Handler.Type.Queries.GetTypeById;
 public class GetTypeByIdQueryHandlerTest : TestSetup
 {
     private readonly Mock<ITypeQueries> _mockTypeQueries;

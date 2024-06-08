@@ -6,7 +6,7 @@ using T_Shop.Application.Features.Color.Queries.GetColors;
 using T_Shop.Domain.Repository;
 using T_Shop.Shared.DTOs.Color.ResponseModel;
 
-namespace T_Shop.Application.XUnitTest.Handler.Color.GetColors;
+namespace T_Shop.Application.XUnitTest.Handler.Color.Queries.GetColors;
 public class GetColorsQueryHandlerTest : TestSetup
 {
     private readonly Mock<IColorQueries> _mockColorQueries;

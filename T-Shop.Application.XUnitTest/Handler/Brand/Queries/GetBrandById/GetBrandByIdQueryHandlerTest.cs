@@ -6,7 +6,7 @@ using T_Shop.Domain.Exceptions;
 using T_Shop.Domain.Repository;
 using T_Shop.Shared.DTOs.Brand.ResponseModel;
 
-namespace T_Shop.Application.XUnitTest.Handler.Brand.GetBrandById;
+namespace T_Shop.Application.XUnitTest.Handler.Brand.Queries.GetBrandById;
 public class GetBrandByIdQueryHandlerTest : TestSetup
 {
     private readonly Mock<IBrandQueries> _mockBrandQueries;
