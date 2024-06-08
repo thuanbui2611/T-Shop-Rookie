@@ -55,10 +55,8 @@ public class CreateModelProductCommandHandler : IRequestHandler<CreateModelProdu
             Name = brand.Name,
         };
 
-        _ = Task.Run(() =>
-        {
-            UpdateExistedCache(newModel);
-        });
+
+        UpdateExistedCache(newModel);
 
         var result = _mapper.Map<ModelProductResponseModel>(newModel);
         return result;
