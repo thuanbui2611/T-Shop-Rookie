@@ -38,7 +38,7 @@ public class DeleteModelProductCommandHandler : IRequestHandler<DeleteModelProdu
     private async void UpdateExistedCache(Model deletedModel)
     {
         var key = _cacheKeyConstants.ModelCacheKey;
-        var cacheValues = await _cache.GetAsync<List<TypeProduct>>(key);
+        var cacheValues = await _cache.GetAsync<List<Model>>(key);
         if (cacheValues != null)
         {
             cacheValues.RemoveAll(t => t.Id.Equals(deletedModel.Id));
