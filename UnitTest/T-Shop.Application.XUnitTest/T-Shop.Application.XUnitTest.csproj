@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\T-Shop.Domain.XUnitTest\T-Shop.Domain.XUnitTest.csproj" />
+    <ProjectReference Include="..\..\UnitTest\T-Shop.Domain.XUnitTest\T-Shop.Domain.XUnitTest.csproj" />
   </ItemGroup>
 
   <ItemGroup>

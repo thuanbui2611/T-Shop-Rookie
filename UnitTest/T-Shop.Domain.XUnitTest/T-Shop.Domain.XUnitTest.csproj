@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -18,9 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\T-Shop.Application\T-Shop.Application.csproj" />
-    <ProjectReference Include="..\T-Shop.Domain\T-Shop.Domain.csproj" />
-    <ProjectReference Include="..\T-Shop.Infrastructure\T-Shop.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\API\T-Shop.Application\T-Shop.Application.csproj" />
+    <ProjectReference Include="..\..\API\T-Shop.Domain\T-Shop.Domain.csproj" />
+    <ProjectReference Include="..\..\API\T-Shop.Infrastructure\T-Shop.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
