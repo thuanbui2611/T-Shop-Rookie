@@ -7,5 +7,5 @@ This project is a project for Rookie in Nashtech.
 The technology stack for this system includes:
 
 - Front-end (Admin): React, Typescript, Redux Toolkit - Redux Thunk, Tailwindcss.
-- Front-end (Client): MVC,
+- Front-end (Client): MVC, RazorPage.
 - Back-end: .Net 8.0, RESTful API, Entity Framework Core, Cloudinary, Stripe, Postgres.
